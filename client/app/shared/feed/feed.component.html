@@ -1,0 +1,11 @@
+<section class="feed-item" *ngFor="let item of feedItems">
+  <div class="body">
+    <i class="icon {{item.icon}}"></i> 
+    <small class="text-muted text-uppercase">{{item.time}}</small>
+    <div class="title font-weight-bold"><a routerLink="user/username">{{item.actor}}</a> {{item.verb}} <span [ngClass]="item.label_type ? 'label' : ''">{{item.label_type}}</span>{{item.label_type ? ' ': ''}}{{item.object}} <a routerLink="org/boston_globe">{{item.target}}</a> <a href="#">{{item.target_possessive}}</a></div>
+    <div class="details" *ngIf="item.detail">
+      <img src="{{item.actor_img}}" height="30px" alt="">
+      <blockquote class="{{item.detail_type}}">{{item.detail}}</blockquote>
+    </div>
+  </div>
+</section>

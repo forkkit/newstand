@@ -1,0 +1,19 @@
+<app-toast [message]="toast.message"></app-toast>
+
+<div class="card register mt-5 mx-auto">
+  <div class="card-body">
+    <h2 class="card-title font-weight-bold text-center mb-4">Register</h2>
+    <form [formGroup]="registerForm" (ngSubmit)="register()">
+      <div class="form-group" [ngClass]="setClassUsername()">
+        <input class="form-control form-control-lg rounded-0" type="text" name="username" formControlName="username" placeholder="Username" autofocus>
+      </div>
+      <div class="form-group" [ngClass]="setClassEmail()">
+        <input class="form-control form-control-lg rounded-0" type="email" name="email" formControlName="email" placeholder="Email">
+      </div>
+      <div class="form-group" [ngClass]="setClassPassword()">
+        <input class="form-control form-control-lg rounded-0" type="password" name="password" formControlName="password" placeholder="Password">
+      </div>
+      <button class="btn btn-primary btn-block btn-lg rounded-0" type="submit" [disabled]="!registerForm.valid">Register</button>
+    </form>
+  </div>
+</div>

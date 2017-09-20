@@ -1,0 +1,45 @@
+.feed-item{
+    position: relative;
+    padding: 0 0 1em 40px;
+    font-size: 14px;
+    min-height: 85px;
+    border-top:1px solid #eff3f6;
+    &:first-child{
+        border-top: 0;
+        >.body{
+            padding-top: 0;
+        }
+    }
+    >.body{
+        padding: 1em 0 0;
+        >.icon{
+            position: absolute;
+            left: 0;
+            color: #999999;
+            font-size: 2em;
+        }
+        span{
+            &.label{
+                background-color: #03fc96;
+                padding: 3px;
+            }
+        }
+        >.details{
+            position: relative;
+            >img{
+                position: absolute;
+                left: 0;
+            }
+            >blockquote{
+                font-size: 12px;
+                padding-left: 5px;
+                margin: 0 0 0 40px;
+                &.quote{
+                    border-left: 5px solid #eaf5ff;
+                    font-style: italic;
+                }
+            }
+        }
+        
+    }
+}
