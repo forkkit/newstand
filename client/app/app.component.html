@@ -5,6 +5,25 @@
       <span class="d-none d-md-inline">Newstand.org</span>
     </a>
     <span class="mr-auto"></span>
+
+    <button class="navbar-toggler d-md-none" *ngIf="auth.loggedIn" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+      <i class="fa fa-user"></i>
+    </button>
+
+    <div class="collapse card-nav-mobile d-md-none" id="navbarText" *ngIf="auth.loggedIn">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link disabled" href="#">{{auth.currentUser.username}}</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/account">Account</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/logout">Logout</a>
+        </li>
+      </ul>
+    </div>
+
     <ul class="navbar-nav">
       <li class="nav-item">
         <a routerLink="/login" class="nav-link" routerLinkActive="active" *ngIf="!auth.loggedIn">
@@ -13,19 +32,18 @@
         </a>
       </li>
       <li class="nav-item">
-        <a routerLink="/account" class="nav-link" routerLinkActive="active" *ngIf="auth.loggedIn">
-          <i class="fa fa-user"></i> Account ({{auth.currentUser.username}})
-        </a>
-      </li>
-      <li class="nav-item">
         <a routerLink="/admin" class="nav-link" routerLinkActive="active" *ngIf="auth.loggedIn && auth.isAdmin">
           <i class="fa fa-lock"></i> Admin
         </a>
       </li>
-      <li class="nav-item">
-        <a routerLink="/logout" class="nav-link" routerLinkActive="active" *ngIf="auth.loggedIn">
-          <i class="fa fa-sign-out"></i> Logout
+      <li class="nav-item dropdown d-md-inline d-none" *ngIf="auth.loggedIn">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          {{auth.currentUser.username}}
         </a>
+        <div class="dropdown-menu dropdown-menu-right rounded-0" aria-labelledby="navbarDropdownMenuLink">
+          <a class="dropdown-item" routerLink="/account">Account</a>
+          <a class="dropdown-item" routerLink="/logout">Logout</a>
+        </div>
       </li>
     </ul>
   </div>

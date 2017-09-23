@@ -13,11 +13,11 @@ export class UserService {
   constructor(private http: Http) { }
 
   register(user): Observable<any> {
-    return this.http.post('/api/user', JSON.stringify(user), this.options);
+    return this.http.post('/api/users/create', JSON.stringify(user), this.options);
   }
 
   login(credentials): Observable<any> {
-    return this.http.post('/api/login', JSON.stringify(credentials), this.options);
+    return this.http.post('/api/auth/local', JSON.stringify(credentials), this.options);
   }
 
   getUsers(): Observable<any> {

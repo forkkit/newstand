@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
-import { UserService } from '../services/user.service';
+import { AuthService } from '../services/auth.service';
 import { ToastComponent } from '../shared/toast/toast.component';
 
 @Component({
@@ -22,12 +22,12 @@ export class RegisterComponent implements OnInit {
   password = new FormControl('', [Validators.required,
                                   Validators.minLength(6)]);
 
-  role = new FormControl('', [Validators.required]);
+  role = 'user';
 
   constructor(private formBuilder: FormBuilder,
               private router: Router,
               public toast: ToastComponent,
-              private userService: UserService) { }
+              private auth: AuthService) { }
 
   ngOnInit() {
     this.registerForm = this.formBuilder.group({
@@ -49,10 +49,10 @@ export class RegisterComponent implements OnInit {
   }
 
   register() {
-    this.userService.register(this.registerForm.value).subscribe(
-      res => {
-        this.toast.setMessage('you successfully registered!', 'success');
-        this.router.navigate(['/login']);
+    this.auth.register(this.registerForm.value).subscribe(
+      res => { 
+        this.router.navigate(['/']);
+        this.toast.setMessage('you successfully registered!', 'success'); 
       },
       error => this.toast.setMessage('email already exists', 'danger')
     );

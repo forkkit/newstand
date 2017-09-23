@@ -2,7 +2,7 @@ import * as chai from 'chai';
 import * as chaiHttp from 'chai-http';
 
 process.env.NODE_ENV = 'test';
-import { app } from '../app';
+import App from '../config/express';
 import Cat from '../models/cat';
 
 const should = chai.use(chaiHttp).should();
@@ -18,7 +18,7 @@ describe('Cats', () => {
   describe('Backend tests for cats', () => {
 
     it('should get all the cats', done => {
-      chai.request(app)
+      chai.request(App)
         .get('/api/cats')
         .end((err, res) => {
           res.should.have.status(200);
@@ -29,7 +29,7 @@ describe('Cats', () => {
     });
 
     it('should get cats count', done => {
-      chai.request(app)
+      chai.request(App)
         .get('/api/cats/count')
         .end((err, res) => {
           res.should.have.status(200);
@@ -41,7 +41,7 @@ describe('Cats', () => {
 
     it('should create new cat', done => {
       const cat = { name: 'Fluffy', weight: 4, age: 2 };
-      chai.request(app)
+      chai.request(App)
         .post('/api/cat')
         .send(cat)
         .end((err, res) => {
@@ -57,7 +57,7 @@ describe('Cats', () => {
     it('should get a cat by its id', done => {
       const cat = new Cat({ name: 'Cat', weight: 2, age: 4 });
       cat.save((error, newCat) => {
-        chai.request(app)
+        chai.request(App)
           .get(`/api/cat/${newCat.id}`)
           .end((err, res) => {
             res.should.have.status(200);
@@ -74,7 +74,7 @@ describe('Cats', () => {
     it('should update a cat by its id', done => {
       const cat = new Cat({ name: 'Cat', weight: 2, age: 4 });
       cat.save((error, newCat) => {
-        chai.request(app)
+        chai.request(App)
           .put(`/api/cat/${newCat.id}`)
           .send({ weight: 5 })
           .end((err, res) => {
@@ -87,7 +87,7 @@ describe('Cats', () => {
     it('should delete a cat by its id', done => {
       const cat = new Cat({ name: 'Cat', weight: 2, age: 4 });
       cat.save((error, newCat) => {
-        chai.request(app)
+        chai.request(App)
           .delete(`/api/cat/${newCat.id}`)
           .end((err, res) => {
             res.should.have.status(200);

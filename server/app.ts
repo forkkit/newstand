@@ -1,47 +1,25 @@
-import * as bodyParser from 'body-parser';
-import * as dotenv from 'dotenv';
-import * as express from 'express';
-import * as morgan from 'morgan';
 import * as mongoose from 'mongoose';
-import * as path from 'path';
+import * as http from 'http';
 
-import setRoutes from './routes';
+import config from './config';
+import App from './config/express';
 
-const app = express();
-dotenv.load({ path: '.env' });
-app.set('port', (process.env.PORT || 3000));
-
-app.use('/', express.static(path.join(__dirname, '../public')));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-
-app.use(morgan('dev'));
-
-if (process.env.NODE_ENV === 'test') {
-  mongoose.connect(process.env.MONGODB_TEST_URI);
-} else {
-  mongoose.connect(process.env.MONGODB_URI);
-}
-
+// Connect to MongoDB
+mongoose.connect(config.mongo.uri, config.mongo.options);
 const db = mongoose.connection;
 (<any>mongoose).Promise = global.Promise;
-
-db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', () => {
-  console.log('Connected to MongoDB');
-
-  setRoutes(app);
-
-  app.get('/*', function(req, res) {
-    res.sendFile(path.join(__dirname, '../public/index.html'));
-  });
-
-  if (!module.parent) {
-    app.listen(app.get('port'), () => {
-      console.log('Angular Full Stack listening on port ' + app.get('port'));
-    });
-  }
-
+db.on('error', function(err) {
+  console.error(`MongoDB connection error: ${err}`);
+  process.exit(-1); // eslint-disable-line no-process-exit
 });
 
-export { app };
+// Start server
+const server = http.createServer(App);
+
+function startServer() {
+  server.listen(config.port, config.ip, function() {
+    console.log('Express server listening on %d, in %s mode', config.port, App.get('env'));
+  });
+}
+
+setImmediate(startServer);

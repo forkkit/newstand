@@ -2,7 +2,7 @@ import * as chai from 'chai';
 import * as chaiHttp from 'chai-http';
 
 process.env.NODE_ENV = 'test';
-import { app } from '../app';
+import App from '../config/express';
 import User from '../models/user';
 
 const should = chai.use(chaiHttp).should();
@@ -18,7 +18,7 @@ describe('Users', () => {
   describe('Backend tests for users', () => {
 
     it('should get all the users', done => {
-      chai.request(app)
+      chai.request(App)
         .get('/api/users')
         .end((err, res) => {
           res.should.have.status(200);
@@ -29,7 +29,7 @@ describe('Users', () => {
     });
 
     it('should get users count', done => {
-      chai.request(app)
+      chai.request(App)
         .get('/api/users/count')
         .end((err, res) => {
           res.should.have.status(200);
@@ -41,7 +41,7 @@ describe('Users', () => {
 
     it('should create new user', done => {
       const user = { username: 'Dave', email: 'dave@example.com', role: 'user' };
-      chai.request(app)
+      chai.request(App)
         .post('/api/user')
         .send(user)
         .end((err, res) => {
@@ -57,7 +57,7 @@ describe('Users', () => {
     it('should get a user by its id', done => {
       const user = new User({ username: 'User', email: 'user@example.com', role: 'user' });
       user.save((error, newUser) => {
-        chai.request(app)
+        chai.request(App)
           .get(`/api/user/${newUser.id}`)
           .end((err, res) => {
             res.should.have.status(200);
@@ -74,7 +74,7 @@ describe('Users', () => {
     it('should update a user by its id', done => {
       const user = new User({ username: 'User', email: 'user@example.com', role: 'user' });
       user.save((error, newUser) => {
-        chai.request(app)
+        chai.request(App)
           .put(`/api/user/${newUser.id}`)
           .send({ username: 'User 2' })
           .end((err, res) => {
@@ -87,7 +87,7 @@ describe('Users', () => {
     it('should delete a user by its id', done => {
       const user = new User({ username: 'User', email: 'user@example.com', role: 'user' });
       user.save((error, newUser) => {
-        chai.request(app)
+        chai.request(App)
           .delete(`/api/user/${newUser.id}`)
           .end((err, res) => {
             res.should.have.status(200);
