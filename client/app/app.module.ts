@@ -1,4 +1,5 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { CookieService } from 'ngx-cookie-service';
 
 import { RoutingModule } from './routing.module';
 import { SharedModule } from './shared/shared.module';
@@ -42,7 +43,8 @@ import { NotFoundComponent } from './not-found/not-found.component';
     AuthGuardLogin,
     AuthGuardAdmin,
     CatService,
-    UserService
+    UserService,
+    CookieService
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   bootstrap: [AppComponent]

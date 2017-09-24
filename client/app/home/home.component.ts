@@ -13,4 +13,8 @@ export class HomeComponent implements OnInit {
 
   }
 
+  loginOauth(provider){
+      window.location.href=`/api/auth/${provider}`;
+  }
+
 }

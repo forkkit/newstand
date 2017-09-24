@@ -1,12 +1,20 @@
 import * as mongoose from 'mongoose';
 import * as crypto from 'crypto';
 
+const authTypes = ['facebook', 'google'];
+
 const userSchema = new mongoose.Schema({
   username: String,
   email: {
     type: String,
     lowercase: true,
-    required: true
+    required() {
+      if(authTypes.indexOf(this.provider) === -1) {
+        return true;
+      } else {
+        return false;
+      }
+    }
   },
   role: {
     type: String,
@@ -14,10 +22,18 @@ const userSchema = new mongoose.Schema({
   },
   password: {
     type: String,
-    required: true
+    required() {
+      if(authTypes.indexOf(this.provider) === -1) {
+        return true;
+      } else {
+        return false;
+      }
+    }
   },
   provider: String,
-  salt: String
+  salt: String,
+  facebook: {},
+  google: {},
 });
 
 /**
@@ -52,6 +68,9 @@ userSchema
 userSchema
 .path('email')
 .validate(function(email) {
+  if(authTypes.indexOf(this.provider) !== -1) {
+    return true;
+  }
   return email.length;
 }, 'Email cannot be blank');
 
@@ -59,22 +78,29 @@ userSchema
 userSchema
 .path('password')
 .validate(function(password) {
+  if(authTypes.indexOf(this.provider) !== -1) {
+    return true;
+  }
   return password.length;
 }, 'Password cannot be blank');
 
 // Validate email is not taken
 userSchema
 .path('email')
-.validate(function(value) {
+.validate(function(value, respond) {
+  if(authTypes.indexOf(this.provider) !== -1) {
+    return respond(true);
+  }
+
   return this.constructor.findOne({ email: value }).exec()
     .then(user => {
       if(user) {
         if(this.id === user.id) {
-          return true;
+          return respond(true);
         }
-        return false;
+        return respond(false);
       }
-      return true;
+      return respond(true);
     })
     .catch(function(err) {
       throw err;
@@ -96,7 +122,11 @@ userSchema
   }
 
   if(!validatePresenceOf(this.password)) {
-    return next(new Error('Invalid password'));
+    if(authTypes.indexOf(this.provider) === -1) {
+      return next(new Error('Invalid password'));
+    } else {
+      return next();
+    }
   }
 
   // Make salt with a callback

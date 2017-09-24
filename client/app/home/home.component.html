@@ -4,12 +4,12 @@
         <h2 class="card-title font-weight-bold">Increasing digital content quality through thoughtful reader engagement</h2>
         
         <div class="mt-2">
-            <button type="button" class="btn btn-light rounded-0 btn-block btn-social fb">
+            <button type="button" class="btn btn-light rounded-0 btn-block btn-social fb" (click)="loginOauth('facebook')">
               <i class="fa fa-facebook fa-fw"></i>  
               Connect with Facebook
             </button>
 
-            <button type="button" class="btn btn-light rounded-0 btn-block btn-social g">
+            <button type="button" class="btn btn-light rounded-0 btn-block btn-social g" (click)="loginOauth('google')">
                 <i class="fa fa-google fa-fw"></i>  
                 Connect with Google
             </button>

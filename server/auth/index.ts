@@ -2,8 +2,14 @@ import * as express from 'express';
 
 import config from '../config';
 import User from '../models/user';
+
 import { Local } from './local/passport';
-import UserRouter from './local';
+import { Facebook } from './facebook/passport';
+import { Google } from './google/passport';
+
+import localStrategy from './local';
+import fbStrategy from './facebook';
+import googleStrategy from './google';
 
 export class AuthRouter {
   
@@ -12,11 +18,16 @@ export class AuthRouter {
   constructor() {
     this.express = express();
     this.routes();
+
     new Local().setup(User);
+    new Facebook().setup(User, config);
+    new Google().setup(User, config);
   }
 
   private routes(): void {
-    this.express.use('/local', UserRouter);
+    this.express.use('/local', localStrategy);
+    this.express.use('/facebook', fbStrategy);
+    this.express.use('/google', googleStrategy);
   }
 
 }

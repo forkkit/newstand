@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { JwtHelper } from 'angular2-jwt';
 
+import { CookieService } from 'ngx-cookie-service';
+
 import { UserService } from '../services/user.service';
 
 @Injectable()
@@ -14,8 +16,11 @@ export class AuthService {
   currentUser = { _id: '', username: '', role: '' };
 
   constructor(private userService: UserService,
-              private router: Router) {
-    const token = localStorage.getItem('token');
+              private router: Router, 
+              private cookieService: CookieService) {
+
+    const token = this.cookieService.get('token');
+
     if (token) {
       const decodedUser = this.decodeUserFromToken(token);
       this.setCurrentUser(decodedUser);
@@ -25,7 +30,7 @@ export class AuthService {
   login(emailAndPassword) {
     return this.userService.login(emailAndPassword).map(res => res.json()).map(
       res => {
-        localStorage.setItem('token', res.token);
+        this.cookieService.set('token', res.token);
         const decodedUser = this.decodeUserFromToken(res.token);
         this.setCurrentUser(decodedUser);
         return this.loggedIn;
@@ -34,7 +39,7 @@ export class AuthService {
   }
 
   logout() {
-    localStorage.removeItem('token');
+    this.cookieService.delete('token');
     this.loggedIn = false;
     this.isAdmin = false;
     this.currentUser = { _id: '', username: '', role: '' };
@@ -44,7 +49,7 @@ export class AuthService {
   register(user) {
     return this.userService.register(user).map(res => res.json()).map(
       res => {
-        localStorage.setItem('token', res.token);
+        this.cookieService.set('token', res.token);
         const decodedUser = this.decodeUserFromToken(res.token);
         this.setCurrentUser(decodedUser);
         return this.loggedIn;
