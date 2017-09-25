@@ -8,6 +8,7 @@ import { UserService } from './services/user.service';
 import { AuthService } from './services/auth.service';
 import { AuthGuardLogin } from './services/auth-guard-login.service';
 import { AuthGuardAdmin } from './services/auth-guard-admin.service';
+import { AuthGuardHome } from './services/auth-guard-home.service';
 import { AppComponent } from './app.component';
 import { CatsComponent } from './cats/cats.component';
 import { HomeComponent } from './home/home.component';
@@ -42,6 +43,7 @@ import { NotFoundComponent } from './not-found/not-found.component';
     AuthService,
     AuthGuardLogin,
     AuthGuardAdmin,
+    AuthGuardHome,
     CatService,
     UserService,
     CookieService

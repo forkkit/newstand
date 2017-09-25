@@ -3,17 +3,19 @@ import {CanActivate, Router, ActivatedRouteSnapshot, RouterStateSnapshot} from '
 import {AuthService} from './auth.service';
 
 @Injectable()
-export class AuthGuardLogin implements CanActivate {
+export class AuthGuardHome implements CanActivate {
 
   constructor(public auth: AuthService, private router: Router) {}
 
-  canActivate() {
-    if(this.auth.loggedIn && this.auth.currentUser.status === 'pending'){
-      this.router.navigate(['/me/account']);
+  canActivate() { 
+
+    if(this.auth.loggedIn){
+      this.router.navigate(['/me']);
       return true;
     }
 
-    return this.auth.loggedIn;
+    return true;
+  
   }
 
 }

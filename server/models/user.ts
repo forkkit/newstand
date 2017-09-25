@@ -30,6 +30,10 @@ const userSchema = new mongoose.Schema({
       }
     }
   },
+  status: {
+    type: String,
+    default: 'pending'
+  },
   provider: String,
   salt: String,
   facebook: {},
@@ -107,6 +111,8 @@ userSchema
     });
 }, 'The specified email address is already in use.');
 
+
+
 var validatePresenceOf = function(value) {
   return value && value.length;
 };
@@ -116,31 +122,40 @@ var validatePresenceOf = function(value) {
  */
 userSchema
 .pre('save', function(next) {
-  // Handle new/update passwords
-  if(!this.isModified('password')) {
-    return next();
-  }
+  
+  const emailName = this.email.split('@')[0];
+  this.setUsername(emailName, (username, err) => {
 
-  if(!validatePresenceOf(this.password)) {
-    if(authTypes.indexOf(this.provider) === -1) {
-      return next(new Error('Invalid password'));
-    } else {
+    this.username = username;
+   
+    // Handle new/update passwords
+    if(!this.isModified('password')) {
       return next();
     }
-  }
 
-  // Make salt with a callback
-  this.makeSalt((saltErr, salt) => {
-    if(saltErr) {
-      return next(saltErr);
-    }
-    this.salt = salt;
-    this.encryptPassword(this.password, (encryptErr, hashedPassword) => {
-      if(encryptErr) {
-        return next(encryptErr);
+    if(!validatePresenceOf(this.password)) {
+      if(authTypes.indexOf(this.provider) === -1) {
+        return next(new Error('Invalid password'));
+      } else {
+        return next();
       }
-      this.password = hashedPassword;
-      return next();
+    }
+
+
+
+    // Make salt with a callback
+    this.makeSalt((saltErr, salt) => {
+      if(saltErr) {
+        return next(saltErr);
+      }
+      this.salt = salt;
+      this.encryptPassword(this.password, (encryptErr, hashedPassword) => {
+        if(encryptErr) {
+          return next(encryptErr);
+        }
+        this.password = hashedPassword;
+        return next();
+      });
     });
   });
 });
@@ -173,6 +188,71 @@ userSchema.methods = {
         return callback(null, false);
       }
     });
+  },
+
+    /**
+   * Check username availability
+   *
+   * @param {String} value
+   * @param {Function} callback
+   * @return {Boolean}
+   * @api public
+   */
+  usernameCheck(value, callback) {
+
+    return this.constructor.findOne({ username: value }).exec()
+    .then(user => {
+      if(user) {
+        if(this.id === user.id) {
+          return callback(true);
+        }
+        return callback(false);
+      }
+      return callback(true);
+    })
+    .catch(function(err) {
+      throw err;
+    });
+    
+  },
+
+    /**
+   * Set unique initial username
+   *
+   * @param {String} value
+   * @param {Function} callback
+   * @return {Boolean}
+   * @api public
+   */
+  setUsername(value, callback) {
+  
+    let that = this;
+    let checkWrap = function(username:string):string {
+
+      return that.usernameCheck(username, (available, err) => {
+                  
+        //Proposed username is available
+        if(available){
+          return callback(username);
+        }
+  
+        //Else, find one that is
+        const dashIndex = username.lastIndexOf('-');
+        const digit= ~~(username.substring(dashIndex  + 1));
+        if(digit){
+          const newUsername = username.substring(0, dashIndex) + '-' + (digit + 1);
+          checkWrap(newUsername);
+          return;
+        }
+
+        checkWrap(username + '-1');
+        return;
+      });
+
+    }
+
+    checkWrap(value); 
+
   },
 
   /**

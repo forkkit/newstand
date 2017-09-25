@@ -14,15 +14,21 @@ import { NotFoundComponent } from './not-found/not-found.component';
 
 import { AuthGuardLogin } from './services/auth-guard-login.service';
 import { AuthGuardAdmin } from './services/auth-guard-admin.service';
+import { AuthGuardHome } from './services/auth-guard-home.service';
 
 const routes: Routes = [
-  { path: '', component: HomeComponent },
+  { path: '', component: HomeComponent, canActivate: [AuthGuardHome]  },
   { path: 'cats', component: CatsComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'login', component: LoginComponent },
   { path: 'logout', component: LogoutComponent },
   { path: 'org/:id', component: OrganizationComponent },
-  { path: 'user/:id', component: UserComponent },
+  { path: 'me', 
+    children: [
+      { path: '', pathMatch: 'full', component: UserComponent, canActivate: [AuthGuardLogin] },
+      { path: 'account', component: AccountComponent },
+    ]
+  },
   { path: 'account', component: AccountComponent, canActivate: [AuthGuardLogin] },
   { path: 'admin', component: AdminComponent, canActivate: [AuthGuardAdmin] },
   { path: 'notfound', component: NotFoundComponent },

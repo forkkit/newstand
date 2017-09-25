@@ -13,10 +13,8 @@ export class Google {
       }
 
       user = new User({
-        name: profile.displayName,
         email: profile.emails[0].value,
         role: 'user',
-        username: profile.emails[0].value.split('@')[0],
         provider: 'google',
         google: profile._json
       });

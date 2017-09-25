@@ -3,11 +3,14 @@ import * as jwt from 'jsonwebtoken';
 
 import config from '../../config';
 import User from '../../models/user';
+import BaseCtrl from '../base';
 
-export class UserRouter {
+export class UserRouter extends BaseCtrl{
   router: Router
+  model = User;
 
   constructor() {
+    super();
     this.router = Router();
     this.routes();
   }
@@ -22,7 +25,7 @@ export class UserRouter {
 
   public create = (req: Request, res: Response) =>  {
     
-    const newUser = new User(req.body);
+    const newUser = new this.model(req.body);
     newUser.provider = 'local';
     newUser.save()
     .then(function(user) {
@@ -30,7 +33,8 @@ export class UserRouter {
       const payload = {
         _id: user._id,
         role: user.role, 
-        username: user.username
+        username: user.username,
+        status: user.status
       }
 
       const token = jwt.sign({ user: payload }, config.secrets.session, {
@@ -46,6 +50,7 @@ export class UserRouter {
 
   routes() {
     this.router.post('/create', this.create);
+    this.router.get('/:id', this.get);
   }
 
 }

@@ -44,8 +44,8 @@ export function isAuthenticated() {
 /**
  * Returns a jwt token signed by the app secret
  */
-export function signToken(id, role, username) {
-  return jwt.sign({user: {_id: id, role, username }}, config.secrets.session, {
+export function signToken(id, role, username, status) {
+  return jwt.sign({user: {_id: id, role, username, status }}, config.secrets.session, {
     expiresIn: "7d"
   });
 }
@@ -57,7 +57,7 @@ export function setTokenCookie(req, res) {
   if(!req.user) {
     return res.status(404).send('It looks like you aren\'t logged in, please try again.');
   }
-  var token = signToken(req.user._id, req.user.role, req.user.username);
+  var token = signToken(req.user._id, req.user.role, req.user.username, req.user.status);
   res.cookie('token', token);
   res.redirect('/');
 }

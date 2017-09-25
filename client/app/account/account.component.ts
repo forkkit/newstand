@@ -23,17 +23,17 @@ export class AccountComponent implements OnInit {
 
   getUser() {
     this.userService.getUser(this.auth.currentUser).subscribe(
-      data => this.user = data,
+      data => console.log(data),
       error => console.log(error),
       () => this.isLoading = false
     );
   }
 
   save(user) {
-    this.userService.editUser(user).subscribe(
-      res => this.toast.setMessage('account settings saved!', 'success'),
-      error => console.log(error)
-    );
+    // this.userService.editUser(user).subscribe(
+    //   res => this.toast.setMessage('account settings saved!', 'success'),
+    //   error => console.log(error)
+    // );
   }
 
 }

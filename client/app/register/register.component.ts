@@ -12,17 +12,16 @@ import { ToastComponent } from '../shared/toast/toast.component';
 export class RegisterComponent implements OnInit {
 
   registerForm: FormGroup;
-  username = new FormControl('', [Validators.required,
-                                  Validators.minLength(2),
-                                  Validators.maxLength(30),
-                                  Validators.pattern('[a-zA-Z0-9_-\\s]*')]);
+
   email = new FormControl('', [Validators.required,
                                Validators.minLength(3),
-                               Validators.maxLength(100)]);
+                               Validators.pattern("[^ @]*@[^ @]*")]);
   password = new FormControl('', [Validators.required,
-                                  Validators.minLength(6)]);
-
-  role = 'user';
+                               Validators.minLength(8)]); 
+  
+  passwordConfirm = new FormControl('', [Validators.required,
+                               Validators.minLength(8)]);                                  
+                                                           
 
   constructor(private formBuilder: FormBuilder,
               private router: Router,
@@ -31,21 +30,31 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit() {
     this.registerForm = this.formBuilder.group({
-      username: this.username,
       email: this.email,
       password: this.password,
-      role: this.role
+      passwordConfirm: this.passwordConfirm
+    },
+      {
+        validator: this.passwordMatch
     });
   }
 
-  setClassUsername() {
-    return { 'has-danger': !this.username.pristine && !this.username.valid };
-  }
+  passwordMatch(g: FormGroup) {
+    return g.get('password').value === g.get('passwordConfirm').value
+       ? null : { 'mismatch': true };
+   }
+ 
   setClassEmail() {
-    return { 'has-danger': !this.email.pristine && !this.email.valid };
+    return (!this.email.pristine && !this.email.valid) ? 'Enter valid email address' : false;
   }
+
   setClassPassword() {
-    return { 'has-danger': !this.password.pristine && !this.password.valid };
+    return (!this.password.pristine && !this.password.valid) ? 'Password must be a minimum of 8 characters' : false;
+  }
+
+  setClassConfirm() { 
+    return (!this.passwordConfirm.pristine && !this.passwordConfirm.valid ||
+    !this.passwordConfirm.pristine && this.registerForm.errors && this.registerForm.errors.mismatch) ? 'Passwords must match' :false;
   }
 
   register() {

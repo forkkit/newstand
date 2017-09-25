@@ -33,7 +33,7 @@ export class UserService {
   }
 
   getUser(user): Observable<any> {
-    return this.http.get(`/api/user/${user._id}`).map(res => res.json());
+    return this.http.get(`/api/users/${user._id}`).map(res => res.json());
   }
 
   editUser(user): Observable<any> {

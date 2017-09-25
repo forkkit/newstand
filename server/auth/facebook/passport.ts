@@ -10,9 +10,8 @@ export class Facebook {
       if(user) {
         return done(null, user);
       }
-      console.log(profile.displayName);
+      
       user = new User({
-        username: profile.displayName,
         email: profile.emails[0].value,
         role: 'user',
         provider: 'facebook',
