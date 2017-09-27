@@ -2,6 +2,8 @@ import * as jwt from 'jsonwebtoken';
 import * as expressJwt from 'express-jwt';
 import * as compose from 'composable-middleware';
 
+import _ from 'lodash';
+
 import User from '../models/user';
 import config from '../config';
 
@@ -25,6 +27,7 @@ export function isAuthenticated() {
       if(req.query && typeof req.headers.authorization === 'undefined') {
         req.headers.authorization = `Bearer ${req.cookies.token}`;
       }
+      
       validateJwt(req, res, next);
     })
     // Attach user to request
@@ -34,7 +37,12 @@ export function isAuthenticated() {
           if(!user) {
             return res.status(401).end();
           }
+
+          //Send back to client - eventually supporting token refresh
+          var token = req.headers.authorization;
+          req.token = token.replace(new RegExp('Bearer ', 'g'), '');
           req.user = user;
+          
           next();
         })
         .catch(err => next(err));
@@ -44,8 +52,8 @@ export function isAuthenticated() {
 /**
  * Returns a jwt token signed by the app secret
  */
-export function signToken(id, role, username, status) {
-  return jwt.sign({user: {_id: id, role, username, status }}, config.secrets.session, {
+export function signToken(id, role) {
+  return jwt.sign({ _id: id, role}, config.secrets.session, {
     expiresIn: "7d"
   });
 }
@@ -57,7 +65,7 @@ export function setTokenCookie(req, res) {
   if(!req.user) {
     return res.status(404).send('It looks like you aren\'t logged in, please try again.');
   }
-  var token = signToken(req.user._id, req.user.role, req.user.username, req.user.status);
+  var token = signToken(req.user._id, req.user.role);
   res.cookie('token', token);
   res.redirect('/');
 }

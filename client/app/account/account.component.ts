@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
+import { Router } from '@angular/router';
 import { ToastComponent } from '../shared/toast/toast.component';
 import { AuthService } from '../services/auth.service';
-import { UserService } from '../services/user.service';
+
+import { User } from '../services/user.model';
 
 @Component({
   selector: 'app-account',
@@ -10,30 +13,40 @@ import { UserService } from '../services/user.service';
 })
 export class AccountComponent implements OnInit {
 
-  user = {};
+  data: User;
+  
   isLoading = true;
 
+  usernameForm: FormGroup;
+  username = new FormControl('', [Validators.required]);
+
   constructor(private auth: AuthService,
-              public toast: ToastComponent,
-              private userService: UserService) { }
+    private router: Router,
+    private formBuilder: FormBuilder,
+    public toast: ToastComponent) { }
 
   ngOnInit() {
     this.getUser();
+
+    this.usernameForm = this.formBuilder.group({
+      username: this.username
+    });
   }
 
   getUser() {
-    this.userService.getUser(this.auth.currentUser).subscribe(
-      data => console.log(data),
-      error => console.log(error),
-      () => this.isLoading = false
+    this.auth.currentUser.subscribe(
+      (userData: User) => {
+        this.data = userData;
+
+      }
     );
   }
 
-  save(user) {
-    // this.userService.editUser(user).subscribe(
-    //   res => this.toast.setMessage('account settings saved!', 'success'),
-    //   error => console.log(error)
-    // );
+  submit() {
+    this.auth.confirmUsername(this.data).subscribe(
+      res =>  this.router.navigate(['/me']),
+      error => console.log(error)
+    );
   }
 
 }

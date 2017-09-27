@@ -333,6 +333,7 @@ userSchema.methods = {
 userSchema.set('toJSON', {
   transform: function(doc, ret, options) {
     delete ret.password;
+    delete ret.salt;
     return ret;
   }
 });

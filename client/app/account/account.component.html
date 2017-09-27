@@ -1,4 +1,16 @@
 
 <app-toast [message]="toast.message"></app-toast>
 
-<h3>user account page</h3>
+<div class="setup_container mt-5 mx-auto">
+    <div class="card login">
+        <h2 class="card-title font-weight-bold text-center mt-4">Confirm username</h2>
+        <div class="card-body">
+            <form [formGroup]="usernameForm" (ngSubmit)="submit()">
+                <div class="form-group">
+                    <input class="form-control form-control-lg rounded-0" type="text" name="username" spellcheck="false" formControlName="username" [(ngModel)]="data.username" placeholder="Username">
+                </div>
+                <button class="btn btn-primary btn-block btn-lg rounded-0 mt-4" type="submit" [disabled]="!usernameForm.valid">Continue</button>
+            </form>
+        </div>
+    </div>
+</div>

@@ -59,11 +59,11 @@ export class RegisterComponent implements OnInit {
 
   register() {
     this.auth.register(this.registerForm.value).subscribe(
-      res => { 
+      res => {
         this.router.navigate(['/']);
         this.toast.setMessage('you successfully registered!', 'success'); 
       },
-      error => this.toast.setMessage('email already exists', 'danger')
+      error => console.log(error)
     );
   }
 }

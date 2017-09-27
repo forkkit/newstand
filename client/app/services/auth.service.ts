@@ -1,74 +1,96 @@
-import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
-import { JwtHelper } from 'angular2-jwt';
-
+import { Injectable, EventEmitter, Output } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
+import { Observable } from 'rxjs/Rx';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { ReplaySubject } from 'rxjs/ReplaySubject';
+import 'rxjs/add/operator/distinctUntilChanged';
 
 import { UserService } from '../services/user.service';
 
+import { Data, User } from './user.model';
+
 @Injectable()
 export class AuthService {
-  loggedIn = false;
-  isAdmin = false;
+  
+  constructor(
+    private userService: UserService,
+    private cookieService: CookieService
+  ) {}
 
-  jwtHelper: JwtHelper = new JwtHelper();
+  private currentUserSubject = new BehaviorSubject<User>(new User());
+  public currentUser = this.currentUserSubject.asObservable().distinctUntilChanged();
 
-  currentUser = { _id: '', username: '', role: '', status: '' };
+  private isAuthenticatedSubject = new ReplaySubject<boolean>(1);
+  public isAuthenticated = this.isAuthenticatedSubject.asObservable();
 
-  constructor(private userService: UserService,
-              private router: Router, 
-              private cookieService: CookieService) {
+  populate() {
 
-    const token = this.cookieService.get('token');
-
-    if (token) {
-      const decodedUser = this.decodeUserFromToken(token);
-      this.setCurrentUser(decodedUser);
+    if(!this.cookieService.get('token')){
+      this.logout();
+      return;
     }
+
+    this.userService.get()
+      .subscribe(
+        data => this.setAuth(data, data.user),
+        err => this.logout()
+      );
+
   }
 
-  login(emailAndPassword) {
-    return this.userService.login(emailAndPassword).map(res => res.json()).map(
-      res => {
-        this.cookieService.set('token', res.token);
-        const decodedUser = this.decodeUserFromToken(res.token);
-        this.setCurrentUser(decodedUser);
-        return this.loggedIn;
-      }
-    );
+
+  setAuth(data: Data, user: User) {
+    // Save JWT sent from server in cookie
+    this.cookieService.set('token', data.token);
+    // Set current user data into observable
+    this.currentUserSubject.next(user);
+    // Set isAuthenticated to true
+    this.isAuthenticatedSubject.next(true);
   }
+
+  isLoggedIn() : Observable<boolean> {
+    return this.isAuthenticatedSubject.asObservable();
+   }
 
   logout() {
+    // Remove JWT from cookie
     this.cookieService.delete('token');
-    this.loggedIn = false;
-    this.isAdmin = false;
-    this.currentUser = { _id: '', username: '', role: '', status: '' };
-    this.router.navigate(['/']);
+    // Set current user to an empty object
+    this.currentUserSubject.next(new User());
+    // Set auth status to false
+    this.isAuthenticatedSubject.next(false);
+  }
+
+  login(credentials) {
+    return this.userService.login(credentials).map(
+      data => {
+        this.setAuth(data, data.user);
+        return data;
+      }
+    );
   }
 
   register(user) {
-    return this.userService.register(user).map(res => res.json()).map(
-      res => {
-        this.cookieService.set('token', res.token);
-        const decodedUser = this.decodeUserFromToken(res.token);
-        this.setCurrentUser(decodedUser);
-        return this.loggedIn;
+    return this.userService.register(user).map(
+      data => {
+        this.setAuth(data, data.user);
+        return data;
       }
     );
   }
 
-  decodeUserFromToken(token) {
-    return this.jwtHelper.decodeToken(token).user;
+  getCurrentUser(): User {
+    return this.currentUserSubject.value;
   }
 
-  setCurrentUser(decodedUser) { 
-    this.loggedIn = true;
-    this.currentUser._id = decodedUser._id;
-    this.currentUser.username = decodedUser.username;
-    this.currentUser.status = decodedUser.status;
-    this.currentUser.role = decodedUser.role;
-    decodedUser.role === 'admin' ? this.isAdmin = true : this.isAdmin = false;
-    delete decodedUser.role;
+
+  confirmUsername(user): Observable<User> {
+    return this.userService.username(user)
+    .map(user => {
+      // Update the currentUser observable
+      this.currentUserSubject.next(user);
+      return user;
+    });
   }
 
 }

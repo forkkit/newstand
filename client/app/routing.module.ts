@@ -26,10 +26,10 @@ const routes: Routes = [
   { path: 'me', 
     children: [
       { path: '', pathMatch: 'full', component: UserComponent, canActivate: [AuthGuardLogin] },
-      { path: 'account', component: AccountComponent },
+      { path: 'setup', component: AccountComponent },
     ]
   },
-  { path: 'account', component: AccountComponent, canActivate: [AuthGuardLogin] },
+  { path: 'setup', component: AccountComponent, canActivate: [AuthGuardLogin] },
   { path: 'admin', component: AdminComponent, canActivate: [AuthGuardAdmin] },
   { path: 'notfound', component: NotFoundComponent },
   { path: '**', redirectTo: '/notfound' },

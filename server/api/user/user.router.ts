@@ -1,9 +1,12 @@
 import {Router, Request, Response, NextFunction} from 'express';
 import * as jwt from 'jsonwebtoken';
 
+import * as auth from '../../auth/auth.service';
 import config from '../../config';
 import User from '../../models/user';
 import BaseCtrl from '../base';
+
+import { userRequest } from "../../config/definitions";
 
 export class UserRouter extends BaseCtrl{
   router: Router
@@ -22,6 +25,22 @@ export class UserRouter extends BaseCtrl{
     };
   }
 
+  public me = (req: userRequest, res: Response) =>  {
+    
+    const userId = req.user._id;
+    const token = req.token;
+    
+      return User.findOne({ _id: userId }).exec()
+        .then(user => {
+          if(!user) {
+            return res.status(401).end();
+          }
+
+          return res.json({token, user});
+        })
+        .catch(err => console.log(err));
+  }
+
 
   public create = (req: Request, res: Response) =>  {
     
@@ -30,27 +49,43 @@ export class UserRouter extends BaseCtrl{
     newUser.save()
     .then(function(user) {
 
-      const payload = {
-        _id: user._id,
-        role: user.role, 
-        username: user.username,
-        status: user.status
-      }
+      const token = auth.signToken(user._id, user.role);
 
-      const token = jwt.sign({ user: payload }, config.secrets.session, {
-        expiresIn: 60 * 60 * 5
-      });
-
-      res.json({ token });
+      res.json({ token, user });
     })
     .catch(this.validationError(res, undefined));
 
+  }
+
+  public username = (req: Request, res: Response) =>  {
+
+    const user = req.user;
+    const username = req.body.username;
+    
+    let that = this;
+    user.usernameCheck(username, function(available, err) {
+      
+      if(!available){
+        res.status(409).send('Username not available. Please try again.')
+      }
+
+      user.username = username;
+      user.status = 'active';
+      return user.save()
+        .then(function(user) {
+
+          return res.json({user});
+        })
+        .catch(err => console.log(err));
+      
+    });
 
   }
 
   routes() {
     this.router.post('/create', this.create);
-    this.router.get('/:id', this.get);
+    this.router.get('/me', auth.isAuthenticated(), this.me);
+    this.router.put('/username', auth.isAuthenticated(), this.username);
   }
 
 }

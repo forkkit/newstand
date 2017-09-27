@@ -21,8 +21,10 @@ export class LocalStrategy {
         return res.status(404).json({message: 'Something went wrong, please try again.'});
       }
   
-      var token = signToken(user._id, user.role, user.username, user.status);
-      res.json({ token });
+      const token = signToken(user._id, user.role);
+
+      res.json({token, user});
+
     })(req, res, next);
 
   }
