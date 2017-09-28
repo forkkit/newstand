@@ -69,11 +69,13 @@ export class UserRouter extends BaseCtrl{
         res.status(409).send('Username not available. Please try again.')
       }
 
-      user.username = username;
-      user.status = 'active';
+      user.set({ 
+        status: 'active',
+        username: username
+      });
+
       return user.save()
         .then(function(user) {
-
           return res.json({user});
         })
         .catch(err => console.log(err));

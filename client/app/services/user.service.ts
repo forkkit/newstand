@@ -33,8 +33,8 @@ export class UserService {
     return this.http.get<Data>('/api/users/me');
   }
 
-  username(user): Observable<User> {
-    return this.http.put('/api/users/username', user);
+  username(user): Observable<Data> {
+    return this.http.put<Data>('/api/users/username', user);
   }
 
   getUsers(): Observable<any> {

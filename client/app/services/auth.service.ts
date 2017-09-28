@@ -84,11 +84,11 @@ export class AuthService {
   }
 
 
-  confirmUsername(user): Observable<User> {
+  confirmUsername(user): Observable<Data> {
     return this.userService.username(user)
-    .map(user => {
+    .map((data:Data) => {
       // Update the currentUser observable
-      this.currentUserSubject.next(user);
+      this.currentUserSubject.next(data.user);
       return user;
     });
   }

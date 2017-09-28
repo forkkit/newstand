@@ -13,7 +13,7 @@ import { User } from '../services/user.model';
 })
 export class AccountComponent implements OnInit {
 
-  data: User;
+  currentUser: User;
   
   isLoading = true;
 
@@ -23,29 +23,35 @@ export class AccountComponent implements OnInit {
   constructor(private auth: AuthService,
     private router: Router,
     private formBuilder: FormBuilder,
-    public toast: ToastComponent) { }
+    public toast: ToastComponent) {
+
+      this.usernameForm = this.formBuilder.group({
+        username: this.username
+      });
+    }
 
   ngOnInit() {
     this.getUser();
-
-    this.usernameForm = this.formBuilder.group({
-      username: this.username
-    });
   }
 
   getUser() {
     this.auth.currentUser.subscribe(
       (userData: User) => {
-        this.data = userData;
-
+        this.currentUser = userData;
       }
     );
-  }
+ }
 
   submit() {
-    this.auth.confirmUsername(this.data).subscribe(
-      res =>  this.router.navigate(['/me']),
-      error => console.log(error)
+    this.auth
+    .confirmUsername(this.currentUser)
+    .subscribe(
+      updatedUser => {
+        this.router.navigate(['/me'])
+      },
+      err => {
+        console.log(err);
+      }
     );
   }
 

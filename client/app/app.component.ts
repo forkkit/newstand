@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 
 import { AuthService } from './services/auth.service';
 
+import { User } from './services/user.model';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -10,8 +12,7 @@ import { AuthService } from './services/auth.service';
 })
 export class AppComponent implements OnInit {
 
-  isLoggedIn;
-  currentUser = {};
+  currentUser: User = new User();
 
   constructor(
     public auth: AuthService,

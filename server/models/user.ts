@@ -126,7 +126,10 @@ userSchema
   const emailName = this.email.split('@')[0];
   this.setUsername(emailName, (username, err) => {
 
-    this.username = username;
+    //Only set on initial save
+    if(!this.username){
+      this.username = username;
+    }
    
     // Handle new/update passwords
     if(!this.isModified('password')) {
