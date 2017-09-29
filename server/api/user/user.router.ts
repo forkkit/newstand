@@ -18,13 +18,6 @@ export class UserRouter extends BaseCtrl{
     this.routes();
   }
 
-  private validationError(res: any, statusCode?:number) {
-    statusCode = statusCode || 500;
-    return function(err) {
-      return res.status(statusCode).send(err);
-    };
-  }
-
   public me = (req: userRequest, res: Response) =>  {
     
     const userId = req.user._id;
@@ -53,7 +46,7 @@ export class UserRouter extends BaseCtrl{
 
       res.json({ token, user });
     })
-    .catch(this.validationError(res, undefined));
+    .catch(this.validationError(res));
 
   }
 
@@ -66,7 +59,8 @@ export class UserRouter extends BaseCtrl{
     user.usernameCheck(username, function(available, err) {
       
       if(!available){
-        res.status(409).send('Username not available. Please try again.')
+        res.status(409).send('Username not available. Please try again.');
+        return;
       }
 
       user.set({ 

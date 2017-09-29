@@ -38,8 +38,9 @@ export class AuthService {
 
   }
 
-
   setAuth(data: Data, user: User) {
+    // Clear out any residual
+    this.cookieService.delete('token');
     // Save JWT sent from server in cookie
     this.cookieService.set('token', data.token);
     // Set current user data into observable
@@ -47,10 +48,6 @@ export class AuthService {
     // Set isAuthenticated to true
     this.isAuthenticatedSubject.next(true);
   }
-
-  isLoggedIn() : Observable<boolean> {
-    return this.isAuthenticatedSubject.asObservable();
-   }
 
   logout() {
     // Remove JWT from cookie
@@ -66,7 +63,8 @@ export class AuthService {
       data => {
         this.setAuth(data, data.user);
         return data;
-      }
+      },
+      err => this.logout()
     );
   }
 
@@ -75,7 +73,8 @@ export class AuthService {
       data => {
         this.setAuth(data, data.user);
         return data;
-      }
+      },
+      err => this.logout()
     );
   }
 

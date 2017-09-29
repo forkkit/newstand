@@ -2,6 +2,13 @@ abstract class BaseCtrl {
 
   abstract model: any;
 
+  validationError = (res: any, statusCode?:number) => {
+    statusCode = statusCode || 500;
+    return function(err) { console.log(err.errors);
+      return res.status(statusCode).send(err);
+    };
+  }
+
   // Get all
   getAll = (req, res) => {
     this.model.find({}, (err, docs) => {

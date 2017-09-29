@@ -50,7 +50,7 @@ export class AccountComponent implements OnInit {
         this.router.navigate(['/me'])
       },
       err => {
-        console.log(err);
+        this.toast.setMessage(err.error, 'danger'); 
       }
     );
   }

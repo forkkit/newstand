@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
 import { ToastComponent } from '../shared/toast/toast.component';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-register',
@@ -10,6 +11,8 @@ import { ToastComponent } from '../shared/toast/toast.component';
   styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent implements OnInit {
+
+  errors = {};
 
   registerForm: FormGroup;
 
@@ -63,7 +66,15 @@ export class RegisterComponent implements OnInit {
         this.router.navigate(['/']);
         this.toast.setMessage('you successfully registered!', 'success'); 
       },
-      error => console.log(error)
+      (err: HttpErrorResponse) => {
+        if (err.error instanceof Error) {
+          // Client-side error
+          this.toast.setMessage(err.error.message, 'danger'); 
+        } else {
+          err = JSON.parse(err.error);
+          this.toast.setMessage(err.message, 'danger'); 
+        }
+      }
     );
   }
 }
