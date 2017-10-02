@@ -12,6 +12,7 @@ import * as passport from 'passport';
 import config from './index';
 
 import UserRouter from '../api/user/user.router';
+import ProfileRouter from '../api/profile/profile.router';
 import AuthRouter from '../auth';
 
 class App {
@@ -41,6 +42,8 @@ class App {
     // API endpoints
     private routes(): void {
         this.express.use('/api/users', UserRouter);
+        this.express.use('/api/profiles', ProfileRouter);
+
         this.express.use('/api/auth', AuthRouter);
     }
 }

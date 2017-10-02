@@ -1,44 +1,17 @@
-import { Component, ChangeDetectorRef, AfterViewChecked, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component } from '@angular/core';
 
-import { AuthService } from './services/auth.service';
-
-import { User } from './services/user.model';
+import { AuthService } from './shared/services/';
 
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  templateUrl: './app.component.html'
 })
-export class AppComponent implements OnInit {
-
-  currentUser: User = new User();
-
+export class AppComponent{
+  
   constructor(
-    public auth: AuthService,
-    private router: Router,
-    private cdr: ChangeDetectorRef  
+    public auth: AuthService
   ) { 
-    
     this.auth.populate();
-
   }
-
-  ngOnInit() {
-    this.auth.currentUser.subscribe(
-      (userData) => {
-        this.currentUser = userData;
-      }
-    )
-  }
-
-  logout(){
-    this.auth.logout();
-    this.router.navigateByUrl('/'); 
-  }
-
-  ngAfterViewChecked(): void {
-		this.cdr.detectChanges();
-	}
-
+  
 }

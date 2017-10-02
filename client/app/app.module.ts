@@ -1,54 +1,57 @@
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgModule, ModuleWithProviders, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
+import { RouterModule } from '@angular/router';
 
-import { TokenInterceptor } from './services/token.interceptor';
-import { RoutingModule } from './routing.module';
-import { SharedModule } from './shared/shared.module';
-import { CatService } from './services/cat.service';
-import { UserService } from './services/user.service';
-import { AuthService } from './services/auth.service';
-import { AuthGuardLogin } from './services/auth-guard-login.service';
-import { AuthGuardAdmin } from './services/auth-guard-admin.service';
-import { AuthGuardHome } from './services/auth-guard-home.service';
 import { AppComponent } from './app.component';
-import { CatsComponent } from './cats/cats.component';
-import { HomeComponent } from './home/home.component';
-import { RegisterComponent } from './register/register.component';
-import { LoginComponent } from './login/login.component';
-import { LogoutComponent } from './logout/logout.component';
-import { OrganizationComponent } from './organization/organization.component';
-import { UserComponent } from './user/user.component';
-import { AccountComponent } from './account/account.component';
-import { AdminComponent } from './admin/admin.component';
-import { NotFoundComponent } from './not-found/not-found.component';
+import { HomeModule } from './home/home.module';
+import { AuthModule } from './auth/auth.module';
+import { SettingsModule } from './settings/settings.module';
+import { AdminModule } from './admin/admin.module';
+import { ProfileModule } from './profile/profile.module';
+import { NotFoundModule } from './not-found/not-found.module';
+
+import {
+  HeaderComponent,
+  UserService,
+  ProfilesService,
+  AuthService,
+  JwtService,
+  AuthGuardLogin,
+  AuthGuardAdmin,
+  AuthGuardHome,
+  AuthGuardSetup,
+  TokenInterceptor,
+  SharedModule,
+} from './shared';
+
+const rootRouting: ModuleWithProviders = RouterModule.forRoot([]);
 
 @NgModule({
   declarations: [
     AppComponent,
-    CatsComponent,
-    HomeComponent,
-    RegisterComponent,
-    LoginComponent,
-    LogoutComponent,
-    OrganizationComponent,
-    UserComponent,
-    AccountComponent,
-    AdminComponent,
-    NotFoundComponent
+    HeaderComponent
   ],
   imports: [
-    RoutingModule,
+    AuthModule,
+    HomeModule,
+    SettingsModule,
     SharedModule,
-    HttpClientModule
+    AdminModule,
+    NotFoundModule,
+    ProfileModule,
+    HttpClientModule,
+    rootRouting
   ],
   providers: [
     AuthService,
+    ProfilesService,
+    JwtService,
     AuthGuardLogin,
     AuthGuardAdmin,
     AuthGuardHome,
-    CatService,
+    AuthGuardSetup,
     UserService,
     CookieService,
     {

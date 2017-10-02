@@ -4,7 +4,7 @@ abstract class BaseCtrl {
 
   validationError = (res: any, statusCode?:number) => {
     statusCode = statusCode || 500;
-    return function(err) { console.log(err.errors);
+    return function(err) {
       return res.status(statusCode).send(err);
     };
   }
