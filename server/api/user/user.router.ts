@@ -23,65 +23,52 @@ export class UserRouter extends BaseCtrl{
     const userId = req.user._id;
     const token = req.token;
     
-      return User.findOne({ _id: userId }).exec()
-        .then(user => {
-          if(!user) {
-            return res.status(401).end();
-          }
+    return User.findOne({ _id: userId }).populate('profile').exec()
+      .then(user => {
+        if(!user) {
+          return res.status(401).end();
+        }
 
-          return res.json({token, user});
-        })
-        .catch(err => console.log(err));
+        return res.json({token, user});
+      })
+      .catch(err => console.log(err));
   }
 
 
   public create = (req: Request, res: Response) =>  {
     
     const newUser = new this.model(req.body);
-    newUser.provider = 'local';
-    newUser.save()
-    .then(function(user) {
 
-      const token = auth.signToken(user._id, user.role);
-
-      res.json({ token, user });
-    })
-    .catch(this.validationError(res));
-
-  }
-
-  public username = (req: Request, res: Response) =>  {
-
-    const user = req.user;
-    const username = req.body.username;
-    
-    let that = this;
-    user.usernameCheck(username, function(available, err) {
-      
-      if(!available){
-        res.status(409).send('Username not available. Please try again.');
+    return User.findOne({email:newUser.email}).exec()
+      .then(user => {
+        //Check that email is available
+        if(user){
+          throw new Error('The E-mail address you entered is already associated with an account.');
+        }
         return;
-      }
+      })
+      .then(auth.setupProfile(newUser.email))
+      .then(profile => {
 
-      user.set({ 
-        status: 'active',
-        username: username
-      });
+        newUser.profile = profile;
+        newUser.provider = 'local';
 
-      return user.save()
-        .then(function(user) {
-          return res.json({user});
-        })
-        .catch(err => console.log(err));
-      
-    });
+        return newUser.save()
+          .then(function(user) {
+            const token = auth.signToken(user._id, user.role);
+            return res.json({ token, user });
+          })
+          .catch(err => {throw err; });
+
+        
+      })
+      .catch(this.validationError(res));
 
   }
 
   routes() {
     this.router.post('/create', this.create);
     this.router.get('/me', auth.isAuthenticated(), this.me);
-    this.router.put('/username', auth.isAuthenticated(), this.username);
   }
 
 }

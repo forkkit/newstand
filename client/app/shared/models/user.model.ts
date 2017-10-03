@@ -1,3 +1,5 @@
+import {Profile} from './profile.model';
+
 export class Data{
     user: User;
     token: string;
@@ -6,8 +8,7 @@ export class Data{
  export class User{
     id?: string;
     _id?: string;
-    username?: string;
     email?: string;
-    status?: string;
     role?: string;
+    profile?: Profile;
  }

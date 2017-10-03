@@ -1,5 +1,6 @@
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { ngfModule } from "angular-file";
 
 import { SetupComponent } from './setup/setup.component';
 import { 
@@ -18,7 +19,8 @@ const settingsRouting: ModuleWithProviders = RouterModule.forChild([
 @NgModule({
     imports: [
         settingsRouting,
-        SharedModule
+        SharedModule,
+        ngfModule
     ],
     declarations: [
         SetupComponent

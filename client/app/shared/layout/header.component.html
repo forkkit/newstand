@@ -6,14 +6,14 @@
       </a>
       <span class="mr-auto"></span>
   
-      <button class="navbar-toggler d-md-none" *showAuthed="true" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-        <i class="fa fa-user"></i>
+      <button class="navbar-toggler d-md-none p-0 border-0" *showAuthed="true" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+          <img src="{{currentUser.profile.image}}" width="30" height="30" class="d-inline-block align-top" alt="" alt="">
       </button>
   
       <div class="collapse card-nav-mobile d-md-none" id="navbarText" *showAuthed="true">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item">
-            <a class="nav-link disabled" href="#">{{currentUser.username}}</a>
+            <a class="nav-link disabled" href="#">Logged in as {{currentUser.profile.username}}</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" routerLink="/account">Account</a>
@@ -33,7 +33,8 @@
         </li>
         <li class="nav-item dropdown d-md-inline d-none" *showAuthed="true">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            {{currentUser.username}}
+            <img src="{{currentUser.profile.image}}" width="30" height="30" class="d-inline-block align-top mr-1" alt="" alt="">
+            {{currentUser.profile.username}}
           </a>
           <div class="dropdown-menu dropdown-menu-right rounded-0" aria-labelledby="navbarDropdownMenuLink">
             <a class="dropdown-item" routerLink="/account">Account</a>

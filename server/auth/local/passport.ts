@@ -7,7 +7,7 @@ export class Local {
     
     User.findOne({
       email: email.toLowerCase()
-    }).exec()
+    }).populate('profile').exec()
       .then(user => {
         if(!user) {
           return done(null, false, {

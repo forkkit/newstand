@@ -5,6 +5,7 @@ import * as compose from 'composable-middleware';
 import _ from 'lodash';
 
 import User from '../models/user';
+import Profile from '../models/profile';
 import config from '../config';
 
 const validateJwt = expressJwt({
@@ -48,6 +49,47 @@ export function isAuthenticated() {
         .catch(err => next(err));
     });
 }
+
+/**
+ * Setup initial user profile upon account creation
+ */
+export function setupProfile(email:string, image?: string) {
+  return function(){
+    
+    let generateUsername = function(username:string) { 
+
+      return Profile.findOne({ username: username }).exec().
+      then(has => {
+
+        //If available
+        if(!has){
+          let profile = new Profile();
+          profile.username = username;
+          profile.image = (image ? image : '/assets/user_placeholder.jpg');
+          return profile.save()
+            .catch(err=>{throw err});
+        }
+
+        //Find available
+        const dashIndex = username.lastIndexOf('-');
+        const digit= ~~(username.substring(dashIndex  + 1));
+        if(digit){
+          const newUsername = username.substring(0, dashIndex) + '-' + (digit + 1);
+          return generateUsername(newUsername);
+        }
+
+        return generateUsername(username + '-1');
+
+      })
+
+    }
+
+    const username = email.split('@')[0];
+    return generateUsername(username);
+
+  }
+}
+
 
 /**
  * Returns a jwt token signed by the app secret

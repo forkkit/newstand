@@ -82,14 +82,8 @@ export class AuthService {
     return this.currentUserSubject.value;
   }
 
-
-  confirmUsername(user): Observable<User> {
-    return this.userService.username(user)
-    .map((data:Data) => {
-      // Update the currentUser observable
-      this.currentUserSubject.next(data.user);
-      return data.user;
-    });
+  updateUser(user) {
+    this.currentUserSubject.next(user)
   }
 
 }

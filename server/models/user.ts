@@ -1,10 +1,11 @@
 import * as mongoose from 'mongoose';
 import * as crypto from 'crypto';
 
+let ObjectId = mongoose.Schema.Types.ObjectId;
+
 const authTypes = ['facebook', 'google'];
 
 const userSchema = new mongoose.Schema({
-  username: String,
   email: {
     type: String,
     lowercase: true,
@@ -30,9 +31,9 @@ const userSchema = new mongoose.Schema({
       }
     }
   },
-  status: {
-    type: String,
-    default: 'pending'
+  profile: {
+    type: ObjectId, 
+    ref: 'Profile' 
   },
   provider: String,
   salt: String,
@@ -44,15 +45,6 @@ const userSchema = new mongoose.Schema({
  * Virtuals
  */
 
-// Public profile information
-userSchema
-.virtual('profile')
-.get(function() {
-  return {
-    name: this.name,
-    role: this.role
-  };
-});
 
 // Non-sensitive info we'll be putting in the token
 userSchema
@@ -122,43 +114,32 @@ var validatePresenceOf = function(value) {
  */
 userSchema
 .pre('save', function(next) {
-  
-  const emailName = this.email.split('@')[0];
-  this.setUsername(emailName, (username, err) => {
-
-    //Only set on initial save
-    if(!this.username){
-      this.username = username;
-    }
    
-    // Handle new/update passwords
-    if(!this.isModified('password')) {
+  // Handle new/update passwords
+  if(!this.isModified('password')) {
+    return next();
+  }
+
+  if(!validatePresenceOf(this.password)) {
+    if(authTypes.indexOf(this.provider) === -1) {
+      return next(new Error('Invalid password'));
+    } else {
       return next();
     }
+  }
 
-    if(!validatePresenceOf(this.password)) {
-      if(authTypes.indexOf(this.provider) === -1) {
-        return next(new Error('Invalid password'));
-      } else {
-        return next();
-      }
+  // Make salt with a callback
+  this.makeSalt((saltErr, salt) => {
+    if(saltErr) {
+      return next(saltErr);
     }
-
-
-
-    // Make salt with a callback
-    this.makeSalt((saltErr, salt) => {
-      if(saltErr) {
-        return next(saltErr);
+    this.salt = salt;
+    this.encryptPassword(this.password, (encryptErr, hashedPassword) => {
+      if(encryptErr) {
+        return next(encryptErr);
       }
-      this.salt = salt;
-      this.encryptPassword(this.password, (encryptErr, hashedPassword) => {
-        if(encryptErr) {
-          return next(encryptErr);
-        }
-        this.password = hashedPassword;
-        return next();
-      });
+      this.password = hashedPassword;
+      return next();
     });
   });
 });

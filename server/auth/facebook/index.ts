@@ -12,7 +12,7 @@ export class FBStrategy {
 
   routes() {
     this.router.get('/', passport.authenticate('facebook', {
-        scope: ['email'],
+        scope: ['public_profile'],
         failureRedirect: '/signup',
         session: false
       }));

@@ -14,4 +14,8 @@ export class ProfilesService {
     return this.http.get('/api/profiles/' + username)
   }
   
+  username(user): Observable<any> {
+    return this.http.put('/api/profiles/username', user);
+  }
+  
 }

@@ -2,6 +2,7 @@ import * as express from 'express';
 
 import config from '../config';
 import User from '../models/user';
+import Profile from '../models/profile';
 
 import { Local } from './local/passport';
 import { Facebook } from './facebook/passport';

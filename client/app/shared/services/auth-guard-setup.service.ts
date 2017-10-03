@@ -16,7 +16,7 @@ export class AuthGuardSetup implements CanActivate {
       if(auth){
 
         // Require user to setup ac
-        if(this.auth.getCurrentUser().status === 'pending'){
+        if(this.auth.getCurrentUser().profile.status === 'pending'){
           return true;
         }
 
