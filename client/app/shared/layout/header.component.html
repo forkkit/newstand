@@ -16,7 +16,7 @@
             <a class="nav-link disabled" href="#">Logged in as {{currentUser.profile.username}}</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" routerLink="/account">Account</a>
+            <a class="nav-link" routerLink="/settings/profile">Account</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" (click)="logout()">Logout</a>
@@ -37,7 +37,7 @@
             {{currentUser.profile.username}}
           </a>
           <div class="dropdown-menu dropdown-menu-right rounded-0" aria-labelledby="navbarDropdownMenuLink">
-            <a class="dropdown-item" routerLink="/account">Account</a>
+            <a class="dropdown-item" routerLink="/settings/profile">Account</a>
             <a class="dropdown-item" (click)="logout()">Logout</a>
           </div>
         </li>

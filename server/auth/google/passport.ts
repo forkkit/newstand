@@ -13,19 +13,18 @@ export class Google {
     const photoPath = photo.substr(0,photo.indexOf('?sz=')) + '?sz=200';
 
     User.findOne({'google.id': profile.id}).exec()
-    .then(user => {
-      if(user) {
-        return done(null, user);
-      }
-    })
     .then(auth.setupProfile(profile.emails[0].value, photoPath))
-    .then(local_profile => {
+    .then(result => {
       
+      if(result.user){
+        return done(null, result.user);
+      }
+
       const user = new User({
         email: profile.emails[0].value,
         role: 'user',
         provider: 'google',
-        profile: local_profile,
+        profile: result.profile,
         google: profile._json
       });
       user.save()

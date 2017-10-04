@@ -40,17 +40,14 @@ export class UserRouter extends BaseCtrl{
     const newUser = new this.model(req.body);
 
     return User.findOne({email:newUser.email}).exec()
-      .then(user => {
-        //Check that email is available
-        if(user){
-          throw new Error('The E-mail address you entered is already associated with an account.');
-        }
-        return;
-      })
       .then(auth.setupProfile(newUser.email))
-      .then(profile => {
+      .then(result => {
 
-        newUser.profile = profile;
+        if(result.user){
+          throw 'The E-mail address you entered is already associated with an account.';
+        }
+
+        newUser.profile = result.profile;
         newUser.provider = 'local';
 
         return newUser.save()

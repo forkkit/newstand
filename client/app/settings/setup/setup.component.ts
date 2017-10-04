@@ -8,11 +8,11 @@ import { AuthService, ProfilesService } from '../../shared/services';
 import { User } from '../../shared/models';
 const URL = 'https://evening-anchorage-3159.herokuapp.com/api/';
 @Component({
-  selector: 'app-account',
+  selector: 'app-settings-setup',
   templateUrl: './setup.component.html',
   styleUrls: ['./setup.component.scss']
 })
-export class SetupComponent implements OnInit {
+export class SettingsSetupComponent implements OnInit {
 
   currentUser: User;
   

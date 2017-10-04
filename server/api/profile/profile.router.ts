@@ -17,6 +17,13 @@ export class ProfileRouter extends BaseCtrl{
     this.routes();
   }
 
+  public create = (req: userRequest, res: Response) =>  {
+    
+    const profile = req.body;
+
+    
+  }
+
   public profile = (req: userRequest, res: Response) =>  {
     
     const params = req.params;
@@ -62,6 +69,7 @@ export class ProfileRouter extends BaseCtrl{
   }
 
   routes() {
+    this.router.post('/create', this.insert);
     this.router.get('/:username', this.profile);
     this.router.put('/username', auth.isAuthenticated(), this.username);
   }

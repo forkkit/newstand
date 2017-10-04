@@ -1,0 +1,15 @@
+
+<div class="row mt-4">
+    <div class="col-md-4">
+        <div class="list-group list-group-settings">
+            <li class="list-group-item text-muted">Personal settings</li>
+            <a href="#" class="list-group-item list-group-item-action" routerLink="/settings/profile" routerLinkActive="active">Profile</a>
+            <a href="#" class="list-group-item list-group-item-action" routerLink="/settings/account" routerLinkActive="active">Account</a>
+            <a href="#" class="list-group-item list-group-item-action" routerLink="/settings/organizations" routerLinkActive="active">Publications</a>
+            <a href="#" class="list-group-item list-group-item-action" routerLink="/settings/notifications" routerLinkActive="active">Notifications</a>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <router-outlet></router-outlet>
+    </div>
+</div>

@@ -54,7 +54,12 @@ export function isAuthenticated() {
  * Setup initial user profile upon account creation
  */
 export function setupProfile(email:string, image?: string) {
-  return function(){
+  return function(entity){
+
+    //User already exists, bail early
+    if(entity){
+      return {user: entity};
+    }
     
     let generateUsername = function(username:string) { 
 
@@ -67,6 +72,9 @@ export function setupProfile(email:string, image?: string) {
           profile.username = username;
           profile.image = (image ? image : '/assets/user_placeholder.jpg');
           return profile.save()
+            .then(result=>{
+              return {profile:result};
+            })
             .catch(err=>{throw err});
         }
 

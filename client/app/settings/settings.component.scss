@@ -1,0 +1,8 @@
+.list-group-settings{
+    >.list-group-item{
+        &:last-child, 
+        &:first-child{
+            border-radius: 0;
+        }
+    }
+}

@@ -1,0 +1,37 @@
+<form action="" [formGroup]="setupForm" (ngSubmit)="submit()">
+    <div class="mt-2">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input class="form-control form-control-lg rounded-0" id="name" type="text" name="name" spellcheck="false" formControlName="name" (blur)="createUsername($event.target.value)">
+                </div>
+                <div class="form-group" [hidden]="!hasUsername">
+                    <label for="username">handle</label>
+                    <input class="form-control form-control-lg rounded-0" id="username" type="text" name="username" spellcheck="false" [(ngModel)]="handle" (keyup)="handleFormat($event.target.value)" formControlName="username">
+                    <small class="helper-text text-muted">newstand.org/{{handle}}</small>
+                </div>
+                <div class="form-group">
+                    <label for="bio">Bio</label>
+                    <textarea name="" id="bio" name="bio" rows="2" class="form-control form-control-lg" formControlName="bio"></textarea>
+                    <small class="helper-text text-muted">Brief statement introducing this publication</small>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="bio">Publication picture</label>
+                    <div class="img-wrapper">
+                        <img src="/assets/pub_placeholder.png" alt="">
+                        <div class="img-text">
+                            <span>Tap to edit</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="mt-4">
+            <a routerLink="/settings/organizations" role="button" class="btn btn-secondary btn-lg rounded-0">Cancel</a>
+            <button class="btn btn-primary btn-lg rounded-0" type="submit" [disabled]="!setupForm.valid">Create publication</button>
+        </div>
+    </div>
+</form>

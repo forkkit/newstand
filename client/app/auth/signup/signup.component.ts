@@ -71,8 +71,7 @@ export class SignupComponent implements OnInit {
           // Client-side error
           this.toast.setMessage(err.error.message, 'danger'); 
         } else {
-          err = JSON.parse(err.error);
-          this.toast.setMessage(err.message, 'danger'); 
+          this.toast.setMessage(err.error, 'danger'); 
         }
       }
     );
