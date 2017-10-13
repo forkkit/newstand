@@ -17,11 +17,12 @@ export class ProfileRouter extends BaseCtrl{
     this.routes();
   }
 
-  public create = (req: userRequest, res: Response) =>  {
+  public index = (req: userRequest, res: Response) =>  {
     
-    const profile = req.body;
+    this.model.find({'publisher.members.profile': req.profile._id}).exec()
+      .then(this.respondWithResult(res))
+      .catch(this.validationError(res))
 
-    
   }
 
   public profile = (req: userRequest, res: Response) =>  {
@@ -34,17 +35,17 @@ export class ProfileRouter extends BaseCtrl{
                 throw new Error('Profile not found');
             }
 
-            return res.json({profile});
+            return res.json(profile);
         })
         .catch(this.validationError(res, 401));
   }
 
-  public username = (req: Request, res: Response) =>  {
+  public username = (req: userRequest, res: Response) =>  {
     
-    const user = req.user;
-    const username = req.body.profile.username;
+    const user = req.profile;
+    const username = req.body.username;
     
-    return this.model.findById(user.profile).exec()
+    return this.model.findById(user._id).exec()
       .then(profile => {
 
         if(!profile){
@@ -55,12 +56,7 @@ export class ProfileRouter extends BaseCtrl{
         profile.type = 'user';
         profile.status = 'active';
         return profile.save()
-          .then(result => {
-
-            user.profile = result;
-            return res.json({user});
-
-          })
+          .then(this.respondWithResult(res))
           .catch(err => {throw err});
 
       })
@@ -69,9 +65,12 @@ export class ProfileRouter extends BaseCtrl{
   }
 
   routes() {
-    this.router.post('/create', this.insert);
-    this.router.get('/:username', this.profile);
+    this.router.get('/username/:username', this.profile);
     this.router.put('/username', auth.isAuthenticated(), this.username);
+    this.router.get('/', auth.isAuthenticated(), this.index)
+    this.router.get('/:id', this.get);
+    this.router.post('/', this.insert);
+    this.router.put('/:id', this.update);
   }
 
 }

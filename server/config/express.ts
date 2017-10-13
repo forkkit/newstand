@@ -13,6 +13,8 @@ import config from './index';
 
 import UserRouter from '../api/user/user.router';
 import ProfileRouter from '../api/profile/profile.router';
+import PublisherRouter from '../api/publisher/publisher.router';
+import WizardRouter from '../api/publisher/wizard.router';
 import AuthRouter from '../auth';
 
 class App {
@@ -43,6 +45,8 @@ class App {
     private routes(): void {
         this.express.use('/api/users', UserRouter);
         this.express.use('/api/profiles', ProfileRouter);
+        this.express.use('/api/publishers', PublisherRouter);
+        this.express.use('/api/wizards', WizardRouter);
 
         this.express.use('/api/auth', AuthRouter);
     }

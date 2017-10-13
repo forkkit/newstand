@@ -1,0 +1,5 @@
+<div [ngSwitch]="profile.type" class="mt-4">
+    <app-profile-publisher *ngSwitchCase="'publisher'"></app-profile-publisher>
+    <app-profile-user *ngSwitchCase="'user'"></app-profile-user>
+</div>
+      

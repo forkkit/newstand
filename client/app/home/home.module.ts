@@ -6,9 +6,7 @@ import { AuthGuardHome, SharedModule } from '../shared';
 
 const homeRouting: ModuleWithProviders = RouterModule.forChild([
   {
-    path: '',
-    component: HomeComponent,
-    canActivate: [AuthGuardHome]
+    path: '', component: HomeComponent, canActivate: [AuthGuardHome], data: { title: 'Newstand'}
   }
 ]);
 

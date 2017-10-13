@@ -21,8 +21,8 @@ export class AuthRouter {
     this.routes();
 
     new Local().setup(User);
-    new Facebook().setup(User, config);
-    new Google().setup(User, config);
+    new Facebook().setup(User, Profile, config);
+    new Google().setup(User, Profile, config);
   }
 
   private routes(): void {

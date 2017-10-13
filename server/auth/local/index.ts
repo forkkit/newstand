@@ -1,9 +1,10 @@
 import * as passport from 'passport';
 import {signToken} from '../auth.service';
 import {Router, Request, Response, NextFunction} from 'express';
+import Profile from '../../models/profile';
 
 export class LocalStrategy {
-  router: Router
+  router: Router;
 
   constructor() {
     this.router = Router();
@@ -20,11 +21,16 @@ export class LocalStrategy {
       if(!user) {
         return res.status(404).json({message: 'Something went wrong, please try again.'});
       }
+
+      return Profile.findById(user._id).exec()
+        .then(profile=>{
+            
+          const token = signToken(profile._id);
+          return res.json({token, profile});
+
+        })
+        .catch(err => console.log(err));
   
-      const token = signToken(user._id, user.role);
-
-      res.json({token, user});
-
     })(req, res, next);
 
   }

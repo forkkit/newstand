@@ -1,0 +1,42 @@
+ul{
+  padding: 0;
+  >li{
+    list-style: none;
+    padding: 10px;
+    border-top: 1px solid rgba(0, 0, 0, 0.125);
+    >a{
+      display: block;
+
+      img{
+        max-height: 30px;
+        margin-right: 10px;
+      }
+    }
+  }
+}
+
+table{
+  >thead{
+    >tr{
+      >th{
+        font-size: .7rem;
+        text-transform: uppercase
+      }
+    }
+  }
+  >tbody{
+    >tr{
+      &:hover{
+        cursor: pointer;
+        background-color: #f9f9f9;
+      }
+      >td{
+        font-size: .9rem;
+        vertical-align: middle;
+        >img{
+          max-height: 30px;
+        }
+      }
+    }
+  }
+}

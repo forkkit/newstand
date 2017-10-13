@@ -1,0 +1,27 @@
+<form action="" [formGroup]="detailsForm" (ngSubmit)="submit(detailsForm)">
+    <div class="mt-2">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="form-group">
+                    <label for="domain">Domain</label>
+                    <input class="form-control form-control-lg rounded-0" id="domain" type="text" name="domain" spellcheck="false" formControlName="domain">
+                </div>
+                <div class="form-group">
+                    <label for="subdomains">Sub domains (If applicable)</label>
+                    <textarea name="" id="subdomains" name="subdomains" rows="2" class="form-control form-control-lg" formControlName="subdomains"></textarea>
+                    <small class="helper-text text-muted">Brief statement introducing this publication</small>
+                </div>
+            </div>
+            <div class="col-md-4">
+                
+            </div>
+        </div>
+
+        <div class="mt-4">
+            <a [routerLink]="['/settings/publications/create/members/' + publisher._id]"  role="button" class="btn btn-secondary btn-lg rounded-0">Back</a>
+            <button class="btn btn-dark btn-lg rounded-0" type="submit">
+                Complete
+            </button>
+        </div>
+    </div>
+</form>

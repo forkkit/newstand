@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 
-import { Data, User } from '../models';
+import { Data, User, Profile } from '../models';
 
 @Injectable()
 export class UserService {
@@ -39,8 +39,8 @@ export class UserService {
     return this.http.get(`/api/users/${user._id}`);
   }
 
-  editUser(user): Observable<any> {
-    return this.http.put(`/api/user/${user._id}`, user);
+  update(user): Observable<Profile> {
+    return this.http.put(`/api/users/${user._id}`, user);
   }
 
   deleteUser(user): Observable<any> {

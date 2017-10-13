@@ -1,17 +1,6 @@
-/* You can add global styles to this file, and also import other style files */
-
+@import url('https://fonts.googleapis.com/css?family=Roboto:400,500,700,900');
 @import '~bootstrap/scss/functions', '_variables';
-
 @import '~bootstrap/scss/bootstrap.scss';
-
-
-body {
-  background: #ffffff;
-}
-
-.input-group {
-  margin-bottom: 15px;
-}
 
 @font-face {
   font-family: 'icomoon';
@@ -47,6 +36,26 @@ body {
 .icon-tag_accept:before {
   content: "\e900";
 }
+
+body {
+  background: #ffffff;
+}
+
+.input-group {
+  margin-bottom: 15px;
+}
+
+.btn{
+  text-transform: uppercase;
+  &.btn-lg{
+    font-size: 1.05rem
+  }
+  &:hover{
+    cursor: pointer
+  }
+}
+
+
 
 .btn-social{
   padding: .8rem .75rem;

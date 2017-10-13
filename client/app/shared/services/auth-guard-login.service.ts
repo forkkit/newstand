@@ -13,7 +13,7 @@ export class AuthGuardLogin implements CanActivate {
 
     return this.auth.isAuthenticated.map((auth) => {
       
-      if(auth && this.auth.getCurrentUser().profile.status === 'pending'){
+      if(auth && this.auth.getCurrentUser().status === 'pending'){
         this.router.navigate(['/settings/setup']);
         return true;
       }

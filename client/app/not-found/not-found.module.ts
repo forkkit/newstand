@@ -5,7 +5,7 @@ import { NotFoundComponent } from './not-found.component';
 import { AuthGuardHome } from '../shared';
 
 const notfoundRouting: ModuleWithProviders = RouterModule.forChild([
-    { path: 'notfound', component: NotFoundComponent },
+    { path: 'notfound', component: NotFoundComponent, data: { title: 'Newstand | Page not found'} }, 
   //  { path: '**', redirectTo: '/notfound' },
 ]);
 

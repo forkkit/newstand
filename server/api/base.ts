@@ -4,8 +4,18 @@ abstract class BaseCtrl {
 
   validationError = (res: any, statusCode?:number) => {
     statusCode = statusCode || 500;
-    return function(err) {
+    return function(err) {console.log(err)
       return res.status(statusCode).send(err);
+    };
+  }
+
+  respondWithResult = (res: any, statusCode?:number) => {
+    statusCode = statusCode || 200;
+    return function(entity) { 
+      if(entity) {
+        return res.status(statusCode).json(entity);
+      }
+      return null;
     };
   }
 
@@ -52,7 +62,7 @@ abstract class BaseCtrl {
   update = (req, res) => {
     this.model.findOneAndUpdate({ _id: req.params.id }, req.body, (err) => {
       if (err) { return console.error(err); }
-      res.sendStatus(200);
+      res.status(200).json({});
     });
   }
 

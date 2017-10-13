@@ -29,7 +29,7 @@ export class Local {
 
   }
 
-  public setup(User:any/*, config*/) {
+  public setup(User:any/*, Profile, config*/) {
 
     passport.use(new LocalStrategy({ 
       usernameField: 'email',

@@ -53,8 +53,8 @@ export class SettingsSetupComponent implements OnInit {
     this.profile.username(this.currentUser)
       .subscribe(
         data => {
-          this.auth.updateUser(data.user);
-          this.router.navigate(['/' + data.user.profile.username])
+          this.auth.update(data);
+          this.router.navigate(['/' + data.username])
         },
         err => {
           this.toast.setMessage(err.error, 'danger'); 

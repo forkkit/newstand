@@ -4,6 +4,7 @@ import * as jwt from 'jsonwebtoken';
 import * as auth from '../../auth/auth.service';
 import config from '../../config';
 import User from '../../models/user';
+import Profile from '../../models/profile';
 import BaseCtrl from '../base';
 
 import { userRequest } from "../../config/definitions";
@@ -11,6 +12,7 @@ import { userRequest } from "../../config/definitions";
 export class UserRouter extends BaseCtrl{
   router: Router
   model = User;
+  profile = Profile;
 
   constructor() {
     super();
@@ -20,45 +22,35 @@ export class UserRouter extends BaseCtrl{
 
   public me = (req: userRequest, res: Response) =>  {
     
-    const userId = req.user._id;
     const token = req.token;
     
-    return User.findOne({ _id: userId }).populate('profile').exec()
-      .then(user => {
-        if(!user) {
+    return this.profile.findById(req.profile._id).exec()
+      .then(profile => {
+
+        if(!profile) {
           return res.status(401).end();
         }
 
-        return res.json({token, user});
+        return res.json({token, profile});
+
       })
-      .catch(err => console.log(err));
+      .catch(this.validationError(res));
   }
 
 
   public create = (req: Request, res: Response) =>  {
     
-    const newUser = new this.model(req.body);
+    const user = new this.model(req.body);
 
-    return User.findOne({email:newUser.email}).exec()
-      .then(auth.setupProfile(newUser.email))
-      .then(result => {
+    user.provider = 'local';
+    return user.save()
+      .then(auth.userProfile())  
+      .then(profile=>{
 
-        if(result.user){
-          throw 'The E-mail address you entered is already associated with an account.';
-        }
+        const token = auth.signToken(profile._id);
+        return res.json({ token, profile });
 
-        newUser.profile = result.profile;
-        newUser.provider = 'local';
-
-        return newUser.save()
-          .then(function(user) {
-            const token = auth.signToken(user._id, user.role);
-            return res.json({ token, user });
-          })
-          .catch(err => {throw err; });
-
-        
-      })
+      }) 
       .catch(this.validationError(res));
 
   }
@@ -66,6 +58,7 @@ export class UserRouter extends BaseCtrl{
   routes() {
     this.router.post('/create', this.create);
     this.router.get('/me', auth.isAuthenticated(), this.me);
+    this.router.put('/:id', auth.isAuthenticated(), this.update);
   }
 
 }

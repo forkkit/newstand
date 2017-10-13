@@ -5,33 +5,36 @@ import * as auth from '../../auth/auth.service';
 
 export class Facebook {
 
-  public fbAuthenticate(User, profile, done) {
+  public fbAuthenticate(User, Profile, profile, done) {
 
     User.findOne({'facebook.id': profile.id}).exec()
-    .then(auth.setupProfile(profile.emails[0].value, profile.photos[0].value))
-    .then(result => {
+      .then(user => {
 
-      if(result.user){
-        return done(null, result.user);
-      }
+        if(user){
+          return Profile.findOne({'user.object': user._id}).exec()
+            .then(result => {
+              return done(null, result);
+            })
+            .catch(err => {throw err});
+        }
 
-      const user = new User({
-        email: profile.emails[0].value,
-        role: 'user',
-        provider: 'facebook',
-        profile: result.profile,
-        facebook: profile._json
-      });
+        const newUser = new User({
+          email: profile.emails[0].value,
+          role: 'user',
+          provider: 'facebook',
+          facebook: profile._json
+        });
 
-      user.save()
-        .then(savedUser => done(null, savedUser))
-        .catch(err => done(err));
-    })
-    .catch(err => done(err));
+        newUser.save()
+          .then(auth.userProfile())
+          .then(profile => done(null, profile))
+          .catch(err => done(err));
+      })
+      .catch(err => done(err));
 
   }
 
-  public setup(User, config) {
+  public setup(User:any, Profile:any, config) {
 
     passport.use(new FacebookStrategy({
         clientID: config.facebook.clientID,
@@ -43,7 +46,7 @@ export class Facebook {
           'picture.type(large)'
         ] 
     }, (accessToken, refreshToken, profile, done) => {
-      return this.fbAuthenticate(User, profile, done);
+      return this.fbAuthenticate(User, Profile, profile, done);
     }));
 
   }

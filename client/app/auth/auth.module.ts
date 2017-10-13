@@ -8,11 +8,13 @@ import { SharedModule } from '../shared';
 const authRouting: ModuleWithProviders = RouterModule.forChild([
     {
         path: 'login',
-        component: LoginComponent
+        component: LoginComponent,
+        data: { title: 'Newstand | Login'}
     },
     {
         path: 'signup',
-        component: SignupComponent
+        component: SignupComponent, 
+        data: { title: 'Newstand | Sign up'}
     }
 ]);
 

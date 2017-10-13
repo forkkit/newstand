@@ -15,12 +15,14 @@ export class AuthGuardHome implements CanActivate {
 
     return this.auth.isAuthenticated.map((auth) => {
 
-      if(auth && this.auth.getCurrentUser().profile.status === 'active'){
-        this.router.navigate(['/' + this.auth.getCurrentUser().profile.username]);
-        return true;
+      const user = this.auth.getCurrentUser();
+
+      if(auth && user.status === 'active'){
+        this.router.navigate(['/', user.username]);
+        return;
       }
 
-      if(auth && this.auth.getCurrentUser().profile.status === 'pending'){
+      if(auth && user.status === 'pending'){
         this.router.navigate(['/settings/setup']);
         return true;
       }

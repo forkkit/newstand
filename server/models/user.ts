@@ -6,7 +6,6 @@ let ObjectId = mongoose.Schema.Types.ObjectId;
 const authTypes = ['facebook', 'google'];
 
 const userSchema = new mongoose.Schema({
-  name: String,
   email: {
     type: String,
     lowercase: true,
@@ -32,14 +31,14 @@ const userSchema = new mongoose.Schema({
       }
     }
   },
-  profile: {
-    type: ObjectId, 
-    ref: 'Profile' 
-  },
   provider: String,
   salt: String,
   facebook: {},
   google: {},
+  date: {
+    type: Date, 
+    default: Date.now
+  }
 });
 
 /**

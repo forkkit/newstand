@@ -1,4 +1,4 @@
-<form action="" [formGroup]="setupForm" (ngSubmit)="submit()">
+<form action="" [formGroup]="setupForm" (ngSubmit)="submit(setupForm)">
     <div class="mt-2">
         <div class="row">
             <div class="col-md-8">
@@ -29,9 +29,12 @@
                 </div>
             </div>
         </div>
+
         <div class="mt-4">
-            <a routerLink="/settings/organizations" role="button" class="btn btn-secondary btn-lg rounded-0">Cancel</a>
-            <button class="btn btn-primary btn-lg rounded-0" type="submit" [disabled]="!setupForm.valid">Create publication</button>
+            <a routerLink="/settings/publications" role="button" class="btn btn-secondary btn-lg rounded-0">Cancel</a>
+            <button class="btn btn-dark btn-lg rounded-0" type="submit">
+                Continue
+            </button>
         </div>
     </div>
 </form>

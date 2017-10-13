@@ -1,18 +1,50 @@
 import * as mongoose from 'mongoose';
 
-const profileSchema = new mongoose.Schema({
-    username: String,
-    image: String,
-    bio: String,
-    type: {
-      type: String
-    },  
-    status: {
-      type: String,
-      default: 'pending'
-    },
-});
+let ObjectId = mongoose.Schema.Types.ObjectId;
 
+const profileSchema = new mongoose.Schema({
+  name: String,
+  username: String,
+  image: String,
+  bio: String, 
+  status: {
+    type: String,
+    default: 'pending'
+  },
+  type : String,
+  publisher: {
+    status: {
+      type: Number, 
+      default: 0
+    },
+    members:[{
+      username: String,
+      role: String,
+      profile: {
+        type: ObjectId, 
+        ref: 'Profile' 
+      },
+      date: {
+        type: Date, 
+        default: Date.now
+      }
+    }], 
+    object: {
+      type: ObjectId, 
+      ref: 'Publisher' 
+    }
+  },
+  user: { 
+    object: {
+      type: ObjectId, 
+      ref: 'User' 
+    }
+  },
+  date: {
+    type: Date, 
+    default: Date.now
+  }
+});
 
 profileSchema
 .path('username')

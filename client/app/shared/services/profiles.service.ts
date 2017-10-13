@@ -10,14 +10,26 @@ export class ProfilesService {
 
   constructor(private http: HttpClient) { }
 
-  get(username): Observable<any> {
-    return this.http.get('/api/profiles/' + username)
+  getAll(): Observable<any> {
+    return this.http.get('/api/profiles/')
+  }
+
+  get(id): Observable<any> {
+    return this.http.get(`/api/profiles/${id}`)
   }
 
   create(publication): Observable<Profile> {
-    return this.http.post<Profile>('/api/profiles/create', publication);
+    return this.http.post<Profile>('/api/profiles', publication);
   }
-  
+
+  update(profile): Observable<Profile> {
+    return this.http.put<Profile>(`/api/profiles/${profile._id}`, profile);
+  }
+
+  getByUsername(username): Observable<any> {
+    return this.http.get(`/api/profiles/username/${username}`)
+  }
+
   username(user): Observable<any> {
     return this.http.put('/api/profiles/username', user);
   }

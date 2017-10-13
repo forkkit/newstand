@@ -12,5 +12,9 @@ nav.nav-pills-create-pub{
         &:first-child{
             border-left: 0;
         }
+        &.disabled{
+            pointer-events: none;
+            cursor:default;
+        }
     }
 }

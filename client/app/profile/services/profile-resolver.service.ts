@@ -3,7 +3,8 @@ import { ActivatedRouteSnapshot, Resolve, Router, RouterStateSnapshot } from '@a
 import { Observable } from 'rxjs/Rx';
 import 'rxjs/add/operator/take';
 
-import { Profile, ProfilesService } from '../shared';
+
+import { Profile, ProfilesService } from '../../shared';
 
 @Injectable()
 export class ProfileResolver implements Resolve<Profile> {
@@ -17,7 +18,7 @@ export class ProfileResolver implements Resolve<Profile> {
     state: RouterStateSnapshot
   ): Observable<any> {
 
-    return this.profilesService.get(route.params['username']).map(fields => {
+    return this.profilesService.getByUsername(route.params['username']).map(fields => {
         
         console.log(fields);
 

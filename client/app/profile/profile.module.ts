@@ -1,37 +1,33 @@
 import { ModuleWithProviders, NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
-import { UserComponent } from './user/user.component';
-import { PublisherComponent } from './publisher/publisher.component';
-import { ProfileResolver } from './profile-resolver.service';
+import { ProfileComponent } from './profile.component';
+import { UserProfileComponent } from './user/user.component';
+import { PublisherProfileComponent } from './publisher/publisher.component';
+import { ProfileAuthService } from './services';
 import { AuthGuardLogin } from '../shared';
 
 const profileRouting: ModuleWithProviders = RouterModule.forChild([
   {
     path: ':username',
-    component: UserComponent,
-    resolve: {
-      profile: ProfileResolver
-    },
-    children: [
-      {
-        path: '',
-        component: PublisherComponent
-      }
-    ]
+    component: ProfileComponent,
+    data: { title: 'Newstand | Profile'}
   }
 ]);
 
 @NgModule({
   imports: [
-    profileRouting
+    profileRouting,
+    CommonModule
   ],
   declarations: [
-    UserComponent,
-    PublisherComponent
+    ProfileComponent,
+    UserProfileComponent,
+    PublisherProfileComponent
   ],
   providers: [
-    ProfileResolver
+    ProfileAuthService
   ]
 })
 export class ProfileModule {}
