@@ -1,0 +1,59 @@
+<div class="modal-header">
+  <h4 class="modal-title">Create article label</h4>
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i></span>
+  </button>
+</div>
+<div class="modal-body">
+
+  <form [formGroup]="labelForm" (ngSubmit)="submit(labelForm)">
+
+    <div [hidden]="validArticle">
+      <input class="form-control form-control-lg" type="text" formControlName="url" placeholder="Start by entering article url..." (blur)="verifyDomain($event.target.value)" (keyup.enter)="verifyDomain($event.target.value)">
+
+      <div [hidden]="!profile._id" class="mt-3">
+        <textarea name="" id="bio" name="bio" rows="3" class="form-control form-control-lg" formControlName="section" placeholder="Copy/paste the article section in question..." (blur)="verifySection($event.target.value)" (keyup.enter)="verifySection($event.target.value)"></textarea>
+      </div>
+
+      <div class="alert alert-danger mt-4" role="alert" [hidden]="!error">
+          {{errorMessage}}
+      </div>
+    </div>
+
+    <div [hidden]="!validArticle" class="valid-article">
+
+      <div class="row">
+        <div class="col-lg-2 col-md-4">
+          <img src="{{profile.image}}" alt="" class="img-thumbnail">
+          <small class="text-muted">@{{profile.username}}</small>
+        </div>
+        <div class="col-lg-10 col-md-8">
+            <h6>{{this.labelForm.value.url}}</h6>
+            <p class="lead">{{this.labelForm.value.section}}</p>
+        </div>
+      </div>
+
+      <div class="action mt-2 pt-3">
+
+        <ul>
+          <li>Apply label:</li>
+          <li *ngFor="let labels of labelOptions">
+            <button type="button" class="btn btn-outline-dark btn-sm rounded-0" (click)="selectLabel(labels)" [class.active]="labels == activeLabel">
+              {{labels}}
+            </button>
+          </li>
+        </ul>
+
+        <textarea name="" id="bio" name="bio" rows="2" class="form-control form-control-lg" formControlName="description" placeholder="Add clarity to your label (optional)"></textarea>
+        <small class="text-muted">Not publicly visible</small>
+
+        <div class="text-right mt-3">
+            <button type="submit" class="btn btn-dark btn-lg rounded-0">Submit label</button>        
+        </div>
+
+      </div>
+    </div>
+
+  </form>
+
+</div>

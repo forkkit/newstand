@@ -5,6 +5,13 @@
         <span class="d-none d-md-inline">Newstand.org</span>
       </a>
       <span class="mr-auto"></span>
+
+
+      <ul class="navbar-nav action" *showAuthed="true">
+        <li class="nav-item create-tag">
+          <a href="javascript:;" (click)="open()"><i class="fa fa-tag fa-lg"></i></a>
+        </li>
+      </ul>
   
       <button class="navbar-toggler d-md-none p-0 border-0" *showAuthed="true" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
           <img src="{{currentUser.image}}" width="30" height="30" class="d-inline-block align-top" alt="" alt="">
@@ -31,12 +38,12 @@
             <span class="d-md-none"><i class="fa fa-sign-in fa-lg"></i></span>
           </a>
         </li>
-        <li class="nav-item dropdown d-md-inline d-none" *showAuthed="true">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <li class="nav-item dropdown d-md-inline d-none" *showAuthed="true" ngbDropdown>
+          <a class="nav-link dropdown-toggle" href="javascript:;" id="navbarDropdownMenuLink" ngbDropdownToggle>
             <img src="{{currentUser.image}}" width="30" height="30" class="d-inline-block align-top mr-1" alt="" alt="">
             {{currentUser.username}}
           </a>
-          <div class="dropdown-menu dropdown-menu-right rounded-0" aria-labelledby="navbarDropdownMenuLink">
+          <div class="dropdown-menu-right rounded-0" ngbDropdownMenu>
             <a class="dropdown-item" routerLink="/settings/profile">Account</a>
             <a class="dropdown-item" (click)="logout()">Logout</a>
           </div>
@@ -44,3 +51,7 @@
       </ul>
     </div>
 </nav>
+
+<ng-template #content let-c="close" let-d="dismiss">
+  <app-label-modal></app-label-modal>
+</ng-template>

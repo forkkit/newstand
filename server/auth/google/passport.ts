@@ -31,7 +31,7 @@ export class Google {
         });
         
         newUser.save()
-          .then(auth.userProfile())
+          .then(auth.userProfile(photoPath))
           .then(profile => done(null, profile))
           .catch(err => done(err));
 

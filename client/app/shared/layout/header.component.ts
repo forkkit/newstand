@@ -1,22 +1,27 @@
-import { Component, OnInit, ChangeDetectorRef, AfterViewChecked } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+
+import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 
 import { User } from '../models';
 import { AuthService } from '../services';
+import { LabelModalComponent } from '../label-modal/label-modal.component';
+
 
 @Component({
   selector: 'layout-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss']
+  styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent implements OnInit {
 
     currentUser: User = new User();
+    closeResult: string;
 
     constructor(
         public auth: AuthService,
         private router: Router,
-        private cdr: ChangeDetectorRef 
+        private modalService: NgbModal
     ) {}
 
     ngOnInit() {
@@ -32,8 +37,9 @@ export class HeaderComponent implements OnInit {
         this.router.navigateByUrl('/'); 
     }
 
-    // ngAfterViewChecked(): void {
-	// 	this.cdr.detectChanges();
-	// }
+    open() {
+        this.modalService.open(LabelModalComponent, {size: 'lg', 'backdrop': 'static'});
+    }
+    
 
 }

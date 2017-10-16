@@ -55,8 +55,6 @@ body {
   }
 }
 
-
-
 .btn-social{
   padding: .8rem .75rem;
   &.fb{
@@ -82,4 +80,9 @@ body {
           cursor: pointer;
       }
   }
+}
+
+
+.modal-content{
+  border-radius: 0;
 }

@@ -49,9 +49,9 @@ export class WizardDetailsComponent implements OnInit {
     this.subscription.unsubscribe();
   }
 
-  submit(){
+  submit(form){
     
-    return this.wizardService.details(this.publisher._id, {}).subscribe(
+    return this.wizardService.details(this.publisher._id, form.value).subscribe(
       data => {
         this.wizardAuth.updatePublisher(data);
         console.log(data);

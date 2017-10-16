@@ -44,7 +44,7 @@ export class UserRouter extends BaseCtrl{
 
     user.provider = 'local';
     return user.save()
-      .then(auth.userProfile())  
+      .then(auth.userProfile('/assets/user_placeholder.jpg'))  
       .then(profile=>{
 
         const token = auth.signToken(profile._id);

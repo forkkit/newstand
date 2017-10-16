@@ -6,8 +6,10 @@ import { RouterModule } from '@angular/router';
 import { ToastComponent } from './toast/toast.component';
 import { LoadingComponent } from './loading/loading.component';
 import { FeedComponent } from './feed/feed.component';
+import { LabelModalComponent } from './label-modal/label-modal.component';
 import { ShowAuthedDirective } from './show-authed.directive';
-
+import { LabelService } from './services/label.service';
+ 
 @NgModule({
   imports: [
     BrowserModule,
@@ -30,10 +32,15 @@ import { ShowAuthedDirective } from './show-authed.directive';
     ToastComponent,
     LoadingComponent,
     FeedComponent,
+    LabelModalComponent,
     ShowAuthedDirective
   ],
+  entryComponents: [
+    LabelModalComponent
+  ],
   providers: [
-    ToastComponent
+    ToastComponent, 
+    LabelService
   ]
 })
 export class SharedModule { }

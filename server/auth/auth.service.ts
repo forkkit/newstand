@@ -55,9 +55,9 @@ export function isAuthenticated() {
 /**
  * Setup initial user profile upon account creation
  */
-export function userProfile() {
+export function userProfile(image?: string) {
   return function(user){
-    
+
     let generateUsername = function(username:string) { 
 
       return Profile.findOne({ username: username }).exec().
@@ -67,7 +67,7 @@ export function userProfile() {
           if(!has){
             let profile = new Profile({
               username: username,
-              image: '/assets/user_placeholder.jpg',
+              image: image,
               user: {
                 object: user._id
               }

@@ -26,7 +26,7 @@ export class Facebook {
         });
 
         newUser.save()
-          .then(auth.userProfile())
+          .then(auth.userProfile(profile.photos[0].value))
           .then(profile => done(null, profile))
           .catch(err => done(err));
       })

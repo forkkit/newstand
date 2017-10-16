@@ -1,3 +1,4 @@
 export * from './user.model';
 export * from './profile.model';
 export * from './publisher.model';
+export * from './label.model';

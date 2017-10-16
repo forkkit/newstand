@@ -4,6 +4,8 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
 import { RouterModule } from '@angular/router';
 
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+
 import { AppComponent } from './app.component';
 import { HomeModule } from './home/home.module';
 import { AuthModule } from './auth/auth.module';
@@ -36,6 +38,7 @@ const rootRouting: ModuleWithProviders = RouterModule.forRoot([]);
     HeaderComponent
   ],
   imports: [
+    NgbModule.forRoot(),
     AuthModule,
     HomeModule,
     SettingsModule,
