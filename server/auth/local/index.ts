@@ -21,8 +21,8 @@ export class LocalStrategy {
       if(!user) {
         return res.status(404).json({message: 'Something went wrong, please try again.'});
       }
-
-      return Profile.findById(user._id).exec()
+      
+      return Profile.findOne({'user.object':user._id}).exec()
         .then(profile=>{
             
           const token = signToken(profile._id);

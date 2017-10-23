@@ -27,6 +27,8 @@ export class Profile {
     user?: {
         object?: User
     }
+    follow?: boolean;
+    unseen?: number;
 
     
    

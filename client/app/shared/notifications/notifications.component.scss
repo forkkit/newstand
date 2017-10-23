@@ -1,0 +1,32 @@
+.list-notifications{
+    >.list-group-item{
+        &:first-child{
+            border-radius: 0;
+            border-top: 0;
+        }
+        &:last-child{
+            border-radius: 0;
+            border-bottom: 0;
+        }
+
+        border-left: 0;
+        border-right: 0;
+        position: relative;
+        padding: 0.5rem 1.25rem 0.5rem 50px;
+
+            
+            >img{
+                height: 35px;
+                position: absolute;
+                left: 7px;
+                top: 7px;
+            }
+
+            >.content{
+                height: 35px;
+                max-width: 208px;
+                font-size: .8rem;
+                line-height: 1.2;
+            }
+    }
+}

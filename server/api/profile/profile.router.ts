@@ -4,12 +4,14 @@ import * as auth from '../../auth/auth.service';
 import config from '../../config';
 import Profile from '../../models/profile';
 import BaseCtrl from '../base';
+import Stream from '../../models/stream';
 
 import { userRequest } from "../../config/definitions";
 
 export class ProfileRouter extends BaseCtrl{
   router: Router
   model = Profile;
+  stream = Stream;
 
   constructor() {
     super();
@@ -28,6 +30,7 @@ export class ProfileRouter extends BaseCtrl{
   public profile = (req: userRequest, res: Response) =>  {
     
     const params = req.params;
+    const user = req.profile;
 
     return this.model.findOne({ username: params.username }).exec()
         .then(profile => {
@@ -35,8 +38,27 @@ export class ProfileRouter extends BaseCtrl{
                 throw new Error('Profile not found');
             }
 
-            return res.json(profile);
+            return profile;
         })
+        .then((profile)=>{
+
+          if(!user || user._id.equals(profile._id)){
+            return profile;
+          }
+
+          return this.stream.Follow.find({user:user._id, target: profile._id}).exec()
+            .then((follow)=>{
+
+              const is = follow.length>0 ? true : false;
+
+              profile.set('follow', is);
+
+              return profile;
+
+            });
+
+        })
+        .then(this.respondWithResult(res))
         .catch(this.validationError(res, 401));
   }
 
@@ -64,13 +86,16 @@ export class ProfileRouter extends BaseCtrl{
     
   }
 
+
+
   routes() {
-    this.router.get('/username/:username', this.profile);
+
+    this.router.get('/username/:username', auth.checkAuth(), this.profile);
     this.router.put('/username', auth.isAuthenticated(), this.username);
     this.router.get('/', auth.isAuthenticated(), this.index)
-    this.router.get('/:id', this.get);
+    this.router.get('/:id', auth.checkAuth(), this.get);
     this.router.post('/', this.insert);
-    this.router.put('/:id', this.update);
+    this.router.put('/:id', this.update);    
   }
 
 }

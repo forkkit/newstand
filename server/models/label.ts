@@ -27,6 +27,6 @@ const labelSchema = new mongoose.Schema({
     }
 });
 
-const Label = mongoose.model('Label', labelSchema);
+const Label = mongoose.model('LabelDetail', labelSchema);
 
 export default Label;

@@ -3,8 +3,10 @@ import {Router, Request, Response, NextFunction} from 'express';
 import * as auth from '../../auth/auth.service';
 import Publisher from '../../models/publisher';
 import Profile from '../../models/profile';
+import Stream from '../../models/stream';
 import BaseCtrl from '../base';
-
+import config from '../../config';
+import { userRequest } from "../../config/definitions";
 
 export class WizardRouter extends BaseCtrl{
   router: Router
@@ -41,9 +43,23 @@ export class WizardRouter extends BaseCtrl{
     
     }
 
-    private details = (req: Request, res: Response) =>  {
+    private follow = function(user){
+        return function(entity){
+
+            const follow = new Stream.Follow({
+                user: user._id,
+                target: entity._id
+            });
+
+            return follow.save()
+                .catch(err => {throw err});
+        }
+    }
+
+    private details = (req: userRequest, res: Response) =>  {
 
         const publisher = new this.publisher(req.body);
+        const user = req.profile;
         
         return publisher.save()
             .then(savedPublisher => {
@@ -55,6 +71,7 @@ export class WizardRouter extends BaseCtrl{
                         profile.publisher.status = 2;
                         
                         return profile.save()
+                            .then(this.follow(user))
                             .then(this.respondWithResult(res))
                             .catch(err => {throw err});
                     })
@@ -71,7 +88,7 @@ export class WizardRouter extends BaseCtrl{
     this.router.get('/:id', this.get);
     this.router.post('/setup', this.insert);
     this.router.put('/members/:id', this.members);
-    this.router.put('/details/:id', this.details);
+    this.router.put('/details/:id', auth.isAuthenticated(), this.details);
   }
 
 }

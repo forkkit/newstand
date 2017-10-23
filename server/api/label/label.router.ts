@@ -4,9 +4,10 @@ import { stringScraper } from 'string-scraper';
 import * as auth from '../../auth/auth.service';
 import config from '../../config';
 import Profile from '../../models/profile';
-import BaseCtrl from '../base';
 import Publisher from '../../models/publisher';
-import Label from '../../models/label';
+import LabelDetail from '../../models/label';
+import Stream from '../../models/stream';
+import BaseCtrl from '../base';
 
 import { userRequest } from "../../config/definitions";
 
@@ -14,7 +15,8 @@ export class LabelRouter extends BaseCtrl{
   router: Router
   model = Profile;
   publisher = Publisher;
-  label = Label;
+  label = LabelDetail;
+  stream = Stream;
 
   constructor() {
     super();
@@ -42,23 +44,35 @@ export class LabelRouter extends BaseCtrl{
 
   public verifySection = (req: Request, res: Response) =>  {
 
-    const data = req.body;
+    const data = req.body; 
     
     return stringScraper(data.url, data.section, 20)
     .then((result) => {
       return res.json({valid:result})
     })
-    .catch(this.validationError(res));
+    .catch((err)=>console.log(err));
 
   }
 
   public create = (req: userRequest, res: Response) =>  {
     
-    const data = new Label(req.body);
+    const data = new this.label(req.body);
     data.user.username = req.profile.username;
     data.user.profile = req.profile._id;
 
     data.save()
+      .then((label)=>{
+
+        const activity = new this.stream.Label({
+            user: label.user.profile, 
+            target: label.publisher.profile,
+            label: label._id
+        });
+
+        return activity.save()
+          .catch((err)=>{ throw err; });
+
+      })
       .then(this.respondWithResult(res))
       .catch(this.validationError(res));
     

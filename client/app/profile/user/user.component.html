@@ -1,5 +1,16 @@
-<p>
-  {{profile | json}}
-</p>
-
-<p>Edit access: {{userAuth}}</p>
+<div class="row">
+  <div class="col-md-5">
+      <button class="btn btn-dark rounded-0 mb-3" *ngIf="!userAuth && !profile.follow" (click)="follow(profile._id)">Follow {{profile.type}}</button>
+      
+      <h4>Profile</h4>
+      <ul>
+        <li><strong>Name: </strong>{{profile.name ? profile.name : 'Undefined'}}</li>
+        <li><strong>Username: </strong>{{profile.username}}</li>
+        <li><strong>Type: </strong>{{profile.type}}</li>
+        <li><strong>Edit access: </strong>{{userAuth}}</li>
+      </ul>
+  </div>
+  <div class="col-md-7">
+      <app-feed></app-feed>
+  </div>
+</div>

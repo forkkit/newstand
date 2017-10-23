@@ -10,8 +10,11 @@
             padding-top: 0;
         }
     }
-    >.body{
+    .body{
         padding: 1em 0 0;
+        a{
+            font-weight: bold;
+        }
         >.icon{
             position: absolute;
             left: 0;
@@ -22,6 +25,7 @@
             &.label{
                 background-color: #03fc96;
                 padding: 3px;
+                font-weight: bold;
             }
         }
         >.details{

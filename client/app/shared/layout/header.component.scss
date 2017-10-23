@@ -1,7 +1,45 @@
 .navbar-nav{
+    a{
+        color: #000000;
+        
+        &.dropdown-username{
+            line-height: 30px;
+            vertical-align: middle;
+        }
+    }
+    
     &.action{
-        margin-right: 20px;
+        >li{
+            margin-right: 20px;
+            .dropdown-toggle{
+                &::after{
+                    display: none;
+                }
+            }
+
+            .list-group{
+                a{
+                    &:first-child, &:last-child{ 
+                        border-radius: 0
+                    }
+                }
+            }
+        }
         >.nav-item{
+            a{
+                position: relative;
+                >span.count{
+                    position: absolute;
+                    top: 3px;
+                    right: 7px;
+                    background-color: #00E676;
+                    font-size: .7rem;
+                    padding: 2px;
+                    line-height: .7rem;
+                    color: #fff;
+                }
+    
+            }
             &.create-tag{
                 >a{
                     color: #00E676;
@@ -9,6 +47,10 @@
                         outline: none;
                     }
                 }
+            }
+            .notifications{
+                min-width: 280px;
+                padding: 0;
             }
         }
     }

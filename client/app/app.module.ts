@@ -27,7 +27,8 @@ import {
   TokenInterceptor,
   PublisherAuthService,
   PublishersService,
-  SharedModule,
+  StreamService,
+  SharedModule
 } from './shared';
 
 const rootRouting: ModuleWithProviders = RouterModule.forRoot([]);
@@ -60,6 +61,7 @@ const rootRouting: ModuleWithProviders = RouterModule.forRoot([]);
     UserService,
     PublisherAuthService,
     PublishersService,
+    StreamService,
     CookieService,
     {
       provide: HTTP_INTERCEPTORS,

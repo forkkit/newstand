@@ -29,6 +29,10 @@ const all = {
         clientSecret: process.env.GOOGLE_SECRET || 'secret',
         callbackURL: `${process.env.DOMAIN || ''}/api/auth/google/callback`
     },
+    stream: {
+        key: process.env.STREAM_KEY || 'id',
+        secret: process.env.STREAM_SECRET || 'secret'
+    },
 }
 
 export default all;

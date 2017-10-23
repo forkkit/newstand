@@ -23,6 +23,7 @@ export class UserRouter extends BaseCtrl{
   public me = (req: userRequest, res: Response) =>  {
     
     const token = req.token;
+    const user = req.profile;
     
     return this.profile.findById(req.profile._id).exec()
       .then(profile => {
@@ -30,6 +31,8 @@ export class UserRouter extends BaseCtrl{
         if(!profile) {
           return res.status(401).end();
         }
+
+        profile.unseen = user.unseen; 
 
         return res.json({token, profile});
 
@@ -57,7 +60,7 @@ export class UserRouter extends BaseCtrl{
 
   routes() {
     this.router.post('/create', this.create);
-    this.router.get('/me', auth.isAuthenticated(), this.me);
+    this.router.get('/me', auth.isAuthenticated(), auth.stream(), this.me);
     this.router.put('/:id', auth.isAuthenticated(), this.update);
   }
 

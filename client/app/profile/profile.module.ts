@@ -6,7 +6,7 @@ import { ProfileComponent } from './profile.component';
 import { UserProfileComponent } from './user/user.component';
 import { PublisherProfileComponent } from './publisher/publisher.component';
 import { ProfileAuthService } from './services';
-import { AuthGuardLogin } from '../shared';
+import { AuthGuardLogin, SharedModule } from '../shared';
 
 const profileRouting: ModuleWithProviders = RouterModule.forChild([
   {
@@ -18,6 +18,7 @@ const profileRouting: ModuleWithProviders = RouterModule.forChild([
 
 @NgModule({
   imports: [
+    SharedModule,
     profileRouting,
     CommonModule
   ],

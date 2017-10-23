@@ -2,5 +2,6 @@
     {{profile | json}}
 </p>
 
+<button class="btn btn-dark rounded-0 mb-3" *ngIf="!userAuth && !profile.follow" (click)="follow(profile._id)">Follow {{profile.type}}</button>
 
 <p>Edit access: {{userAuth}}</p>

@@ -1,6 +1,7 @@
 import * as jwt from 'jsonwebtoken';
 import * as expressJwt from 'express-jwt';
 import * as compose from 'composable-middleware';
+import * as stream_node from 'getstream-node';
 
 import _ from 'lodash';
 
@@ -11,6 +12,8 @@ import config from '../config';
 const validateJwt = expressJwt({
   secret: config.secrets.session
 });
+
+const FeedManager = stream_node.FeedManager;
 
 /**
  * Attaches the user object to the request if authenticated
@@ -47,6 +50,39 @@ export function isAuthenticated() {
           req.profile = profile;
           
           next();
+        })
+        .catch(err => next(err));
+    });
+}
+
+
+/**
+ * Check if the user is auth with no redirects
+ */
+export function checkAuth() {
+  return compose()
+    // Validate jwt
+    .use(function(req, res, next) {
+      // allow access_token to be passed through query parameter as well
+      if(req.query && req.query.hasOwnProperty('access_token')) {
+        req.headers.authorization = `Bearer ${req.query.access_token}`;
+      }
+     // IE11 forgets to set Authorization header sometimes. Pull from cookie instead.
+      if(req.query && typeof req.headers.authorization === 'undefined') {
+        req.headers.authorization = `Bearer ${req.cookies.token}`;
+      }
+      
+      validateJwt(req, res, next);
+    })
+    // Attach user to request
+    .use(function(req, res, next) {
+
+      Profile.findById(req.user._id).exec()
+        .then(profile => {
+
+          req.profile = profile;          
+          next();
+
         })
         .catch(err => next(err));
     });
@@ -95,6 +131,26 @@ export function userProfile(image?: string) {
     return generateUsername(username);
 
   }
+}
+
+
+/**
+ * Get stream activity for user
+ */
+export function stream() {
+  return compose()
+    .use(function(req, res, next) {
+      
+      const notificationFeed = FeedManager.getNotificationFeed(req.profile._id);
+
+      return notificationFeed.get({ limit: 0 }).then(function(body) {
+        if (typeof body !== 'undefined')
+          req.profile.unseen = body.unseen;
+        next();
+      })
+      .catch(err => next(err));
+
+    });
 }
 
 

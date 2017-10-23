@@ -51,7 +51,7 @@ export class LabelModalComponent implements OnInit {
 
   }
 
-  ngOnInit(){
+  ngOnInit(){ 
     this.labelForm.patchValue({
       url: this.url, 
       publisher: {
@@ -68,13 +68,12 @@ export class LabelModalComponent implements OnInit {
       return;
     }
 
-    this.label.url = url;
     this.error = false;
 
     this.baseUrl = Utils.extractHost(url);
 
     return this.labelService.searchByDomain({url: this.baseUrl}).subscribe(
-      data => { 
+      data => {
 
         if(data.error){
           this.error = true;
@@ -83,19 +82,27 @@ export class LabelModalComponent implements OnInit {
 
         this.profile = data;
 
+        this.labelForm.patchValue({
+          url: url,
+          publisher: {
+            username: data.username,
+            profile: data._id
+          }
+        });
+
       },
       err => console.log(err)
     );
   }
   
-  verifySection(text){ 
+  verifySection(text){
     
     //If textarea empty
     if(!text){
       return;
     }
 
-    return this.labelService.verifySection({section: text, url: this.url}).subscribe(
+    return this.labelService.verifySection({section: text, url: this.labelForm.value.url}).subscribe(
       result => {
 
        if(!result.valid){
@@ -112,7 +119,6 @@ export class LabelModalComponent implements OnInit {
       err => console.log(err)
     );
   }
-
 
   selectLabel(label){
     this.activeLabel = label;

@@ -16,6 +16,7 @@ import ProfileRouter from '../api/profile/profile.router';
 import PublisherRouter from '../api/publisher/publisher.router';
 import WizardRouter from '../api/publisher/wizard.router';
 import LabelRouter from '../api/label/label.router';
+import StreamRouter from '../api/stream/stream.router';
 import AuthRouter from '../auth';
 
 class App {
@@ -49,7 +50,7 @@ class App {
         this.express.use('/api/publishers', PublisherRouter);
         this.express.use('/api/wizards', WizardRouter);
         this.express.use('/api/labels', LabelRouter);
-
+        this.express.use('/api/streams', StreamRouter);
         this.express.use('/api/auth', AuthRouter);
     }
 }

@@ -43,7 +43,9 @@ const profileSchema = new mongoose.Schema({
   date: {
     type: Date, 
     default: Date.now
-  }
+  },
+  follow: Boolean,
+  unseen: Number
 });
 
 profileSchema
