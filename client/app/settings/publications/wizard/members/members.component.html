@@ -1,9 +1,39 @@
 <form action="" (ngSubmit)="submit()">
     <div class="mt-2">
-        <h2>TO DO.....</h2>
+
+        <table class="table mb-3">
+            <tbody>
+                <tr *ngFor="let member of profile.publisher.members">
+                    <td>{{member.username}}</td>
+                    <td>{{member.role}}</td>
+                    <td>
+                        <a *ngIf="member.role !== 'owner'" href="javascript:;" (click)="removeUser(member)">
+                            <i class="fa fa-trash-o" aria-hidden="true"></i>
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input class="form-control form-control-sm" type="email" name="email" [(ngModel)]="newUser.email" placeholder="Add user by e-mail">
+                    </td>
+                    <td>
+                        <select class="form-control form-control-sm" id="exampleFormControlSelect1" name="role" [(ngModel)]="newUser.role">
+                            <option value="author">Author</option>
+                            <option value="viewer">Viewer</option>
+                            <option value="owner">Admin</option>
+                        </select>
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-dark btn-sm btn-block rounded-0" (click)="addUser(newUser)">
+                            Add user
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
 
         <div class="mt-4">
-            <a [routerLink]="['/settings/publications/create/setup/' + publisher._id]" role="button" class="btn btn-secondary btn-lg rounded-0">Back</a>
+            <a [routerLink]="['/settings/publications/create/setup/' + profile._id]" role="button" class="btn btn-secondary btn-lg rounded-0">Back</a>
             <button class="btn btn-dark btn-lg rounded-0" type="submit">Next step</button>
         </div>
     </div>

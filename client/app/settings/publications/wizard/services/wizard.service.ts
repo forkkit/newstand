@@ -19,6 +19,10 @@ export class WizardService {
     return this.http.post<Publisher>('/api/wizards/setup', publication);
   }
 
+  findMember(email): Observable<Profile> {
+    return this.http.get<Profile>(`/api/wizards/members/${email}`);
+  }
+
   members(id, data): Observable<Profile> {
     return this.http.put<Profile>(`/api/wizards/members/${id}`, data);
   }

@@ -3,6 +3,7 @@ import {Router, Request, Response, NextFunction} from 'express';
 import * as auth from '../../auth/auth.service';
 import Publisher from '../../models/publisher';
 import Profile from '../../models/profile';
+import User from '../../models/user';
 import Stream from '../../models/stream';
 import BaseCtrl from '../base';
 import config from '../../config';
@@ -12,11 +13,30 @@ export class WizardRouter extends BaseCtrl{
   router: Router
   model = Profile;
   publisher = Publisher;
+  user = User;
 
   constructor() {
     super();
     this.router = Router();
     this.routes();
+  }
+
+  private findMember = (req: Request, res: Response) =>  {
+
+    return this.user.findOne({'email':req.params.email}).exec()
+        .then((user)=>{
+
+            if(!user){
+                throw 'User not found with email provided';
+            }
+
+            return this.model.findOne({'user.object':user._id}).exec()
+                .then(this.respondWithResult(res))
+                .catch(err => {throw err});
+
+        })
+        .catch(this.validationError(res));
+
   }
 
   private members = (req: Request, res: Response) =>  {
@@ -32,7 +52,7 @@ export class WizardRouter extends BaseCtrl{
             profile.publisher.status = 1;
         }
 
-        //publisher.members = req.body.members;
+        profile.publisher.members = req.body.members;
 
         return profile.save()
             .then(this.respondWithResult(res))
@@ -85,10 +105,11 @@ export class WizardRouter extends BaseCtrl{
   
   
   routes() {
-    this.router.get('/:id', this.get);
     this.router.post('/setup', this.insert);
+    this.router.get('/members/:email', this.findMember);
     this.router.put('/members/:id', this.members);
     this.router.put('/details/:id', auth.isAuthenticated(), this.details);
+    this.router.get('/:id', this.get);
   }
 
 }

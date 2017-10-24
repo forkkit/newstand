@@ -82,7 +82,7 @@ export class WizardSetupComponent implements OnInit {
     }
 
     createUsername(value){
-      if(this.hasUsername){
+      if(this.hasUsername || !value){
         return;
       }
 

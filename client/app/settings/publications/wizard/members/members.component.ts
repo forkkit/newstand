@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 
 import { ToastComponent } from '../../../../shared/toast/toast.component';
 import { WizardService, WizardAuth } from '../services';
-import { Publisher, AuthService } from '../../../../shared';
+import { Profile, AuthService } from '../../../../shared';
 
 @Component({
   selector: 'app-wizard-members',
@@ -13,7 +13,11 @@ import { Publisher, AuthService } from '../../../../shared';
 })
 export class WizardMembersComponent implements OnInit {
 
-  private publisher: Publisher = new Publisher();
+  private profile: Profile = new Profile();
+  public newUser = {
+    email: '',
+    role: 'author'
+  }
 
   private subscription;
 
@@ -29,7 +33,7 @@ export class WizardMembersComponent implements OnInit {
     
     this.subscription = this.wizardAuth.currentPublisher.subscribe(
       (results) => {
-        this.publisher = results;
+        this.profile = results;
       }
     );
 
@@ -39,12 +43,39 @@ export class WizardMembersComponent implements OnInit {
     this.subscription.unsubscribe();
   }
 
+  addUser(user){
+    
+    return this.wizardService.findMember(user.email).subscribe(
+      data => {
+        this.profile.publisher.members.push({
+          profile: data._id,
+          username:data.username, 
+          role: user.role
+        });
+
+        this.newUser = { email: '', role: 'author' }
+      },
+      err => this.toast.setMessage(err.error, 'danger')
+    );
+
+  }
+
+  removeUser(member){
+    const members = this.profile.publisher.members;
+
+    for(let i = 0; i < members.length; i++){
+      if(members[i].username === member.username){
+        this.profile.publisher.members.splice(i, 1);
+      }
+    }
+  }
+
   submit(){
 
-    return this.wizardService.members(this.publisher._id, {}).subscribe(
+    return this.wizardService.members(this.profile._id, this.profile.publisher).subscribe(
       data => {
         this.wizardAuth.updatePublisher(data);
-        this.router.navigate(['settings/publications/create/details', this.publisher._id]);
+        this.router.navigate(['settings/publications/create/details', this.profile._id]);
       },
       err => this.toast.setMessage(err.error, 'danger')
     );
