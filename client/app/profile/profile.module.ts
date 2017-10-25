@@ -3,17 +3,26 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
 import { ProfileComponent } from './profile.component';
-import { UserProfileComponent } from './user/user.component';
-import { PublisherProfileComponent } from './publisher/publisher.component';
 import { ProfileAuthService } from './services';
 import { AuthGuardLogin, SharedModule } from '../shared';
+
+import {
+  FeedComponent,
+  ProfileFlagsComponent,
+  ProfileFlagsDetailComponent,
+} from './components';
 
 const profileRouting: ModuleWithProviders = RouterModule.forChild([
   {
     path: ':username',
     component: ProfileComponent,
-    data: { title: 'Newstand | Profile'}
+      children: [
+        { path: '', pathMatch: 'full', component: FeedComponent, data: { title: 'Newstand | Profile', page: 'feed'} },
+        { path: 'flags', component: ProfileFlagsComponent, data: { title: 'Newstand | Flags', page: 'flag'} },
+        { path: 'flags/:id', component: ProfileFlagsDetailComponent, data: { title: 'Newstand | Flag Detail', page: 'flag'} },
+      ]
   }
+  
 ]);
 
 @NgModule({
@@ -24,8 +33,9 @@ const profileRouting: ModuleWithProviders = RouterModule.forChild([
   ],
   declarations: [
     ProfileComponent,
-    UserProfileComponent,
-    PublisherProfileComponent
+    ProfileFlagsComponent,
+    ProfileFlagsDetailComponent,
+    FeedComponent
   ],
   providers: [
     ProfileAuthService

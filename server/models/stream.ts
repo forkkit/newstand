@@ -18,10 +18,10 @@ const labelSchema = new Schema(
 
 labelSchema.plugin(StreamMongoose.activity);
 
-labelSchema.methods.activityNotify = function() {
-	const target_feed = FeedManager.getNotificationFeed(this.target._id); 
-	return [target_feed];
-};
+// labelSchema.methods.activityNotify = function() {
+// 	const target_feed = FeedManager.getNotificationFeed(this.target._id); 
+// 	return [target_feed];
+// };
 
 labelSchema.statics.pathsToPopulate = function() {
 	return ['user', 'label'];
@@ -32,7 +32,7 @@ labelSchema.methods.activityForeignId = function() {
 };
 
 labelSchema.methods.createActivity = function() { 
-	// this is the default createActivity code, customize as you see fit.
+	
       var activity:any = {};
       var extra_data = this.activityExtraData();
       for (var key in extra_data) {
@@ -42,6 +42,8 @@ labelSchema.methods.createActivity = function() {
 	  const publisher = this.target.publisher, toField = [];
 
 	  if(publisher && publisher.members.length > 0){
+
+		//Push to publisher admins notification feed
 		for(let i = 0; publisher.members.length>i; i++){
 			if(!publisher.members[i].profile.equals(this.user._id))
 				toField.push('notification:'+publisher.members[i].profile);

@@ -3,7 +3,7 @@
     padding: 0 0 1em 40px;
     font-size: 14px;
     min-height: 85px;
-    border-top:1px solid #eff3f6;
+    border-bottom:1px solid #eff3f6;
     &:first-child{
         border-top: 0;
         >.body{
@@ -14,6 +14,11 @@
         padding: 1em 0 0;
         a{
             font-weight: bold;
+
+            &.label{
+                background-color: #03fc96;
+                padding: 3px;
+            }
         }
         >.icon{
             position: absolute;
@@ -21,26 +26,31 @@
             color: #999999;
             font-size: 2em;
         }
-        span{
-            &.label{
-                background-color: #03fc96;
-                padding: 3px;
-                font-weight: bold;
-            }
-        }
         >.details{
             position: relative;
+            margin-top: 5px;
             >img{
                 position: absolute;
                 left: 0;
+                border: 1px solid #eff3f6;
             }
-            >blockquote{
-                font-size: 12px;
+            >.section{
+                font-size: .8rem;
                 padding-left: 5px;
-                margin: 0 0 0 40px;
-                &.quote{
+                margin: 0 0 0 35px;
+                >blockquote{
+                    padding-left: 7px;
                     border-left: 5px solid #eaf5ff;
                     font-style: italic;
+                    margin: 0;
+                }
+                >.source{
+                    padding-left: 12px;
+                    font-size: .8rem;
+                    >a{
+                        font-weight: normal
+                    }
+                
                 }
             }
         }

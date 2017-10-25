@@ -8,8 +8,8 @@ export class StreamService {
 
   constructor(private http: HttpClient) { }
 
-  feed(): Observable<any> {
-    return this.http.get('/api/streams/feed')
+  feed(id): Observable<any> {
+    return this.http.get(`/api/streams/feed/${id}`)
   }
 
   follow(target): Observable<any> {

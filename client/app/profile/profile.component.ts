@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute, Params } from '@angular/router';
+import { Router, ActivatedRoute, Params, RouterLinkActive, NavigationEnd } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { 
   Profile,
-  LabelService 
+  LabelService,
+  StreamService
 } from '../shared';
 
 import { 
@@ -22,41 +23,66 @@ import Utils from '../shared/utils';
 })
 export class ProfileComponent implements OnInit{
 
-  private subscription;
   public profile: Profile = new Profile();
   private urlPram: string;
+  public userAuth: boolean;
+  public currentTab:string;
+  private subscription;
 
   constructor(
     private profileAuth: ProfileAuthService,
     private route: ActivatedRoute,
     private router: Router,
     private modalService: NgbModal,
-    private labelService: LabelService
-  ) { }
-
-  ngOnInit(){
-
-    //Update profile data based on username
-    this.route.params
-      .subscribe(params=>{this.profileAuth.populate(params.username)})
+    private labelService: LabelService,
+    private streamService: StreamService
+  ) { 
     
-    this.subscription = this.profileAuth.currentProfile
-      .subscribe(profile => this.profile = profile);
+    route.params
+      .subscribe(params=>{
+         //Update profile data based on username
+        this.profileAuth.populate(params.username);
+      
+      });
 
-    this.urlPram = this.route.snapshot.queryParams.label;
+    const urlParam = route.snapshot.queryParams.label;
 
-    if(this.urlPram){
-      const domain = Utils.extractHost(this.urlPram);
-      this.handleParams(domain);
+    if(urlParam){
+      const domain = Utils.extractHost(urlParam);
+      this.handleParams(urlParam, domain);
     }
 
   }
 
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
+  ngOnInit(){ 
+
+    this.profileAuth.currentProfile
+      .subscribe(profile => {this.profile = profile;});
+
+    this.profileAuth.isUserAuth
+      .subscribe(auth => this.userAuth = auth);
+
+    //Hack to keep current tab active
+    this.activeRoute();
+    this.subscription = this.router.events
+      .subscribe((event) => {
+        if(event instanceof NavigationEnd) {
+
+          this.activeRoute();
+          
+        }
+      }
+    );
+
   }
 
-  handleParams(domain){
+  activeRoute(){
+    const snapshot = this.route.firstChild.snapshot;
+    if(snapshot)
+    this.currentTab = snapshot.data.page; 
+  }
+
+  handleParams(urlParam, domain){
     return this.labelService.searchByDomain({url: domain}).subscribe(
       data => { 
 
@@ -65,11 +91,23 @@ export class ProfileComponent implements OnInit{
         }
 
         const modalRef = this.modalService.open(LabelModalComponent, {size: 'lg', 'backdrop': 'static'});
-        modalRef.componentInstance.url = this.urlPram;
+        modalRef.componentInstance.url = urlParam;
         modalRef.componentInstance.profile = data;
         
       },
       err => console.log(err)
     );
   }
+
+
+  follow(id){
+    this.streamService.follow({target: id})
+      .subscribe(follow => {this.profile.follow = true});
+  }
+
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
+
 }

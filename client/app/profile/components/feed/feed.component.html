@@ -1,0 +1,38 @@
+<app-loading [condition]="isLoading"></app-loading>
+<section class="feed-item" *ngFor="let item of feed">
+  <div [ngSwitch]="item.verb">
+    <ng-container *ngSwitchCase="'labels'">
+      <div class="body">
+        <i class="icon fa fa-flag-o"></i> 
+        <small class="text-muted text-uppercase">{{item.time | amFromUtc | amLocal | amTimeAgo}}</small>
+        <div class="title">
+          <a [routerLink]="['/' + item.actor.username]">
+            {{item.actor.username}}
+          </a> 
+          flagged section with
+          <a class="label" [routerLink]="['/' + item.object.label.publisher.username + '/flags/' + item.object.label._id]">
+            {{item.object.label.label}}
+          </a> 
+          label on 
+          <a [routerLink]="['/' + item.object.label.publisher.username]">
+            {{item.object.label.publisher.username}}
+          </a>
+        </div>
+        <div class="details">
+          <img src="{{item.actor.image}}" height="30px" alt="">
+          <div class="section">
+            <blockquote>
+              {{item.object.label.section}}
+            </blockquote>
+            <div class="source text-muted">
+                &ndash; <a href="{{item.object.label.url}}" class="text-muted" target="_blank">{{item.object.label.url}}</a>
+            </div>
+        </div>
+        </div>
+      </div>
+    </ng-container>
+    <ng-container *ngSwitchCase="'follows'">
+        <div>dd</div>
+    </ng-container>
+  </div>
+</section>

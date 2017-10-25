@@ -29,11 +29,15 @@ export class StreamRouter extends BaseCtrl{
 
   public feed = (req: userRequest, res: Response) =>  {
     
-    // const userFeed = this.FeedManager.getUserFeed(req.profile._id); 
+    let feed; 
 
-     const flatFeed = this.FeedManager.getNewsFeeds(req.profile._id)['timeline']; 
+    if(req.profile._id.equals(req.params.id)){
+      feed = this.FeedManager.getUserFeed(req.profile._id)
+    }else{
+      feed = this.FeedManager.getNewsFeeds(req.profile._id)['timeline']; 
+    }
 
-     return flatFeed
+     return feed
       .get({})
       .then(this.enrichActivities)
       .then(this.respondWithResult(res))
@@ -84,7 +88,7 @@ export class StreamRouter extends BaseCtrl{
   }
 
   routes() {
-    this.router.get('/feed', auth.isAuthenticated(), this.feed);
+    this.router.get('/feed/:id', auth.isAuthenticated(), this.feed);
     this.router.post('/follow', auth.isAuthenticated(), this.follow);
     this.router.get('/notifications', auth.isAuthenticated(), this.notifications);
   }

@@ -1,5 +1,51 @@
-<div [ngSwitch]="profile.type" class="mt-4">
-    <app-profile-publisher *ngSwitchCase="'publisher'"></app-profile-publisher>
-    <app-profile-user *ngSwitchCase="'user'"></app-profile-user>
+<div class="row mt-3">
+    <div class="col-md-3 col-profile">
+        <img src="{{profile.image}}" class="img-thumbnail rounded-0 mb-3" alt="">
+        
+                
+        <h3>
+            <span *ngIf="profile.name">{{profile.name}}<br></span>
+            <small class="text-muted">@{{profile.username}}</small> 
+        </h3>
+
+        <a [routerLink]="['/settings/profile']" *ngIf="!profile.name || !profile.bio">
+            {{'Add your ' + (profile.name ? '' : 'name ') + (!profile.name && !profile.bio ? 'or ' : '') + (profile.bio ? '' : 'bio')}}
+        </a>
+
+        <hr>
+
+        <button class="btn btn-dark btn-block rounded-0 mb-3" *ngIf="!userAuth && !profile.follow" (click)="follow(profile._id)">Follow {{profile.type}}</button>
+            
+    </div>
+    <div class="col-md-9">
+        <ul class="nav nav-tabs tabs" *ngIf="profile.username">
+            <li class="nav-item">
+                <a class="nav-link" [routerLink]="['/', profile.username]" [class.active]="currentTab === 'feed'">
+                    <i class="fa fa-list" aria-hidden="true"></i>
+                    &nbsp;Activity
+                </a>
+            </li>
+            <li class="nav-item" *ngIf="profile.type === 'publisher'">
+                <a class="nav-link" [routerLink]="['/' + profile.username + '/flags']" [class.active]="currentTab === 'flag'">
+                    <i class="fa fa-flag" aria-hidden="true"></i>
+                    &nbsp;Flags
+                </a>
+            </li>
+            <li class="nav-item" *ngIf="profile.type === 'publisher'">
+                <a class="nav-link" href="#">
+                    <i class="fa fa-users" aria-hidden="true"></i>
+                    &nbsp;Team
+                </a>
+            </li>
+            <li class="nav-item" *ngIf="profile.type === 'publisher' && userAuth">
+                <a class="nav-link" href="#">
+                    <i class="fa fa-cogs" aria-hidden="true"></i>
+                    &nbsp;Settings
+                </a>
+            </li>
+        </ul>
+        <div class="tab-container">
+            <router-outlet></router-outlet>
+        </div>
+    </div>
 </div>
-      

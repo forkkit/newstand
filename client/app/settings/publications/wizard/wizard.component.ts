@@ -16,6 +16,7 @@ export class WizardComponent implements OnInit {
   profile: Profile = new Profile();
 
   private subscription;
+  
   constructor(
     private wizardAuth: WizardAuth,
     private router: Router

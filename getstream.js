@@ -3,17 +3,17 @@ exports.config = {
 	/**
   * GetStream.io API key
   */
-	apiKey: '7shveaxfzcj7',
+	apiKey: process.env.STREAM_KEY,
 
 	/**
   * GetStream.io API Secret
   */
-	apiSecret: 'bk4se869eewcp5sua6y35vanuzvn9xdbzsmb8x23ma29sh4h9aj7zf79deymwde3',
+	apiSecret: process.env.STREAM_SECRET,
 
 	/**
   * GetStream.io API App ID
   */
-	apiAppId: '29945',
+	apiAppId: process.env.STREAM_ID,
 
 	/**
   * GetStream.io API Location
