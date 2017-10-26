@@ -18,11 +18,6 @@ const labelSchema = new Schema(
 
 labelSchema.plugin(StreamMongoose.activity);
 
-// labelSchema.methods.activityNotify = function() {
-// 	const target_feed = FeedManager.getNotificationFeed(this.target._id); 
-// 	return [target_feed];
-// };
-
 labelSchema.statics.pathsToPopulate = function() {
 	return ['user', 'label'];
 };
@@ -40,6 +35,9 @@ labelSchema.methods.createActivity = function() {
 	  }
 	  
 	  const publisher = this.target.publisher, toField = [];
+	  
+	  //Push to publisher timeline
+	  toField.push('timeline:'+this.target._id);
 
 	  if(publisher && publisher.members.length > 0){
 

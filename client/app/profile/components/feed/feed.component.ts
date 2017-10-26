@@ -31,7 +31,10 @@ export class FeedComponent implements OnInit {
 
   }
 
-  loadFeed(profile){
+  loadFeed(profile){ 
+    if(!profile._id){
+      return;
+    }
 
     this.subscription = this.streamService.feed(profile._id)
       .subscribe(

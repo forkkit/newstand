@@ -32,9 +32,9 @@ export class StreamRouter extends BaseCtrl{
     let feed; 
 
     if(req.profile._id.equals(req.params.id)){
-      feed = this.FeedManager.getUserFeed(req.profile._id)
+      feed = this.FeedManager.getUserFeed(req.params.id)
     }else{
-      feed = this.FeedManager.getNewsFeeds(req.profile._id)['timeline']; 
+      feed = this.FeedManager.getNewsFeeds(req.params.id)['timeline']; 
     }
 
      return feed

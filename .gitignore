@@ -42,3 +42,6 @@ Thumbs.db
 
 #environment
 .env
+
+#node cache
+/.node-persist

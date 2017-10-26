@@ -10,9 +10,7 @@
             {{item.actor.username}}
           </a> 
           flagged section with
-          <a class="label" [routerLink]="['/' + item.object.label.publisher.username + '/flags/' + item.object.label._id]">
-            {{item.object.label.label}}
-          </a> 
+          <a class="label" [routerLink]="['/' + item.object.label.publisher.username + '/flags/' + item.object.label._id]">{{item.object.label.label}}</a> 
           label on 
           <a [routerLink]="['/' + item.object.label.publisher.username]">
             {{item.object.label.publisher.username}}
