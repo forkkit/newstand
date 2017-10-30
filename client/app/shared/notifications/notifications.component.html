@@ -1,12 +1,19 @@
 
 <app-loading [condition]="isLoading"></app-loading>
-<div class="list-group list-notifications">
-  <a [routerLink]="['/' + notification.actor.username]" class="list-group-item list-group-item-action" *ngFor="let notification of notifications">
-    <img src="{{notification.actor.image}}" alt="">
-    <div class="content">
-      <strong>{{notification.actor.username}}</strong> {{notificationText(notification)}}
-      <br>
-      <small class="text-muted">{{notification.time | date:'shortTime'}}</small>
-    </div>
-  </a>
+
+<div *ngIf="!isLoading">
+  <div class="empty text-muted" *ngIf="notifications.length === 0">
+    No new notifications at this time
+  </div>
+
+  <div class="list-group list-notifications" *ngIf="notifications.length > 0">
+    <a [routerLink]="['/' + notification.actor.username]" class="list-group-item list-group-item-action" *ngFor="let notification of notifications">
+      <img src="{{notification.actor.image}}" alt="">
+      <div class="content">
+        <strong>{{notification.actor.username}}</strong> {{notificationText(notification)}}
+        <br>
+        <small class="text-muted">{{notification.time | date:'shortTime'}}</small>
+      </div>
+    </a>
+  </div>
 </div>

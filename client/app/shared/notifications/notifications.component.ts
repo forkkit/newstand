@@ -22,7 +22,7 @@ import {
 })
 export class NotificationsSharedComponent implements OnInit {
   
-  notifications: any;
+  notifications: any = [];
   currentUser: Profile = new Profile();
   isLoading:boolean = true;
 
@@ -38,7 +38,7 @@ export class NotificationsSharedComponent implements OnInit {
 
     this.streamService.notifications()
       .subscribe(
-        notifications => {this.notifications = notifications; console.log(notifications)},
+        notifications => {this.notifications = notifications;},
         error => console.log(error),
         () => this.isLoading = false 
       );

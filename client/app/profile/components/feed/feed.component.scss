@@ -1,59 +1,66 @@
-.feed-item{
-    position: relative;
-    padding: 0 0 1em 40px;
-    font-size: 14px;
-    min-height: 85px;
-    border-bottom:1px solid #eff3f6;
-    &:first-child{
-        border-top: 0;
-        >.body{
-            padding-top: 0;
-        }
-    }
-    .body{
-        padding: 1em 0 0;
-        a{
-            font-weight: bold;
+.feed-container{
+    padding: 15px;
 
-            &.label{
-                background-color: #03fc96;
-                padding: 3px;
+    .feed-item{
+        position: relative;
+        padding: 0 0 1em 40px;
+        font-size: 14px;
+        min-height: 85px;
+        border-bottom:1px solid #eff3f6;
+        &:first-child{
+            border-top: 0;
+            >.body{
+                padding-top: 0;
             }
         }
-        >.icon{
-            position: absolute;
-            left: 0;
-            color: #999999;
-            font-size: 2em;
-        }
-        >.details{
-            position: relative;
-            margin-top: 5px;
-            >img{
+        .body{
+            padding: 1em 0 0;
+            a{
+                font-weight: bold;
+
+                &.label{
+                    background-color: #69F0AE;
+                    padding: 3px;
+                }
+            }
+            >.icon{
                 position: absolute;
                 left: 0;
-                border: 1px solid #eff3f6;
+                color: #999999;
+                font-size: 2em;
             }
-            >.section{
-                font-size: .8rem;
-                padding-left: 5px;
-                margin: 0 0 0 35px;
-                >blockquote{
-                    padding-left: 7px;
-                    border-left: 5px solid #eaf5ff;
-                    font-style: italic;
-                    margin: 0;
+            >.details{
+                position: relative;
+                margin-top: 5px;
+                >img{
+                    position: absolute;
+                    left: 0;
+                    border: 1px solid #eff3f6;
                 }
-                >.source{
-                    padding-left: 12px;
+                >.section{
                     font-size: .8rem;
-                    >a{
-                        font-weight: normal
+                    padding-left: 5px;
+                    margin: 0 0 0 35px;
+                    >blockquote{
+                        padding-left: 7px;
+                        border-left: 5px solid #eaf5ff;
+                        font-style: italic;
+                        margin: 0;
                     }
-                
+                    >.source{
+                        padding-left: 12px;
+                        font-size: .8rem;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        >a{
+                            font-weight: normal
+                        }
+                    
+                    }
                 }
             }
+            
         }
-        
     }
 }

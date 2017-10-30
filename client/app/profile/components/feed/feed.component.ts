@@ -38,7 +38,7 @@ export class FeedComponent implements OnInit {
 
     this.subscription = this.streamService.feed(profile._id)
       .subscribe(
-        feed => { this.feed = feed;},
+        feed => { this.feed = feed; },
         error => console.log(error),
         () => this.isLoading = false 
       );

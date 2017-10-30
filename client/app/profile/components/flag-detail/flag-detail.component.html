@@ -1,1 +1,36 @@
-<h1>FLAG DETAILS!!!</h1>
+<div class="status {{label.status}}">{{label.status}}</div>
+
+<div class="discussion" *ngIf="label.user">
+
+    <div class="item">
+        <div class="header row">
+            <div class="col-md-6">
+                <div class="user">
+                    <img src="{{label.user.profile.image}}" alt="">
+                    <h6>{{label.user.profile.username}}</h6>
+                    <small class="text-muted">{{label.date | amFromUtc | amLocal | amTimeAgo}}</small>
+                </div>
+            </div>
+            <div class="col-md-6 label">
+                <span>{{label.label}}</span>
+            </div>
+        </div>
+        <div class="body">
+            <h3 class="section">{{label.section}}</h3>
+            <div class="source text-muted">
+                &ndash; <a href="{{label.url}}">{{label.url}}</a>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="item">
+        <div class="respond-start" *ngIf="!respond">
+            <a href="javascript:;" class="text-muted" (click)="respond = true">
+                <i class="fa fa-comment-o fa-lg" aria-hidden="true"></i> 
+                &nbsp;Respond to flag
+            </a>
+        </div>
+    </div>
+
+</div>

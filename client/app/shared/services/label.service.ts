@@ -23,4 +23,8 @@ export class LabelService {
     return this.http.post('/api/labels/create', data)
   }
 
+  getDetail(id): Observable<any> {
+    return this.http.get(`/api/labels/detail/${id}`)
+  }
+
 }

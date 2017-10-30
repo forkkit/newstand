@@ -1,4 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+
+import { 
+  LabelService,
+  Label
+} from '../../../shared';
 
 @Component({
   selector: 'app-profile-flag-detail',
@@ -7,12 +13,26 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ProfileFlagsDetailComponent implements OnInit {
 
-  private subscription;
+  public label: Label = new Label(); 
+  public respond: boolean = false;
 
-  constructor() { }
+  constructor(
+    private labelService:LabelService,
+    private route: ActivatedRoute
+  ) { 
+    
+    const id: string = route.snapshot.params.id;
+
+    labelService.getDetail(id)
+      .subscribe(
+        label => {this.label = label;},
+        err => console.log(err)
+      
+      );
+
+  }
 
   ngOnInit() {
-
 
   }
 

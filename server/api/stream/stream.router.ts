@@ -76,7 +76,7 @@ export class StreamRouter extends BaseCtrl{
       .then((body)=>{
         const activities = body.results;
         if (activities.length == 0) {
-          return null;
+          return [];
         } else {
           req.user.unseen = 0;
           return this.StreamBackend.enrichActivities(activities[0].activities);

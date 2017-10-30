@@ -21,6 +21,19 @@ const labelSchema = new mongoose.Schema({
         ref: 'Profile' 
       }
     },
+    interactions:[{
+      type:{
+        type: String
+      },
+      object: {
+        type: ObjectId, 
+        ref: 'Interaction' 
+      }
+    }],
+    status:{
+      type: String,
+      default: 'open'
+    },
     date: {
       type: Date, 
       default: Date.now

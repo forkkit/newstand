@@ -78,10 +78,19 @@ export class LabelRouter extends BaseCtrl{
     
   }
 
+  private detail = (req: Request, res: Response) =>  {
+    
+    return this.label.findById(req.params.id).populate('interactions').populate('user.profile').exec()
+      .then(this.respondWithResult(res))
+      .catch(this.validationError(res));
+
+  }
+
   routes() {
     this.router.post('/domain', auth.isAuthenticated(), this.searchByDomain);
     this.router.post('/section', auth.isAuthenticated(), this.verifySection);
     this.router.post('/create', auth.isAuthenticated(), this.create);
+    this.router.get('/detail/:id', this.detail);
   }
 
 }
