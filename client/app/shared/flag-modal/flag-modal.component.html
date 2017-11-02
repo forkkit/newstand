@@ -6,7 +6,7 @@
 </div>
 <div class="modal-body">
 
-  <form [formGroup]="labelForm" (ngSubmit)="submit(labelForm)">
+  <form [formGroup]="flagForm" (ngSubmit)="submit(flagForm)">
 
     <div [hidden]="validArticle">
       <input class="form-control form-control-lg" type="text" formControlName="url" placeholder="Start by entering article url..." (blur)="verifyDomain($event.target.value)" (keyup.enter)="verifyDomain($event.target.value)">
@@ -28,8 +28,8 @@
           <small class="text-muted">@{{profile.username}}</small>
         </div>
         <div class="col-lg-10 col-md-8">
-            <h6>{{this.labelForm.value.url}}</h6>
-            <p class="lead">{{this.labelForm.value.section}}</p>
+            <h6>{{this.flagForm.value.url}}</h6>
+            <p class="lead">{{this.flagForm.value.section}}</p>
         </div>
       </div>
 
@@ -44,11 +44,11 @@
           </li>
         </ul>
 
-        <textarea name="" id="bio" name="bio" rows="2" class="form-control form-control-lg" formControlName="description" placeholder="Add clarity to your label (optional)"></textarea>
+        <textarea name="" id="bio" name="bio" rows="2" class="form-control form-control-lg" formControlName="description" placeholder="Add clarity to your flag (optional)"></textarea>
         <small class="text-muted">Not publicly visible</small>
 
         <div class="text-right mt-3">
-            <button type="submit" class="btn btn-dark btn-lg rounded-0">Submit label</button>        
+            <button type="submit" class="btn btn-dark btn-lg rounded-0">Submit flag</button>        
         </div>
 
       </div>

@@ -22,6 +22,9 @@ export class ProfileAuthService {
 
     private isUserAuthSubject = new ReplaySubject<boolean>(1);
     public isUserAuth = this.isUserAuthSubject.asObservable();
+
+    private userRoleSubject = new ReplaySubject<string>(1);
+    public userRole = this.userRoleSubject.asObservable();
   
     constructor(
         private profilesService: ProfilesService,
@@ -55,7 +58,7 @@ export class ProfileAuthService {
                         return;
                     }
         
-                    this.setProfileRole(profile);
+                    this.setProfileAuth(profile);
                 },
                 err => this.dumpProfile()
             );
@@ -72,7 +75,7 @@ export class ProfileAuthService {
         return this.currentProfileSubject.value;
     }
 
-    setProfileRole(profile){
+    setProfileAuth(profile){
 
         const currentUser = this.userAuth.getCurrentUser();
 
@@ -88,10 +91,14 @@ export class ProfileAuthService {
 
             for(var i=0; members.length>i; i++){
                 if(_.isEqual(members[i].profile, currentUser._id)){
+                    this.userRoleSubject.next(members[i].role);
                     this.isUserAuthSubject.next(true);
                 }
             }
         }
     }
+
+
+
 
 }

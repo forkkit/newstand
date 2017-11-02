@@ -2,6 +2,8 @@ import { ModuleWithProviders, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
+import { QuillModule } from 'ngx-quill';
+
 import { ProfileComponent } from './profile.component';
 import { ProfileAuthService } from './services';
 import { AuthGuardLogin, SharedModule } from '../shared';
@@ -10,6 +12,7 @@ import {
   FeedComponent,
   ProfileFlagsComponent,
   ProfileFlagsDetailComponent,
+  FlagCommentComponent
 } from './components';
 
 const profileRouting: ModuleWithProviders = RouterModule.forChild([
@@ -29,13 +32,15 @@ const profileRouting: ModuleWithProviders = RouterModule.forChild([
   imports: [
     SharedModule,
     profileRouting,
-    CommonModule
+    CommonModule,
+    QuillModule
   ],
   declarations: [
     ProfileComponent,
     ProfileFlagsComponent,
     ProfileFlagsDetailComponent,
-    FeedComponent
+    FeedComponent,
+    FlagCommentComponent
   ],
   providers: [
     ProfileAuthService

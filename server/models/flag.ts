@@ -2,7 +2,7 @@ import * as mongoose from 'mongoose';
 
 let ObjectId = mongoose.Schema.Types.ObjectId;
 
-const labelSchema = new mongoose.Schema({
+const flagSchema = new mongoose.Schema({
     url: String,
     section: String,
     label: String,
@@ -21,18 +21,18 @@ const labelSchema = new mongoose.Schema({
         ref: 'Profile' 
       }
     },
-    interactions:[{
+    activity:[{
       type:{
         type: String
       },
       object: {
         type: ObjectId, 
-        ref: 'Interaction' 
+        ref: 'Activities' 
       }
     }],
     status:{
       type: String,
-      default: 'open'
+      default: 'raise'
     },
     date: {
       type: Date, 
@@ -40,6 +40,6 @@ const labelSchema = new mongoose.Schema({
     }
 });
 
-const Label = mongoose.model('LabelDetail', labelSchema);
+const Flag = mongoose.model('Flag', flagSchema);
 
-export default Label;
+export default Flag;

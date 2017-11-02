@@ -9,5 +9,5 @@ export * from './auth-guard-setup.service';
 export * from './interceptor.service';
 export * from './publisher-auth.service';
 export * from './publisher.service';
-export * from './label.service';
+export * from './flag.service';
 export * from './stream.service';

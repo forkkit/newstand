@@ -4,7 +4,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { 
   Profile,
-  LabelService,
+  FlagService,
   StreamService
 } from '../shared';
 
@@ -12,7 +12,7 @@ import {
   ProfileAuthService,
 } from './services';
 
-import { LabelModalComponent } from '../shared/label-modal/label-modal.component';
+import { FlagModalComponent } from '../shared/flag-modal/flag-modal.component';
 
 import Utils from '../shared/utils';
 
@@ -34,7 +34,7 @@ export class ProfileComponent implements OnInit{
     private route: ActivatedRoute,
     private router: Router,
     private modalService: NgbModal,
-    private labelService: LabelService,
+    private flagService: FlagService,
     private streamService: StreamService
   ) { 
     
@@ -83,14 +83,14 @@ export class ProfileComponent implements OnInit{
   }
 
   handleParams(urlParam, domain){
-    return this.labelService.searchByDomain({url: domain}).subscribe(
+    return this.flagService.searchByDomain({url: domain}).subscribe(
       data => { 
 
         if(data.error){
           this.router.navigate(['/' + this.profile.username])
         }
 
-        const modalRef = this.modalService.open(LabelModalComponent, {size: 'lg', 'backdrop': 'static'});
+        const modalRef = this.modalService.open(FlagModalComponent, {size: 'lg', 'backdrop': 'static'});
         modalRef.componentInstance.url = urlParam;
         modalRef.componentInstance.profile = data;
         

@@ -3,42 +3,42 @@ import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms'
 
 import {NgbModal, NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 
-import { LabelService } from '../services';
-import { Profile, Label } from '../models';
+import { FlagService } from '../services';
+import { Profile, Flag } from '../models';
 
 import Utils from '../utils';
 
 @Component({
-  selector: 'app-label-modal',
-  templateUrl: './label-modal.component.html',
-  styleUrls: ['./label-modal.component.scss']
+  selector: 'app-flag-modal',
+  templateUrl: './flag-modal.component.html',
+  styleUrls: ['./flag-modal.component.scss']
 })
-export class LabelModalComponent implements OnInit {
+export class FlagModalComponent implements OnInit {
   
   @Input() name;
   baseUrl: string;
   error: boolean = false;
   errorMessage: string;
   profile: Profile = new Profile();
-  label: Label = new Label();
+  flag: Flag = new Flag();
   url:string;
   validArticle:boolean = false;
   section:string;
-  labelOptions:string[] = ['source', 'details', 'correction', 'explaination'];
+  labelOptions:string[] = ['source', 'details', 'correction', 'explaination', 'update'];
   activeLabel: string;
 
 
-  labelForm: FormGroup;
+  flagForm: FormGroup;
   username = new FormControl('', [Validators.required]);
   
 
   constructor(
     public activeModal: NgbActiveModal,
-    private labelService: LabelService,
+    private flagService: FlagService,
     private fb: FormBuilder
   ){ 
 
-    this.labelForm = fb.group({
+    this.flagForm = fb.group({
       url: [''],
       section: [''],
       label: [''],
@@ -52,7 +52,7 @@ export class LabelModalComponent implements OnInit {
   }
 
   ngOnInit(){ 
-    this.labelForm.patchValue({
+    this.flagForm.patchValue({
       url: this.url, 
       publisher: {
         username: this.profile.username,
@@ -72,7 +72,7 @@ export class LabelModalComponent implements OnInit {
 
     this.baseUrl = Utils.extractHost(url);
 
-    return this.labelService.searchByDomain({url: this.baseUrl}).subscribe(
+    return this.flagService.searchByDomain({url: this.baseUrl}).subscribe(
       data => {
 
         if(data.error){
@@ -82,7 +82,7 @@ export class LabelModalComponent implements OnInit {
 
         this.profile = data;
 
-        this.labelForm.patchValue({
+        this.flagForm.patchValue({
           url: url,
           publisher: {
             username: data.username,
@@ -102,7 +102,7 @@ export class LabelModalComponent implements OnInit {
       return;
     }
 
-    return this.labelService.verifySection({section: text, url: this.labelForm.value.url}).subscribe(
+    return this.flagService.verifySection({section: text, url: this.flagForm.value.url}).subscribe(
       result => {
 
        if(!result.valid){
@@ -122,11 +122,11 @@ export class LabelModalComponent implements OnInit {
 
   selectLabel(label){
     this.activeLabel = label;
-    this.labelForm.patchValue({label: label});
+    this.flagForm.patchValue({label: label});
   }
 
   submit(form){
-    return this.labelService.create(form.value).subscribe(
+    return this.flagService.create(form.value).subscribe(
       data => { 
 
         console.log(data);

@@ -6,10 +6,10 @@ import {
   ViewContainerRef
 } from '@angular/core';
 
-import { AuthService } from './services';
+import { AuthService } from '../services';
 
-@Directive({ selector: '[showAuthed]' })
-export class ShowAuthedDirective implements OnInit {
+@Directive({ selector: '[userAuth]' })
+export class UserAuthDirective implements OnInit {
   constructor(
     private templateRef: TemplateRef<any>,
     private auth: AuthService,
@@ -30,7 +30,7 @@ export class ShowAuthedDirective implements OnInit {
     )
   }
 
-  @Input() set showAuthed(condition: boolean) {
+  @Input() set userAuth(condition: boolean) {
     this.condition = condition;
   }
 

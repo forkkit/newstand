@@ -1,40 +1,64 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ViewEncapsulation, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { 
-  LabelService,
-  Label
+  FlagService,
+  Flag,
+  Activity
 } from '../../../shared';
+
+import {
+  ProfileAuthService
+} from '../../services';
 
 @Component({
   selector: 'app-profile-flag-detail',
   templateUrl: './flag-detail.component.html',
-  styleUrls: ['./flag-detail.component.scss']
+  styleUrls: ['./flag-detail.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
-export class ProfileFlagsDetailComponent implements OnInit {
+export class ProfileFlagsDetailComponent implements OnInit{
 
-  public label: Label = new Label(); 
+  public flag: Flag = new Flag(); 
   public respond: boolean = false;
+  public userRole: string;
 
   constructor(
-    private labelService:LabelService,
+    private flagService:FlagService,
+    private profileAuthService: ProfileAuthService,
     private route: ActivatedRoute
   ) { 
     
     const id: string = route.snapshot.params.id;
 
-    labelService.getDetail(id)
+    flagService.getDetail(id)
       .subscribe(
-        label => {this.label = label;},
+        flag => {this.flag = flag;},
         err => console.log(err)
       
       );
 
   }
 
-  ngOnInit() {
-
+  ngOnInit(){
+    this.profileAuthService.userRole.subscribe(
+      role => this.userRole = role,
+      err => console.log(err)
+    );
   }
 
+  saved(activity:Activity):void {
+    
+    this.flag.activity.push({
+      type: activity.type,
+      object: activity
+    });
+
+    if(activity.type !== 'comment'){
+      this.flag.status = (activity.type === 'address') ? 'address' : 'raise';
+    }
+    
+    this.respond = false;
+  }
 
 }

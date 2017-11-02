@@ -1,0 +1,21 @@
+.comment-container{
+    quill-editor{
+        [quill-editor-toolbar], [quill-editor-element] {
+            border: none;
+            font-family: "Roboto";
+            font-size: .9rem;
+        }
+        [quill-editor-element] {
+            .ql-editor.ql-blank::before{
+                font-style: normal;
+                color: #868e96;
+                
+            }
+        }
+        
+    }
+
+    .respond-action{
+        border-top: 1px solid #eff3f6
+    }
+}

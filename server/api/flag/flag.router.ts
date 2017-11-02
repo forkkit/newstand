@@ -5,17 +5,19 @@ import * as auth from '../../auth/auth.service';
 import config from '../../config';
 import Profile from '../../models/profile';
 import Publisher from '../../models/publisher';
-import LabelDetail from '../../models/label';
+import FlagDetail from '../../models/flag';
+import Activity from '../../models/activity';
 import Stream from '../../models/stream';
 import BaseCtrl from '../base';
 
 import { userRequest } from "../../config/definitions";
 
-export class LabelRouter extends BaseCtrl{
+export class FlagRouter extends BaseCtrl{
   router: Router
   model = Profile;
   publisher = Publisher;
-  label = LabelDetail;
+  flag = FlagDetail;
+  activity = Activity;
   stream = Stream;
 
   constructor() {
@@ -56,21 +58,22 @@ export class LabelRouter extends BaseCtrl{
 
   public create = (req: userRequest, res: Response) =>  {
     
-    const data = new this.label(req.body);
+    const data = new this.flag(req.body);
     data.user.username = req.profile.username;
     data.user.profile = req.profile._id;
 
     data.save()
-      .then((label)=>{
+      .then((flag)=>{
 
-        const activity = new this.stream.Label({
-            user: label.user.profile, 
-            target: label.publisher.profile,
-            label: label._id
+        const activity = new this.stream.Flag({
+            user: flag.user.profile, 
+            target: flag.publisher.profile,
+            flag: flag._id,
+            type: 'raise'
         });
 
         return activity.save()
-          .catch((err)=>{ throw err; });
+          .catch((err) => { throw err; });
 
       })
       .then(this.respondWithResult(res))
@@ -80,7 +83,47 @@ export class LabelRouter extends BaseCtrl{
 
   private detail = (req: Request, res: Response) =>  {
     
-    return this.label.findById(req.params.id).populate('interactions').populate('user.profile').exec()
+    return this.flag.findById(req.params.id).populate('activity.object').populate('user.profile').exec()
+      .then(this.respondWithResult(res))
+      .catch(this.validationError(res));
+
+  }
+
+  public createActivity = (req: userRequest, res: Response) =>  {
+    
+    const data = new this.activity(req.body);
+
+    data.user.object = req.profile;
+
+    return data.save()
+      .then((activity)=>{
+
+        let status = {};
+
+        if(activity.type !== 'comment'){
+          status = {status: (activity.type === 'address' ? 'address' : 'raise')}
+        }
+
+        const pushActivity = {type: activity.type, object: activity._id}
+
+        return this.flag.findOneAndUpdate({_id: activity.flag}, { $set: status, $push: {activity: pushActivity }}).exec()
+          .then((flag) => {
+
+            const streamActivity = new this.stream.Activity({
+              user: activity.user.object._id, 
+              target: flag.publisher.profile,
+              activity: activity._id,
+              type: activity.type
+            });
+    
+            return streamActivity.save()
+              .then(()=>{ return activity })
+              .catch((err) => { throw err; });
+
+          })
+          .catch((err) => { throw err; });
+
+      })
       .then(this.respondWithResult(res))
       .catch(this.validationError(res));
 
@@ -91,9 +134,11 @@ export class LabelRouter extends BaseCtrl{
     this.router.post('/section', auth.isAuthenticated(), this.verifySection);
     this.router.post('/create', auth.isAuthenticated(), this.create);
     this.router.get('/detail/:id', this.detail);
+
+    this.router.post('/activity', auth.isAuthenticated(), this.createActivity);
   }
 
 }
 
-const router = new LabelRouter().router;
+const router = new FlagRouter().router;
 export default router;

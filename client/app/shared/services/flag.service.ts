@@ -7,24 +7,28 @@ import 'rxjs/add/operator/map';
 import { Profile } from '../models';
 
 @Injectable()
-export class LabelService {
+export class FlagService {
 
   constructor(private http: HttpClient) { }
 
   searchByDomain(domain): Observable<any> {
-    return this.http.post('/api/labels/domain', domain)
+    return this.http.post('/api/flags/domain', domain)
   }
 
   verifySection(data): Observable<any> {
-    return this.http.post('/api/labels/section', data)
+    return this.http.post('/api/flags/section', data)
   }
 
   create(data): Observable<any> {
-    return this.http.post('/api/labels/create', data)
+    return this.http.post('/api/flags/create', data)
   }
 
   getDetail(id): Observable<any> {
-    return this.http.get(`/api/labels/detail/${id}`)
+    return this.http.get(`/api/flags/detail/${id}`)
+  }
+
+  activity(data): Observable<any> {
+    return this.http.post('/api/flags/activity', data)
   }
 
 }

@@ -86,4 +86,8 @@ export class AuthService {
     this.currentUserSubject.next(profile)
   }
 
+  userRole(profile:Profile){
+    console.log(profile);
+  }
+
 }

@@ -7,9 +7,9 @@ import { MomentModule } from 'angular2-moment';
 
 import { ToastComponent } from './toast/toast.component';
 import { LoadingComponent } from './loading/loading.component';
-import { LabelModalComponent } from './label-modal/label-modal.component';
-import { ShowAuthedDirective } from './show-authed.directive';
-import { LabelService } from './services/label.service';
+import { FlagModalComponent } from './flag-modal/flag-modal.component';
+import { UserAuthDirective } from './directives';
+import { FlagService } from './services/flag.service';
 import { NotificationsSharedComponent } from './notifications';
 
  
@@ -30,22 +30,22 @@ import { NotificationsSharedComponent } from './notifications';
     // Shared Components
     ToastComponent,
     LoadingComponent,
-    ShowAuthedDirective,
+    UserAuthDirective,
   ],
   declarations: [
     ToastComponent,
     LoadingComponent,
-    LabelModalComponent,
-    ShowAuthedDirective,
+    FlagModalComponent,
+    UserAuthDirective,
     NotificationsSharedComponent
   ],
   entryComponents: [
-    LabelModalComponent,
+    FlagModalComponent,
     NotificationsSharedComponent
   ],
   providers: [
     ToastComponent, 
-    LabelService,
+    FlagService,
   ]
 })
 export class SharedModule { }

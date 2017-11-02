@@ -1,0 +1,43 @@
+<div class="comment-container">
+    <quill-editor [(ngModel)]="activity.comment" placeholder="Leave a comment">
+        <div quill-editor-toolbar>
+            <span class="ql-formats">
+                <button class="ql-bold" [title]="'Bold'"></button>
+                <button class="ql-italic" [title]="'Italic'"></button>
+            </span>
+            <span class="ql-formats">
+                <button class="ql-list" value="ordered" [title]="'Ordered List'"></button>
+                <button class="ql-list" value="bullet"  [title]="'Bulleted List'"></button>
+            </span>
+            <span class="ql-formats">
+                <select class="ql-size" [title]="'Size'">
+                    <option value="small"></option>
+                    <option value="normal" selected></option>
+                    <option value="large"></option>
+                    <option value="huge"></option>
+                </select>
+            </span>
+            <span class="ql-formats">
+                <button class="ql-link" [title]="'Link'"></button>
+                <button class="ql-blockquote" [title]="'Blockquote'"></button>
+            </span>
+            
+        </div>
+    </quill-editor>
+    <div class="row mt-2 pt-2 respond-action">
+        <div class="col-md-4">
+            <div class="form-check form-check-inline">
+                <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" (change)="checkbox($event, this.flag.status)"> 
+                    {{this.flag.status === 'raise' ? 'Mark as addressed' : 'Reraise flag'}}
+                </label>
+            </div>
+        </div>
+        <div class="col-md-8 text-right">
+            <button class="btn btn-dark rounded-0" (click)="submit()">
+                {{ !this.activity.type ? 'Comment' : (this.activity.type === 'address' ? 'Mark as addressed' : 'Reraise flag')}}
+            </button>
+        </div>
+    </div>
+    <small class="text-muted">Hint: use '@' to link to user or publication and '#' to reference another flag</small>
+</div>

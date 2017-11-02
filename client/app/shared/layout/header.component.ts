@@ -5,7 +5,7 @@ import {NgbModal, ModalDismissReasons, NgbDropdownConfig} from '@ng-bootstrap/ng
 
 import { Profile } from '../models';
 import { AuthService } from '../services';
-import { LabelModalComponent } from '../label-modal/label-modal.component';
+import { FlagModalComponent } from '../flag-modal/flag-modal.component';
 import { NotificationsSharedComponent } from '../notifications';
 
 @Component({
@@ -44,7 +44,7 @@ export class HeaderComponent implements OnInit {
     }
 
     open() {
-        this.modalService.open(LabelModalComponent, {size: 'lg', 'backdrop': 'static'});
+        this.modalService.open(FlagModalComponent, {size: 'lg', 'backdrop': 'static'});
     }
 
     openNotifications(event){ 

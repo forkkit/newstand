@@ -15,12 +15,15 @@
         }
         .body{
             padding: 1em 0 0;
-            a{
-                font-weight: bold;
 
-                &.label{
-                    background-color: #69F0AE;
-                    padding: 3px;
+            >.title{
+                >a{
+                    font-weight: bold;
+
+                    &.flag{
+                        background-color: #69F0AE;
+                        padding: 3px;
+                    }
                 }
             }
             >.icon{
@@ -41,6 +44,7 @@
                     font-size: .8rem;
                     padding-left: 5px;
                     margin: 0 0 0 35px;
+                    min-height: 30px;
                     >blockquote{
                         padding-left: 7px;
                         border-left: 5px solid #eaf5ff;

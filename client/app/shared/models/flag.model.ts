@@ -1,15 +1,15 @@
-import { Interaction } from './interaction.model';
+import { Activity } from './activity.model';
 import { Profile } from './profile.model';
 
-export class Label{
+export class Flag{
     _id?: string;
     url?: string;
     section?: string;
     label?: string;
     description?: string;
-    interaction?: [{
+    activity?: [{
         type?: string;
-        object?: Interaction;
+        object?: Activity;
     }];
     status?: string;
     publication?: {
