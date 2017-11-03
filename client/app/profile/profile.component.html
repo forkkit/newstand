@@ -43,9 +43,9 @@
                     &nbsp;Settings
                 </a>
             </li>
-        </ul>
+        </ul> 
         <div class="tab-container">
-            <router-outlet></router-outlet>
+            <router-outlet *ngIf="switchView"></router-outlet>
         </div>
     </div>
 </div>

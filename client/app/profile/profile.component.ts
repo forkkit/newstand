@@ -28,6 +28,7 @@ export class ProfileComponent implements OnInit{
   public userAuth: boolean;
   public currentTab:string;
   private subscription;
+  private switchView:boolean = false;
 
   constructor(
     private profileAuth: ProfileAuthService,
@@ -40,6 +41,7 @@ export class ProfileComponent implements OnInit{
     
     route.params
       .subscribe(params=>{
+        this.switchView = false;
          //Update profile data based on username
         this.profileAuth.populate(params.username);
       
@@ -57,7 +59,10 @@ export class ProfileComponent implements OnInit{
   ngOnInit(){ 
 
     this.profileAuth.currentProfile
-      .subscribe(profile => {this.profile = profile;});
+      .subscribe(profile => {
+        this.switchView = true;
+        this.profile = profile;
+      });
 
     this.profileAuth.isUserAuth
       .subscribe(auth => this.userAuth = auth);

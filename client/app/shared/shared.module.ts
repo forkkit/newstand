@@ -6,6 +6,7 @@ import { RouterModule } from '@angular/router';
 import { MomentModule } from 'angular2-moment';
 
 import { ToastComponent } from './toast/toast.component';
+import { LoadersCssModule } from 'angular2-loaders-css';
 import { LoadingComponent } from './loading/loading.component';
 import { FlagModalComponent } from './flag-modal/flag-modal.component';
 import { UserAuthDirective } from './directives';
@@ -19,7 +20,8 @@ import { NotificationsSharedComponent } from './notifications';
     FormsModule,
     ReactiveFormsModule,
     RouterModule,
-    MomentModule
+    MomentModule,
+    LoadersCssModule
   ],
   exports: [
     // Shared Modules

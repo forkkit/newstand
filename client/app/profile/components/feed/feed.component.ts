@@ -1,4 +1,6 @@
 import { Component, OnInit  } from '@angular/core';
+import 'rxjs/add/operator/skipWhile';
+import 'rxjs/add/operator/switchMap';
 
 import { 
   StreamService
@@ -26,24 +28,13 @@ export class FeedComponent implements OnInit {
 
   ngOnInit() {
 
-    this.profileAuth.currentProfile
-      .subscribe(profile => this.loadFeed(profile));    
-
-  }
-
-  loadFeed(profile){ 
-
-    if(!profile._id){
-      return;
-    }
-
-    this.subscription = this.streamService.feed(profile._id)
+    this.subscription = this.profileAuth.currentProfile
+      .skipWhile(profile => { return !profile._id; })
+      .switchMap(profile => this.streamService.feed(profile._id))   
       .subscribe(
-        feed => { this.feed = feed;},
-        error => console.log(error),
-        () => this.isLoading = false 
+        feed => { this.feed = feed; this.isLoading = false;},
+        error => console.log(error)
       );
-
   }
 
   commentCount(activity){

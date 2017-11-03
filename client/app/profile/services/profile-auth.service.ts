@@ -47,7 +47,7 @@ export class ProfileAuthService {
     
     }
 
-    setProfile(profile: Profile) {
+    setProfile(profile: Profile) { 
         // Set current profile
         this.currentProfileSubject.next(profile);
 
