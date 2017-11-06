@@ -26,6 +26,8 @@ export class FlagModalComponent implements OnInit {
   section:string;
   labelOptions:string[] = ['source', 'details', 'correction', 'explaination', 'update'];
   activeLabel: string;
+  isLoading:boolean = false;
+  submitted: boolean;
 
 
   flagForm: FormGroup;
@@ -35,17 +37,17 @@ export class FlagModalComponent implements OnInit {
   constructor(
     public activeModal: NgbActiveModal,
     private flagService: FlagService,
-    private fb: FormBuilder
+    private _fb: FormBuilder
   ){ 
 
-    this.flagForm = fb.group({
-      url: [''],
-      section: [''],
-      label: [''],
+    this.flagForm = _fb.group({
+      url: ['', <any>Validators.required],
+      section: ['', <any>Validators.required],
+      label: ['', <any>Validators.required],
       description: [''],
       publisher: {
-        username: [''],
-        profile: ['']
+        username: ['', <any>Validators.required],
+        profile: ['', <any>Validators.required]
       }
     });
 
@@ -70,10 +72,14 @@ export class FlagModalComponent implements OnInit {
 
     this.error = false;
 
+    this.isLoading = true;
+
     this.baseUrl = Utils.extractHost(url);
 
     return this.flagService.searchByDomain({url: this.baseUrl}).subscribe(
       data => {
+
+        this.isLoading = false;
 
         if(data.error){
           this.error = true;
@@ -102,8 +108,12 @@ export class FlagModalComponent implements OnInit {
       return;
     }
 
+    this.isLoading = true;
+
     return this.flagService.verifySection({section: text, url: this.flagForm.value.url}).subscribe(
       result => {
+
+       this.isLoading = false;
 
        if(!result.valid){
         this.error = true;
@@ -125,15 +135,20 @@ export class FlagModalComponent implements OnInit {
     this.flagForm.patchValue({label: label});
   }
 
-  submit(form){
-    return this.flagService.create(form.value).subscribe(
-      data => { 
+  submit(model: Flag, isValid: boolean){ 
+    this.submitted = true;
 
-        console.log(data);
+    if(isValid){
+      return this.flagService.create(model).subscribe(
+        data => { 
 
-      },
-      err => console.log(err)
-    );
+          console.log(data);
+
+        },
+        err => console.log(err)
+      );
+    }
+
   }
 
 }

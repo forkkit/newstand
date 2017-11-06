@@ -4,7 +4,7 @@
     <div [ngSwitch]="item.verb">
       <ng-container *ngSwitchCase="'raise'">
         <div class="body">
-          <i class="icon fa fa-flag-o"></i> 
+          <i class="icon fa icon-flag"></i> 
           <small class="text-muted text-uppercase">{{item.time | amFromUtc | amLocal | amTimeAgo}}</small>
           <div class="title">
             <a [routerLink]="['/' + item.actor.username]">
@@ -37,7 +37,7 @@
       </ng-container>
       <ng-container *ngSwitchCase="'address'">
         <div class="body">
-          <i class="icon fa fa-flag"></i> 
+          <i class="icon fa icon-flag-addressed"></i> 
           <small class="text-muted text-uppercase">{{item.time | amFromUtc | amLocal | amTimeAgo}}</small>
           <div class="title">
             <a [routerLink]="['/' + item.actor.username]">

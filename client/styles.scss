@@ -27,15 +27,17 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-.icon-newstand_icon:before {
-  content: "\e902";
-}
-.icon-tag_close:before {
-  content: "\e901";
-}
-.icon-tag_accept:before {
+
+.icon-flag-addressed:before {
   content: "\e900";
 }
+.icon-flag-reraise:before {
+  content: "\e901";
+}
+.icon-flag:before {
+  content: "\e902";
+}
+
 
 body {
   background: #ffffff;

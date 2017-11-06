@@ -1,12 +1,12 @@
 <div class="modal-header">
-  <h4 class="modal-title">Create flag</h4>
+  <h4 class="modal-title">Raise new flag</h4>
   <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
     <span aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i></span>
   </button>
 </div>
 <div class="modal-body">
 
-  <form [formGroup]="flagForm" (ngSubmit)="submit(flagForm)">
+  <form [formGroup]="flagForm" (ngSubmit)="submit(flagForm.value, flagForm.valid)">
 
     <div [hidden]="validArticle">
       <input class="form-control form-control-lg" type="text" formControlName="url" placeholder="Start by entering article url..." (blur)="verifyDomain($event.target.value)" (keyup.enter)="verifyDomain($event.target.value)">
@@ -19,6 +19,8 @@
           {{errorMessage}}
       </div>
     </div>
+
+    <app-loading [condition]="isLoading"></app-loading>
 
     <div [hidden]="!validArticle" class="valid-article">
 
@@ -38,17 +40,20 @@
         <ul>
           <li>Apply label:</li>
           <li *ngFor="let labels of labelOptions">
-            <button type="button" class="btn btn-outline-dark btn-sm rounded-0" (click)="selectLabel(labels)" [class.active]="labels == activeLabel">
-              {{labels}}
-            </button>
+            <input type="button" name="label" class="btn btn-outline-dark btn-sm rounded-0" [class.active]="labels == activeLabel" [value]="labels" (click)="selectLabel(labels)">
           </li>
         </ul>
 
-        <textarea name="" id="bio" name="bio" rows="2" class="form-control form-control-lg" formControlName="description" placeholder="Add clarity to your flag (optional)"></textarea>
-        <small class="text-muted">Not publicly visible</small>
+        <textarea name="" id="bio" name="bio" rows="2" class="form-control form-control-lg" formControlName="description" placeholder="Add clarity to your flag (optional)" [maxLength]="140"></textarea>
+          
+        <small [class.text-danger]="(140 - flagForm.controls.description.value.length) < 20">{{140 - flagForm.controls.description.value.length}} {{(140 - flagForm.controls.description.value.length) === 1 ? 'character' : 'characters'}} remaining</small>
+
+        <div class="alert alert-danger mt-4" role="alert" [hidden]="flagForm.controls.label.valid || (flagForm.controls.label.pristine && !submitted)">
+          You must select an applicable label!
+        </div>
 
         <div class="text-right mt-3">
-            <button type="submit" class="btn btn-dark btn-lg rounded-0">Submit flag</button>        
+            <button type="submit" class="btn btn-dark btn-lg rounded-0" [disabled]="flagForm.invalid">Submit flag</button>        
         </div>
 
       </div>
