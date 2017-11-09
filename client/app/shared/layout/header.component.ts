@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewContainerRef, Inject, ViewChild, ComponentRef, ComponentFactoryResolver } from '@angular/core';
 import { Router } from '@angular/router';
 
-import {NgbModal, ModalDismissReasons, NgbDropdownConfig} from '@ng-bootstrap/ng-bootstrap';
+import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 
 import { Profile } from '../models';
 import { AuthService } from '../services';
@@ -25,11 +25,8 @@ export class HeaderComponent implements OnInit {
         public auth: AuthService,
         private router: Router,
         private modalService: NgbModal,
-        private dropdown: NgbDropdownConfig,
         private componentFactoryResolver: ComponentFactoryResolver
     ) {
-        dropdown.placement = 'bottom-right';
-
     }
 
     ngOnInit() {

@@ -73,12 +73,72 @@ export class FlagRouter extends BaseCtrl{
         });
 
         return activity.save()
+          .then(()=>{
+
+            return flag;
+
+          })
           .catch((err) => { throw err; });
 
       })
       .then(this.respondWithResult(res))
       .catch(this.validationError(res));
     
+  }
+
+  private extendQuery(obj, src) {
+    Object.keys(src).forEach(function(key) { obj[key] = src[key]; });
+    return obj;
+  }
+
+  private buildQuery(params) { 
+
+    if(!params){ return {}; }
+
+    const acceptableParams = [
+      'status',
+      'url',
+      'user',
+      'label'
+    ];
+
+    //Check for non sactioned params
+    for (let key in params) {
+      if(acceptableParams.indexOf(key) === -1){
+        return null;
+      }
+    }
+
+    //Map variables that req more complex query
+    if(params['user']){
+      params['user.username'] = params['user'];
+      delete params['user'];
+    }
+
+    return params;
+  }
+
+  private list = (req: Request, res: Response) =>  {
+
+    const build = this.buildQuery(req.query);
+
+    if(!build){
+      return res.status(202).send({'error': 'Invalid search parameter used'});
+    }
+
+    const query = this.extendQuery({'publisher.profile': req.params.id}, build);
+
+    return this.flag.paginate(query, { page: req.params.page, limit: 10 })
+      .then((paginate)=>{
+
+        paginate.query = req.query;
+
+        return paginate;
+
+      })
+      .then(this.respondWithResult(res))
+      .catch(this.validationError(res));
+
   }
 
   private detail = (req: Request, res: Response) =>  {
@@ -133,6 +193,7 @@ export class FlagRouter extends BaseCtrl{
     this.router.post('/domain', auth.isAuthenticated(), this.searchByDomain);
     this.router.post('/section', auth.isAuthenticated(), this.verifySection);
     this.router.post('/create', auth.isAuthenticated(), this.create);
+    this.router.get('/list/:id/:page', this.list);
     this.router.get('/detail/:id', this.detail);
 
     this.router.post('/activity', auth.isAuthenticated(), this.createActivity);

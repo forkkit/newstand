@@ -1,62 +1,65 @@
-<div class="status {{flag.status}}">{{flag.status === 'address' ? 'Addressed' : 'Raised'}}</div>
+<div class="tab-container">
 
-<div class="discussion" *ngIf="flag.user">
+    <div class="status {{flag.status}}">{{flag.status === 'address' ? 'Addressed' : 'Raised'}}</div>
 
-    <div class="item">
-        <div class="header row">
-            <div class="col-md-6">
-                <div class="user">
-                    <img src="{{flag.user.profile.image}}" alt="">
-                    <h6>{{flag.user.profile.username}}</h6>
-                    <small class="text-muted">{{flag.date | amFromUtc | amLocal | amTimeAgo}}</small>
+    <div class="discussion" *ngIf="flag.user">
+
+        <div class="item">
+            <div class="header row">
+                <div class="col-md-6">
+                    <div class="user">
+                        <img src="{{flag.user.profile.image}}" alt="">
+                        <h6>{{flag.user.profile.username}}</h6>
+                        <small class="text-muted">{{flag.date | amFromUtc | amLocal | amTimeAgo}}</small>
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-6 flag">
-                <span>{{flag.label}}</span>
-            </div>
-        </div>
-        <div class="body">
-            <h3 class="section">{{flag.section}}</h3>
-            <div class="source text-muted">
-                &ndash; <a href="{{flag.url}}">{{flag.url}}</a>
-            </div>
-        </div>
-    </div>
-
-    <div *ngFor="let item of flag.activity">
-        <div class="item" *ngIf="item.object.comment" id="item.object._id">
-            <div class="header">
-                <div class="user">
-                    <img src="{{item.object.user.object.image}}" alt="">
-                    <h6>{{item.object.user.object.username}} <small class="text-muted" *ngIf="item.object.user.role">({{item.object.user.role}})</small></h6>
-                    <small class="text-muted">{{item.object.date | amFromUtc | amLocal | amTimeAgo}}</small>
+                <div class="col-md-6 flag">
+                    <span>{{flag.label}}</span>
                 </div>
             </div>
             <div class="body">
-                <div [innerHTML]="item.object.comment"></div>
+                <h3 class="section">{{flag.section}}</h3>
+                <div class="source text-muted">
+                    &ndash; <a href="{{flag.url}}">{{flag.url}}</a>
+                </div>
             </div>
         </div>
 
-        <div class="close-flag" *ngIf="item.type === 'address'">
-            <b>{{item.object.user.object.username}}</b> marked this flag as addressed {{item.object.date | amFromUtc | amLocal | amTimeAgo}}
+        <div *ngFor="let item of flag.activity">
+            <div class="item" *ngIf="item.object.comment" id="item.object._id">
+                <div class="header">
+                    <div class="user">
+                        <img src="{{item.object.user.object.image}}" alt="">
+                        <h6>{{item.object.user.object.username}} <small class="text-muted" *ngIf="item.object.user.role">({{item.object.user.role}})</small></h6>
+                        <small class="text-muted">{{item.object.date | amFromUtc | amLocal | amTimeAgo}}</small>
+                    </div>
+                </div>
+                <div class="body">
+                    <div [innerHTML]="item.object.comment"></div>
+                </div>
+            </div>
+
+            <div class="close-flag" *ngIf="item.type === 'address'">
+                <b>{{item.object.user.object.username}}</b> marked this flag as addressed {{item.object.date | amFromUtc | amLocal | amTimeAgo}}
+            </div>
+
+
+            <div class="reopen-flag" *ngIf="item.type === 'reraise'">
+                <b>{{item.object.user.object.username}}</b> reraised this flag {{item.object.date | amFromUtc | amLocal | amTimeAgo}}
+            </div>
+
         </div>
 
-
-        <div class="reopen-flag" *ngIf="item.type === 'reraise'">
-            <b>{{item.object.user.object.username}}</b> reraised this flag {{item.object.date | amFromUtc | amLocal | amTimeAgo}}
+        <div class="item">
+            <div class="respond-start" *ngIf="!respond">
+                <a href="javascript:;" class="text-muted" (click)="respond = true">
+                    <i class="fa fa-comment-o fa-lg" aria-hidden="true"></i> 
+                    &nbsp;Enter a response
+                </a>
+            </div>
+            
+            <app-flag-comment *ngIf="respond" [flag]="flag" [role]="userRole" (saved)='saved($event)'></app-flag-comment>
         </div>
 
     </div>
-
-    <div class="item">
-        <div class="respond-start" *ngIf="!respond">
-            <a href="javascript:;" class="text-muted" (click)="respond = true">
-                <i class="fa fa-comment-o fa-lg" aria-hidden="true"></i> 
-                &nbsp;Enter a response
-            </a>
-        </div>
-        
-        <app-flag-comment *ngIf="respond" [flag]="flag" [role]="userRole" (saved)='saved($event)'></app-flag-comment>
-    </div>
-
 </div>

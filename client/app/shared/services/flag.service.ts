@@ -23,6 +23,10 @@ export class FlagService {
     return this.http.post('/api/flags/create', data)
   }
 
+  get(id, page, params ): Observable<any> {
+    return this.http.get(`/api/flags/list/${id}/${page}?${params}`)
+  }
+
   getDetail(id): Observable<any> {
     return this.http.get(`/api/flags/detail/${id}`)
   }

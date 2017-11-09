@@ -11,7 +11,7 @@
         <li class="nav-item create-tag">
           <a href="javascript:;" class="nav-link" (click)="open()"><i class="fa fa-flag-o fa-lg"></i></a>
         </li>
-        <li class="nav-item" ngbDropdown (openChange)="openNotifications($event)">
+        <li class="nav-item" ngbDropdown (openChange)="openNotifications($event)" placement="bottom-right">
           <a class="nav-link" href="javascript:;" ngbDropdownToggle>
               <span class="count" *ngIf="currentUser.unseen">{{currentUser.unseen}}</span>
               <i class="fa fa-bell fa-lg"></i>
@@ -47,7 +47,7 @@
             <span class="d-md-none"><i class="fa fa-sign-in fa-lg"></i></span>
           </a>
         </li>
-        <li class="nav-item dropdown d-lg-inline d-none" *userAuth="true" ngbDropdown>
+        <li class="nav-item dropdown d-lg-inline d-none" *userAuth="true" ngbDropdown placement="bottom-right">
           <a class="nav-link dropdown-toggle dropdown-username" href="javascript:;" id="navbarDropdownMenuLink" ngbDropdownToggle>
             <img src="{{currentUser.image}}" width="30" height="30" class="d-inline-block align-top mr-1 border" alt="" alt="">
             {{currentUser.username}}

@@ -1,92 +1,99 @@
-.status{
-    text-transform: uppercase;
-    font-size: .8rem;
-    font-weight: bold;
-    letter-spacing: .05em;
-    margin: 0 20px 20px 20px;
-    padding-top: 20px;
-    &.raise{
-        color: #28a745;
-    }
-    &.address{
-        color:#dc3545
-    }
-}
+.tab-container{
+    border-right:1px solid #eff3f6;
+    border-left:1px solid #eff3f6;
+    border-bottom:1px solid #eff3f6;
+    padding: 0;
 
-.discussion{
-    padding: 20px;
-    background-color: #fafafa;
-    
-    .item{
-        margin-bottom: 30px;
-        background-color: #ffffff;
-        border: 1px solid #eff3f6;
-        padding: 15px;
-        -webkit-box-shadow: 0px 0px 1px 0px rgba(0,0,0,0.1);
-        -moz-box-shadow: 0px 0px 1px 0px rgba(0,0,0,0.1);
-        box-shadow: 0px 0px 1px 0px rgba(0,0,0,0.1);
-        >.header{
-            margin-bottom: 15px;
-            .user{
-                position: relative;
-                padding-left: 50px;
-                >img{
-                    height: 40px;
-                    position: absolute;
-                    left: 0;
-                    border: 1px solid #eff3f6;
-                }
-                >h6{
-                    margin-bottom: 5px;
-                }
-
-                >small{
-                    display: block;
-                    font-size: .8rem;
-                }
-            }
-
-            >.flag{
-                text-align: right;
-                >span{
-                    background-color: #69F0AE;
-                    padding: 5px;
-                    font-weight: bold;
-                    text-transform: uppercase;
-                    letter-spacing: .05em;
-                }
-            }
+    .status{
+        text-transform: uppercase;
+        font-size: .8rem;
+        font-weight: bold;
+        letter-spacing: .05em;
+        margin: 0 20px 20px 20px;
+        padding-top: 20px;
+        &.raise{
+            color: #dc3545;
         }
-        >.body{
-            >h3.section{
-                border-left: 5px solid #eaf5ff;
-                padding-left: 15px;
+        &.address{
+            color:#28a745
+        }
+    }
+
+    .discussion{
+        padding: 20px;
+        background-color: #fafafa;
+        
+        .item{
+            margin-bottom: 30px;
+            background-color: #ffffff;
+            border: 1px solid #eff3f6;
+            padding: 15px;
+            -webkit-box-shadow: 0px 0px 1px 0px rgba(0,0,0,0.1);
+            -moz-box-shadow: 0px 0px 1px 0px rgba(0,0,0,0.1);
+            box-shadow: 0px 0px 1px 0px rgba(0,0,0,0.1);
+            >.header{
+                margin-bottom: 15px;
+                .user{
+                    position: relative;
+                    padding-left: 50px;
+                    >img{
+                        height: 40px;
+                        position: absolute;
+                        left: 0;
+                        border: 1px solid #eff3f6;
+                    }
+                    >h6{
+                        margin-bottom: 5px;
+                    }
+
+                    >small{
+                        display: block;
+                        font-size: .8rem;
+                    }
+                }
+
+                >.flag{
+                    text-align: right;
+                    >span{
+                        background-color: #69F0AE;
+                        padding: 5px;
+                        font-weight: bold;
+                        text-transform: uppercase;
+                        letter-spacing: .05em;
+                    }
+                }
             }
-            >.source{
+            >.body{
+                >h3.section{
+                    border-left: 5px solid #eaf5ff;
+                    padding-left: 15px;
+                }
+                >.source{
+                    font-size: .9rem;
+                    padding-left: 20px;
+                }
+
+                blockquote{
+                    border-left: 4px solid #eaf5ff;
+                    padding-left: 12px;
+                }
+            }
+            >.respond-start{
+                padding: 25px 0;
                 font-size: .9rem;
-                padding-left: 20px;
-            }
-
-            blockquote{
-                border-left: 4px solid #eaf5ff;
-                padding-left: 12px;
             }
         }
-        >.respond-start{
-            padding: 25px 0;
-            font-size: .9rem;
+
+        .close-flag{
+            margin: 0 -21px 30px -21px;
+            padding: 0 0 20px 41px;
+            border-bottom: 10px solid #eff3f6;
         }
-    }
 
-    .close-flag{
-        margin: 0 -21px 30px -21px;
-        padding: 0 0 20px 41px;
-        border-bottom: 10px solid #eff3f6;
-    }
+        .reopen-flag{
+            padding-left: 20px;
+            margin-bottom: 30px;
+        }
 
-    .reopen-flag{
-        padding-left: 20px;
-        margin-bottom: 30px;
     }
-
 }

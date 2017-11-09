@@ -1,4 +1,5 @@
 import * as mongoose from 'mongoose';
+import * as mongoosePaginate from 'mongoose-paginate';
 
 let ObjectId = mongoose.Schema.Types.ObjectId;
 
@@ -39,6 +40,8 @@ const flagSchema = new mongoose.Schema({
       default: Date.now
     }
 });
+
+flagSchema.plugin(mongoosePaginate);
 
 const Flag = mongoose.model('Flag', flagSchema);
 

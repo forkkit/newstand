@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { Router } from '@angular/router';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 
 import {NgbModal, NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
@@ -35,6 +36,7 @@ export class FlagModalComponent implements OnInit {
   
 
   constructor(
+    private router: Router,
     public activeModal: NgbActiveModal,
     private flagService: FlagService,
     private _fb: FormBuilder
@@ -142,7 +144,9 @@ export class FlagModalComponent implements OnInit {
       return this.flagService.create(model).subscribe(
         data => { 
 
-          console.log(data);
+          this.activeModal.close();
+
+          this.router.navigate(['/', data.publisher.username]);
 
         },
         err => console.log(err)

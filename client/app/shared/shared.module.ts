@@ -12,7 +12,6 @@ import { FlagModalComponent } from './flag-modal/flag-modal.component';
 import { UserAuthDirective } from './directives';
 import { FlagService } from './services/flag.service';
 import { NotificationsSharedComponent } from './notifications';
-
  
 @NgModule({
   imports: [

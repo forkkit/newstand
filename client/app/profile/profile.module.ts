@@ -3,10 +3,11 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
 import { QuillModule } from 'ngx-quill';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { ProfileComponent } from './profile.component';
 import { ProfileAuthService } from './services';
-import { AuthGuardLogin, SharedModule } from '../shared';
+import { AuthGuardLogin, SharedModule, EllipsisPipe } from '../shared';
 
 import {
   FeedComponent,
@@ -33,14 +34,16 @@ const profileRouting: ModuleWithProviders = RouterModule.forChild([
     SharedModule,
     profileRouting,
     CommonModule,
-    QuillModule
+    QuillModule,
+    NgbModule,
   ],
   declarations: [
     ProfileComponent,
     ProfileFlagsComponent,
     ProfileFlagsDetailComponent,
     FeedComponent,
-    FlagCommentComponent
+    FlagCommentComponent,
+    EllipsisPipe
   ],
   providers: [
     ProfileAuthService

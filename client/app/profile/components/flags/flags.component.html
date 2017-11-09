@@ -1,1 +1,79 @@
-<h1>FLAG LIST</h1>
+<div class="tab-container">
+    <div class="flags-container">
+        <div class="header">
+            <div class="row">
+                <div class="col-md-5">
+                    <ul class="options" *ngIf="flags">
+                        <li>
+                            <a [routerLink]="['/' + profile.username + '/flags']" [queryParams]="{ q: 'status: raise', p: 1 }" [class.active]="flags.query && flags.query.status === 'raise'">
+                                <i class="fa fa-exclamation" aria-hidden="true"></i>
+                                Raised
+                            </a>
+                        </li>
+                        <li>
+                            <a [routerLink]="['/' + profile.username + '/flags']" [queryParams]="{ q: 'status: address', p: 1 }" [class.active]="flags.query && flags.query.status === 'address'">
+                                <i class="fa fa-check" aria-hidden="true"></i>
+                                Addressed
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-7">
+                    <div class="input-group">
+                            <div class="input-group-btn" ngbDropdown placement="bottom-left">
+                                    <button type="button" class="btn btn-light dropdown-toggle" ngbDropdownToggle>
+                                        <i class="fa fa-filter" aria-hidden="true"></i>
+                                    </button>
+                                    <div ngbDropdownMenu class="dropdown-menu-right">
+                                        <a class="dropdown-item" href="javascript:;" *ngFor="let item of filter" (click)="changeFilter(item, toFocus)">{{item}}</a>
+                                    </div>
+                                </div>
+                        <div class="input-group-addon"><i class="fa fa-search" aria-hidden="true"></i></div>
+                        
+                        <input class="form-control" type="text" [(ngModel)]='search' (keyup.enter)="searchFlag($event)" #toFocus>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="body">
+
+            <div class="list-group" *ngIf="flags">
+
+                <div class="text-center mt-4 mb-4" *ngIf="flags.docs && flags.docs.length === 0">
+                    <p class="lead">No results found.</p>
+                </div>
+
+                <div class="text-center mt-4 mb-4" *ngIf="flags.error">
+                    <p class="lead">{{flags.error}}</p>
+                </div>
+
+                <a [routerLink]="['/' + flag.publisher.username + '/flags/' + flag._id]" class="list-group-item list-group-item-action flex-column align-items-start" *ngFor="let flag of flags.docs">
+                    <div class="row">
+                        <div class="col-md-1">
+                            <i class="fa" [ngClass]="flag.status === 'raise' ? 'icon-flag' : 'icon-flag-addressed'" aria-hidden="true"></i>
+                        </div>
+                        <div class="col-md-10 content">
+                            <div class="details">
+                                <span>{{flag.label}}</span> flag raised {{flag.date | amFromUtc | amLocal | amTimeAgo}} by {{flag.user.username}}
+                            </div>
+                            <div class="section">
+                                {{flag.section | ellipsis:150}}
+                            </div>
+                            <div class="source text-muted">
+                                {{flag.url}}
+                            </div>
+                        </div>
+                        <div class="col-md-1"></div>
+                    </div>
+                </a>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<div class="mt-3" *ngIf="flags && flags.pages > 1">
+    <ngb-pagination [collectionSize]="flags.pages * 10" [(page)]="page" (pageChange)="pageChange($event)"></ngb-pagination>
+</div>

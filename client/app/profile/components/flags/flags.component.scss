@@ -1,0 +1,122 @@
+.tab-container{
+    border-right:1px solid #eff3f6;
+    border-left:1px solid #eff3f6;
+    border-bottom:1px solid #eff3f6;
+    padding: 0;
+
+    .header{
+        text-transform: uppercase;
+        font-size: .8rem;
+        font-weight: bold;
+        letter-spacing: .05em;
+        margin: 0 20px 20px 20px;
+        padding-top: 20px;
+        ul.options{
+            padding: 0;
+            margin: 0;
+            >li{
+                margin-right: 10px;
+                display: inline-block;
+                >a{
+                    color: #868e96;
+                    &.active{
+                        color: #000000;
+                    }
+                }
+            }
+        }
+
+        .input-group{
+            margin: -10px 0;
+            >.input-group-addon{
+                border-radius: 0;
+                background-color: #ffffff;
+                color: #bbbbbb;
+                padding: 0.5rem 0.5rem;
+            }
+            >.form-control{
+                border-radius: 0;
+                border-left: 0; 
+                padding-left: 0;
+                &:focus{
+                    border: 1px solid rgba(0, 0, 0, 0.15);
+                    border-left: 0;
+                }  
+            }
+        }
+    }
+
+    .body{
+        >.list-group{
+
+            >.list-group-item{
+                border-left: 0;
+                border-right: 0;
+
+                &:first-child{
+                    border-radius: 0;
+                }
+                &:last-child{
+                    border-radius: 0;
+                }
+
+                i.fa{
+                    &.icon-flag{
+                        color: #dc3545;
+                    }
+                    &.icon-flag-addressed{
+                        color: #28a745;
+                    }
+                }
+
+                .content{   
+                    font-size: .8rem;
+
+                    .details{
+                        >span{
+                            background-color: #69F0AE;
+                            padding: 3px;
+                            font-weight: bold;
+                        }
+                    }
+
+                    .section{
+                        margin: 7px 0;
+                        padding-left: 7px;
+                        border-left: 5px solid #eaf5ff;
+                        font-style: italic;
+                    }
+
+                    .source{
+                        padding-left: 12px;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                    }
+                }
+            }
+        }
+    }
+
+}
+
+ngb-pagination{
+    li.page-item{
+        &:first-child{
+            >.page-link{
+                border-radius: 0;
+            }
+        }
+        &:last-child{
+            >.page-link{
+                border-radius: 0;
+            }
+        }
+        &.active{
+            >.page-link{
+                background-color: #000000;
+                border-color: #000000;
+            }
+        }
+    }
+}
