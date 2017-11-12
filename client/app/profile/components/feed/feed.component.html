@@ -44,12 +44,10 @@
             <div class="title">
               <a [routerLink]="['/' + item.actor.username]">
                 {{item.actor.username}}
-              </a> 
-              marked 
-              <a [routerLink]="['/' + item.object.target.username + '/flags/' + item.object.activity.flag]">
-              flag 
-              </a>
-              as addressed on
+              </a> addressed flag with 
+              <a class="address" [routerLink]="['/' + item.object.target.username + '/flags/' + item.object.activity.flag]">
+              {{item.object.activity.address.label}}
+              </a> on
               <a [routerLink]="['/' + item.object.target.username]">
                 {{item.object.target.username}}
               </a>

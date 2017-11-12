@@ -7,6 +7,11 @@ export class Activity{
         object?: Profile;
     };
     flag?: string;
+    address?: {
+        label?: string;
+        data?: string;
+        meta?: any;
+    };
     comment?: string;
     type?:string;
     badge?:string;

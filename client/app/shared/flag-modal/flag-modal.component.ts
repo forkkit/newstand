@@ -25,7 +25,7 @@ export class FlagModalComponent implements OnInit {
   url:string;
   validArticle:boolean = false;
   section:string;
-  labelOptions:string[] = ['source', 'details', 'correction', 'explaination', 'update'];
+  labelOptions:string[] = ['source', 'explanation', 'correction', 'update', 'subjective'];
   activeLabel: string;
   isLoading:boolean = false;
   submitted: boolean;

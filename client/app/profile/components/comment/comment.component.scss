@@ -1,21 +1,45 @@
 .comment-container{
     quill-editor{
-        [quill-editor-toolbar], [quill-editor-element] {
-            border: none;
-            font-family: "Roboto";
-            font-size: .9rem;
+        font-family: "Roboto";
+        font-size: .9rem;
+        [quill-editor-toolbar] {
+            border-width: 0 0 1px 0;
+            border-color: #e9ecef;
+            border-style: solid;
         }
         [quill-editor-element] {
+            min-height: 80px;
+            border: none;
             .ql-editor.ql-blank::before{
                 font-style: normal;
-                color: #868e96;
+                color: #999999;
                 
             }
         }
         
     }
 
-    .respond-action{
-        border-top: 1px solid #eff3f6
+    .source_form{
+        border-top: 1px solid #e9ecef;
+        padding: 10px;
+    }
+
+    .comment-footer{
+        border-top: 1px solid #e9ecef;
+
+        .admin-zone{
+            .btn{
+                background-color: transparent;
+                &:focus{
+                    box-shadow: none;
+                }
+            }
+            .dropdown-item{
+                &:focus{
+                    background-color: #000000;
+                    color: #ffffff;
+                }
+            }
+        }
     }
 }

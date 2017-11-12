@@ -17,7 +17,7 @@
         <button class="btn btn-dark btn-block rounded-0 mb-3" *ngIf="!userAuth && !profile.follow" (click)="follow(profile._id)">Follow {{profile.type}}</button>
             
     </div>
-    <div class="col-md-9">
+    <div class="col-md-9 mb-5">
         <ul class="nav nav-tabs tabs" *ngIf="profile.username">
             <li class="nav-item">
                 <a class="nav-link" [routerLink]="['/', profile.username]" [class.active]="currentTab === 'feed'">

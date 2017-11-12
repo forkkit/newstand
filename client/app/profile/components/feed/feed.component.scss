@@ -30,6 +30,15 @@
                             background-color: #69F0AE;
                             padding: 3px;
                         }
+
+                        &.address{
+                            font-weight: normal;
+                            background-color: #eaf5ff;
+                            color: #0366d6;
+                            padding: 3px;
+                            font-size: .8rem;
+                            display: inline-block;
+                        }
                     }
                 }
                 >.icon{

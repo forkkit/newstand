@@ -18,6 +18,11 @@ const activitySchema = new mongoose.Schema({
         type: ObjectId, 
         ref: 'Flag' 
     },
+    address: {
+        label: String,
+        date: Date,
+        meta: []
+    },
     comment: String,
     type: {
         type: String,

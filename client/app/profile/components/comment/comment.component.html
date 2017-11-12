@@ -1,43 +1,64 @@
 <div class="comment-container">
-    <quill-editor [(ngModel)]="activity.comment" placeholder="Leave a comment">
-        <div quill-editor-toolbar>
-            <span class="ql-formats">
-                <button class="ql-bold" [title]="'Bold'"></button>
-                <button class="ql-italic" [title]="'Italic'"></button>
-            </span>
-            <span class="ql-formats">
-                <button class="ql-list" value="ordered" [title]="'Ordered List'"></button>
-                <button class="ql-list" value="bullet"  [title]="'Bulleted List'"></button>
-            </span>
-            <span class="ql-formats">
-                <select class="ql-size" [title]="'Size'">
-                    <option value="small"></option>
-                    <option value="normal" selected></option>
-                    <option value="large"></option>
-                    <option value="huge"></option>
-                </select>
-            </span>
-            <span class="ql-formats">
-                <button class="ql-link" [title]="'Link'"></button>
-                <button class="ql-blockquote" [title]="'Blockquote'"></button>
-            </span>
+    <form [formGroup]="activityForm" (ngSubmit)="submit(activityForm.value, activityForm.valid)">
+        <quill-editor placeholder="Leave a comment" formControlName="comment">
+            <div quill-editor-toolbar>
+                <span class="ql-formats">
+                    <button class="ql-bold" [title]="'Bold'"></button>
+                    <button class="ql-italic" [title]="'Italic'"></button>
+                </span>
+                <span class="ql-formats">
+                    <button class="ql-list" value="ordered" [title]="'Ordered List'"></button>
+                    <button class="ql-list" value="bullet"  [title]="'Bulleted List'"></button>
+                </span>
+                <span class="ql-formats">
+                    <select class="ql-size" [title]="'Size'">
+                        <option value="small"></option>
+                        <option value="normal" selected></option>
+                        <option value="large"></option>
+                        <option value="huge"></option>
+                    </select>
+                </span>
+                <span class="ql-formats">
+                    <button class="ql-link" [title]="'Link'"></button>
+                    <button class="ql-blockquote" [title]="'Blockquote'"></button>
+                </span>
+            </div>
+        </quill-editor>
+        
+        <div formGroupName="address">
+            <div class="source_form" *ngIf="activityForm.value.address.label === 'add_source'" formArrayName="meta">
+                <div class="row" [formGroupName]="0">
+                    <div class="col-md-3">
+                        <select class="form-control" name="source_type" formControlName="type" (change)="source($event)">
+                            <option value="">Source type</option>
+                            <option value="digital">Digital</option>
+                            <option value="print">Print</option>
+                            <option value="person">Person</option>
+                        </select>                  
+                    </div>
+                    <div class="col-md-9">
+                        <input class="form-control rounded-0" type="text" formControlName="detail" placeholder="{{sourcePlaceholder || 'Enter source details'}}">
+                    </div>
+                </div>
+            </div>
             
-        </div>
-    </quill-editor>
-    <div class="row mt-2 pt-2 respond-action">
-        <div class="col-md-4">
-            <div class="form-check form-check-inline">
-                <label class="form-check-label">
-                    <input class="form-check-input" type="checkbox" (change)="checkbox($event, this.flag.status)"> 
-                    {{this.flag.status === 'raise' ? 'Mark as addressed' : 'Reraise flag'}}
-                </label>
+            <div class="comment-footer pt-2">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="admin-zone"> 
+                            <select class="form-control" name="label" (change)="address($event)">
+                                <option value="">{{addressPlaceholder || 'Address flag'}}</option>
+                                <option *ngFor="let options of addressOptions[flag.label]" value="{{options.value}}">{{options.title}}</option>
+                                <option value="comment">Comment</option>
+                                <option value="duplicate">Duplicate</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <button class="btn btn-dark btn-block rounded-0" type="submit" [disabled]="activityForm.invalid">Respond</button>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="col-md-8 text-right">
-            <button class="btn btn-dark rounded-0" (click)="submit()">
-                {{ !this.activity.type ? 'Comment' : (this.activity.type === 'address' ? 'Mark as addressed' : 'Reraise flag')}}
-            </button>
-        </div>
-    </div>
-    <small class="text-muted">Hint: use '@' to link to user or publication and '#' to reference another flag</small>
+    </form>
 </div>
