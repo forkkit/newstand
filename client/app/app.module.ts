@@ -25,8 +25,6 @@ import {
   AuthGuardHome,
   AuthGuardSetup,
   TokenInterceptor,
-  PublisherAuthService,
-  PublishersService,
   StreamService,
   SharedModule
 } from './shared';
@@ -59,8 +57,6 @@ const rootRouting: ModuleWithProviders = RouterModule.forRoot([]);
     AuthGuardHome,
     AuthGuardSetup,
     UserService,
-    PublisherAuthService,
-    PublishersService,
     StreamService,
     CookieService,
     {

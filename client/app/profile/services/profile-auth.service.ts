@@ -32,12 +32,15 @@ export class ProfileAuthService {
         private userAuth: AuthService
     ) {}
 
-    populate(username) {
+    populate(username) { 
 
         //Avoid making dup request
         if(username === this.currentProfileSubject.value.username){
             return;
         }
+
+        //Reset profile
+        this.currentProfileSubject.next(new Profile());
     
         this.profilesService.getByUsername(username)
             .subscribe(
@@ -47,7 +50,7 @@ export class ProfileAuthService {
     
     }
 
-    setProfile(profile: Profile) { 
+    setProfile(profile: Profile) {
         // Set current profile
         this.currentProfileSubject.next(profile);
 

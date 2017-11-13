@@ -1,0 +1,12 @@
+.card-body.brand{
+    >p{
+        >a{
+            text-decoration: underline;
+        }
+    }
+    button{
+        span{
+            font-size: .9rem;
+        }
+    }
+}

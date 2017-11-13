@@ -36,8 +36,8 @@ export class ProfileFeedComponent implements OnInit {
 
   ngOnInit() {
 
-    this.profileAuth.currentProfile
-      .skipWhile(profile => { return !profile._id; }) 
+    this.subscription = this.profileAuth.currentProfile
+      .skipWhile(profile => { return !profile._id;  }) 
       .subscribe(
         profile => { this.profile = profile;},
         error => console.log(error)
@@ -68,6 +68,11 @@ export class ProfileFeedComponent implements OnInit {
   loadMore(){
     this.viewMoreLoad = true;
     this.FeedComponent.loadMore();
+  }
+
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 
 }

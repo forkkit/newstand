@@ -1,17 +1,17 @@
 <div class="row flex-row-reverse">
-  <div class="col-md-5 mt-4">
-    <div class="card card-body rounded-0">
-        <h2 class="card-title font-weight-bold">Increasing digital content quality through thoughtful reader engagement</h2>
-        
+  <div class="col-md-4 mt-4">
+    <div class="card card-body brand rounded-0">
+        <h3 class="card-title font-weight-bold">Open Source News</h3>
+        <p class="text-muted">Increasing digital content quality through thoughtful reader engagement. <a href="" class="text-muted">Learn more</a></p>
         <div class="mt-2">
             <button type="button" class="btn btn-light rounded-0 btn-block btn-social fb" (click)="loginOauth('facebook')">
               <i class="fa fa-facebook fa-fw"></i>  
-              Connect with Facebook
+              <span>Connect with Facebook</span> 
             </button>
 
             <button type="button" class="btn btn-light rounded-0 btn-block btn-social g" (click)="loginOauth('google')">
                 <i class="fa fa-google fa-fw"></i>  
-                Connect with Google
+                <span>Connect with Google</span>
             </button>
             
             <a routerLink="/signup" class="mt-2 d-block text-muted">
@@ -20,7 +20,7 @@
         </div>
     </div>
   </div>
-  <div class="col-md-7 mt-4">
+  <div class="col-md-8 mt-4">
     <div class="card card-body rounded-0">
       <app-feed [profile]="{_id: 'global'}" (viewMore)="viewMore($event)" #FeedComponent></app-feed>
     </div>

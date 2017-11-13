@@ -74,7 +74,7 @@ export function checkAuth() {
 
       let token  = req.headers.authorization;
       token = token.replace(new RegExp('Bearer ', 'g'), '');
-
+      
       if(token === 'undefined'){
         return next();
       }
@@ -83,7 +83,7 @@ export function checkAuth() {
     })
     // Attach user to request
     .use(function(req, res, next) {
-
+      
       if(!req.user){
         return next();
       }

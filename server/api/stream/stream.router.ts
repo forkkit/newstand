@@ -65,8 +65,8 @@ export class StreamRouter extends BaseCtrl{
   public feedMore = (req: userRequest, res: Response) =>  {
     
     let feed; 
-    const profileId = req.params.id;
-    const nextId = req.params.next;
+    const profileId = req.params.id; 
+    const nextId = req.params.next; 
 
     if(req.profile && req.profile._id.equals(profileId)){
       feed = this.FeedManager.getUserFeed(profileId)
