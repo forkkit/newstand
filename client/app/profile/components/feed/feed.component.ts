@@ -1,8 +1,11 @@
-import { Component, OnInit  } from '@angular/core';
+import { Component, OnInit, ViewChild  } from '@angular/core';
 import 'rxjs/add/operator/skipWhile';
 import 'rxjs/add/operator/switchMap';
 
+import { FeedComponent } from '../../../shared/feed/feed.component';
+
 import { 
+  Profile,
   StreamService
 } from '../../../shared';
 
@@ -11,15 +14,20 @@ import {
 } from '../../services';
 
 @Component({
-  selector: 'app-feed',
+  selector: 'app-profile-feed',
   templateUrl: './feed.component.html',
   styleUrls: ['./feed.component.scss'],
 })
-export class FeedComponent implements OnInit {
+export class ProfileFeedComponent implements OnInit {
+
+  @ViewChild('FeedComponent') FeedComponent;
+
+  public profile: Profile = new Profile(); 
 
   private subscription;
-  public feed: any = [];
-  isLoading:boolean = true;
+  public hasMore:boolean = false;
+  public viewMoreLoad:boolean = false;
+
   
   constructor(
     private streamService: StreamService,
@@ -28,11 +36,10 @@ export class FeedComponent implements OnInit {
 
   ngOnInit() {
 
-    this.subscription = this.profileAuth.currentProfile
-      .skipWhile(profile => { return !profile._id; })
-      .switchMap(profile => this.streamService.feed(profile._id))   
+    this.profileAuth.currentProfile
+      .skipWhile(profile => { return !profile._id; }) 
       .subscribe(
-        feed => { this.feed = feed; this.isLoading = false;},
+        profile => { this.profile = profile;},
         error => console.log(error)
       );
   }
@@ -53,8 +60,14 @@ export class FeedComponent implements OnInit {
     return count ? count : false;
   }
 
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
+  viewMore(event){
+    this.viewMoreLoad = false;
+    this.hasMore = (event && event.results.length > 0) ? true : false;
+  }
+
+  loadMore(){
+    this.viewMoreLoad = true;
+    this.FeedComponent.loadMore();
   }
 
 }

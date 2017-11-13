@@ -10,7 +10,7 @@ import { ProfileAuthService } from './services';
 import { AuthGuardLogin, SharedModule, EllipsisPipe } from '../shared';
 
 import {
-  FeedComponent,
+  ProfileFeedComponent,
   ProfileFlagsComponent,
   ProfileFlagsDetailComponent,
   FlagCommentComponent
@@ -21,7 +21,7 @@ const profileRouting: ModuleWithProviders = RouterModule.forChild([
     path: ':username',
     component: ProfileComponent,
       children: [
-        { path: '', pathMatch: 'full', component: FeedComponent, data: { title: 'Newstand | Profile', page: 'feed'} },
+        { path: '', pathMatch: 'full', component: ProfileFeedComponent, data: { title: 'Newstand | Profile', page: 'feed'} },
         { path: 'flags', component: ProfileFlagsComponent, data: { title: 'Newstand | Flags', page: 'flag'} },
         { path: 'flags/:id', component: ProfileFlagsDetailComponent, data: { title: 'Newstand | Flag Detail', page: 'flag'} },
       ]
@@ -41,7 +41,7 @@ const profileRouting: ModuleWithProviders = RouterModule.forChild([
     ProfileComponent,
     ProfileFlagsComponent,
     ProfileFlagsDetailComponent,
-    FeedComponent,
+    ProfileFeedComponent,
     FlagCommentComponent,
     EllipsisPipe
   ],

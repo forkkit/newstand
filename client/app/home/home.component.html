@@ -22,9 +22,11 @@
   </div>
   <div class="col-md-7 mt-4">
     <div class="card card-body rounded-0">
-      <!-- <app-feed></app-feed> -->
+      <app-feed [profile]="{_id: 'global'}" (viewMore)="viewMore($event)" #FeedComponent></app-feed>
     </div>
-    <button type="button" class="btn btn-light rounded-0 btn-block mt-3 text-muted">View more</button>
-    
+    <button class="btn btn-lg btn-block btn-light rounded-0 mt-2" (click)="loadMore()" *ngIf="hasMore">
+      <span *ngIf="!viewMoreLoad">View more</span>
+      <span *ngIf="viewMoreLoad">Loading...</span>
+    </button>
   </div>
 </div>

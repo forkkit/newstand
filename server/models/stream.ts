@@ -40,7 +40,7 @@ flagSchema.methods.createActivity = function() {
 	  }
 	  
 	  //To Field 
-	  const publisher = this.target.publisher, toField = [];
+	  const publisher = this.target.publisher, toField = ['timeline:global'];
 	  //Push to publisher timeline
 	  toField.push('timeline:'+this.target._id);
 	  if(publisher && publisher.members.length > 0){
@@ -104,7 +104,7 @@ activitySchema.methods.createActivity = function() {
 	}
 	
 	//To Field 
-	const publisher = this.target.publisher, toField = [];
+	const publisher = this.target.publisher, toField = ['timeline:global'];
 	//Push to publisher timeline if admin
 	if(this.activity.user.role !== 'user'){
 		toField.push('timeline:'+this.target._id);

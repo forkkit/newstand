@@ -1,0 +1,127 @@
+<div class="feed-container">
+  <app-loading [condition]="isLoading"></app-loading>
+
+  <div *ngIf="!isLoading && feed.length === 0" class="feed_empty">
+      <p class="h2">No activity found for this profile!</p>
+  </div>
+
+
+  <section class="feed-item" *ngFor="let item of feed.activityData">
+    <div [ngSwitch]="item.verb">
+      <ng-container *ngSwitchCase="'raise'">
+        <div class="body">
+          <i class="icon fa icon-flag"></i> 
+          <small class="text-muted text-uppercase">{{item.time | amFromUtc | amLocal | amTimeAgo}}</small>
+          <div class="title">
+            <a [routerLink]="['/' + item.actor.username]">
+              {{item.actor.username}}
+            </a> 
+            raised
+            <a class="flag" [routerLink]="['/' + item.object.flag.publisher.username + '/flags/' + item.object.flag._id]">{{item.object.flag.label}}</a> 
+            flag on 
+            <a [routerLink]="['/' + item.object.flag.publisher.username]">
+              {{item.object.flag.publisher.username}}
+            </a>
+          </div>
+          <div class="details">
+            <img src="{{item.actor.image}}" height="30px" alt="">
+            <div class="section">
+              <blockquote>
+                {{item.object.flag.section}}
+              </blockquote>
+              <div class="source text-muted">
+                  &ndash; <a href="{{item.object.flag.url}}" class="text-muted" target="_blank">{{item.object.flag.url}}</a>
+              </div>
+            </div>
+            <small *ngIf="commentCount(item.object.flag.activity)">
+              <a class="text-muted" [routerLink]="['/' + item.object.flag.publisher.username + '/flags/' + item.object.flag._id]">
+                {{ commentCount(item.object.flag.activity) === 1 ? '1 comment' :  commentCount(item.object.flag.activity) + ' comments' }}
+              </a>
+            </small>
+          </div>
+        </div>
+      </ng-container>
+      <ng-container *ngSwitchCase="'address'">
+        <div class="body">
+          <i class="icon fa icon-flag-addressed"></i> 
+          <small class="text-muted text-uppercase">{{item.time | amFromUtc | amLocal | amTimeAgo}}</small>
+          <div class="title">
+            <a [routerLink]="['/' + item.actor.username]">
+              {{item.actor.username}}
+            </a> addressed flag with 
+            <a class="address" [routerLink]="['/' + item.object.target.username + '/flags/' + item.object.activity.flag]">
+            {{item.object.activity.address.label}}
+            </a> on
+            <a [routerLink]="['/' + item.object.target.username]">
+              {{item.object.target.username}}
+            </a>
+          </div>
+          <div class="details" *ngIf="item.object.activity.comment">
+            <img src="{{item.actor.image}}" height="30px" alt="">
+            <div class="section"  [innerHTML]="item.object.activity.comment"></div>
+          </div>
+        </div>
+      </ng-container>
+      <ng-container *ngSwitchCase="'comment'">
+        <div class="body">
+          <i class="icon fa fa-comments-o"></i> 
+          <small class="text-muted text-uppercase">{{item.time | amFromUtc | amLocal | amTimeAgo}}</small>
+          <div class="title">
+            <a [routerLink]="['/' + item.actor.username]">
+              {{item.actor.username}}
+            </a> 
+            commented on
+            <a [routerLink]="['/' + item.object.target.username]">
+              {{item.object.target.username}}
+            </a>
+            <a [routerLink]="['/' + item.object.target.username + '/flags/' + item.object.activity.flag]">
+              flag 
+              </a>
+          </div>
+          <div class="details" *ngIf="item.object.activity.comment">
+            <img src="{{item.actor.image}}" height="30px" alt="">
+            <div class="section"  [innerHTML]="item.object.activity.comment"></div>
+          </div>
+        </div>
+      </ng-container>
+      <ng-container *ngSwitchCase="'reraise'">
+        <div class="body">
+          <i class="icon fa fa-flag-checkered"></i> 
+          <small class="text-muted text-uppercase">{{item.time | amFromUtc | amLocal | amTimeAgo}}</small>
+          <div class="title">
+            <a [routerLink]="['/' + item.actor.username]">
+              {{item.actor.username}}
+            </a> 
+            reraised
+            <a [routerLink]="['/' + item.object.target.username + '/flags/' + item.object.activity.flag]">
+              flag 
+            </a>
+            on
+            <a [routerLink]="['/' + item.object.target.username]">
+              {{item.object.target.username}}
+            </a>
+          </div>
+          <div class="details" *ngIf="item.object.activity.comment">
+            <img src="{{item.actor.image}}" height="30px" alt="">
+            <div class="section"  [innerHTML]="item.object.activity.comment"></div>
+          </div>
+        </div>
+      </ng-container>
+      <ng-container *ngSwitchCase="'follows'">
+        <div class="body">
+          <i class="icon fa fa-bookmark-o"></i> 
+          <small class="text-muted text-uppercase">{{item.time | amFromUtc | amLocal | amTimeAgo}}</small>
+          <div class="title">
+            <a [routerLink]="['/' + item.actor.username]">
+              {{item.actor.username}}
+            </a> 
+            followed
+            <a [routerLink]="['/' + item.object.target.username]">
+              {{item.object.target.username}}
+            </a>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </section>
+</div>

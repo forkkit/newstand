@@ -71,11 +71,22 @@ export function checkAuth() {
       if(req.query && typeof req.headers.authorization === 'undefined') {
         req.headers.authorization = `Bearer ${req.cookies.token}`;
       }
+
+      let token  = req.headers.authorization;
+      token = token.replace(new RegExp('Bearer ', 'g'), '');
+
+      if(token === 'undefined'){
+        return next();
+      }
       
       validateJwt(req, res, next);
     })
     // Attach user to request
     .use(function(req, res, next) {
+
+      if(!req.user){
+        return next();
+      }
 
       Profile.findById(req.user._id).exec()
         .then(profile => {

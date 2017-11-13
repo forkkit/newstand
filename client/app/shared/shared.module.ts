@@ -8,6 +8,7 @@ import { MomentModule } from 'angular2-moment';
 import { ToastComponent } from './toast/toast.component';
 import { LoadersCssModule } from 'angular2-loaders-css';
 import { LoadingComponent } from './loading/loading.component';
+import { FeedComponent } from './feed/feed.component';
 import { FlagModalComponent } from './flag-modal/flag-modal.component';
 import { UserAuthDirective } from './directives';
 import { FlagService } from './services/flag.service';
@@ -31,11 +32,13 @@ import { NotificationsSharedComponent } from './notifications';
     // Shared Components
     ToastComponent,
     LoadingComponent,
+    FeedComponent,
     UserAuthDirective,
   ],
   declarations: [
     ToastComponent,
     LoadingComponent,
+    FeedComponent,
     FlagModalComponent,
     UserAuthDirective,
     NotificationsSharedComponent

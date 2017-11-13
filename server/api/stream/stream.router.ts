@@ -31,15 +31,65 @@ export class StreamRouter extends BaseCtrl{
     
     let feed; 
 
-    if(req.profile._id.equals(req.params.id)){
+    if(req.profile && req.profile._id.equals(req.params.id)){
       feed = this.FeedManager.getUserFeed(req.params.id)
-    }else{
+    }else{ 
       feed = this.FeedManager.getNewsFeeds(req.params.id)['timeline']; 
     }
 
-     return feed
-      .get({})
+    return feed
+      .get({ limit: 10 })
       .then(this.enrichActivities)
+      .then((results)=>{
+
+        var activityData = results;
+
+        if(activityData.length === 0){
+          return activityData;
+        }
+
+        return feed.get({ limit: 1, id_lt: activityData[activityData.length-1].id })
+          .then((results) => {
+
+          var nextActivityData = results;
+        
+          return {activityData, nextActivityData};
+
+        });
+      })
+      .then(this.respondWithResult(res))
+      .catch(this.validationError(res))
+    
+  }
+
+  public feedMore = (req: userRequest, res: Response) =>  {
+    
+    let feed; 
+    const profileId = req.params.id;
+    const nextId = req.params.next;
+
+    if(req.profile && req.profile._id.equals(profileId)){
+      feed = this.FeedManager.getUserFeed(profileId)
+    }else{
+      feed = this.FeedManager.getNewsFeeds(profileId)['timeline']; 
+    }
+
+     return feed
+      .get({ limit: 10, id_lte: nextId })
+      .then(this.enrichActivities)
+      .then((results)=>{
+
+        var activityData = results;
+
+        return feed.get({ limit: 1, id_lt: activityData[activityData.length-1].id })
+          .then((results) => {
+
+          var nextActivityData = results;
+        
+          return {activityData, nextActivityData};
+
+        });
+      })
       .then(this.respondWithResult(res))
       .catch(this.validationError(res))
     
@@ -88,7 +138,8 @@ export class StreamRouter extends BaseCtrl{
   }
 
   routes() {
-    this.router.get('/feed/:id', auth.isAuthenticated(), this.feed);
+    this.router.get('/feed/:id', auth.checkAuth(), this.feed);
+    this.router.get('/feed/:id/more/:next', auth.checkAuth(), this.feedMore);
     this.router.post('/follow', auth.isAuthenticated(), this.follow);
     this.router.get('/notifications', auth.isAuthenticated(), this.notifications);
   }

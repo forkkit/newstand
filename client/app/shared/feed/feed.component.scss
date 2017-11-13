@@ -1,0 +1,89 @@
+.feed-container{
+
+    >.feed_empty{
+        text-align: center;
+        padding: 40px 0;
+
+        >p{
+            background-color: #69F0AE;
+            display: inline;
+            padding: 0 5px;
+        }
+    }
+
+    .feed-item{
+        position: relative;
+        padding: 0 0 1em 40px;
+        font-size: 14px;
+        min-height: 85px;
+        border-bottom:1px solid #eff3f6;
+        &:first-child{
+            border-top: 0;
+            >.body{
+                padding-top: 0;
+            }
+        }
+        .body{
+            padding: 1em 0 0;
+
+            >.title{
+                >a{
+                    font-weight: bold;
+
+                    &.flag{
+                        background-color: #69F0AE;
+                        padding: 3px;
+                    }
+
+                    &.address{
+                        font-weight: normal;
+                        background-color: #eaf5ff;
+                        color: #0366d6;
+                        padding: 3px;
+                        font-size: .8rem;
+                        display: inline-block;
+                    }
+                }
+            }
+            >.icon{
+                position: absolute;
+                left: 0;
+                color: #999999;
+                font-size: 2em;
+            }
+            >.details{
+                position: relative;
+                margin-top: 5px;
+                >img{
+                    position: absolute;
+                    left: 0;
+                    border: 1px solid #eff3f6;
+                }
+                >.section{
+                    font-size: .8rem;
+                    padding-left: 5px;
+                    margin: 0 0 0 35px;
+                    min-height: 30px;
+                    >blockquote{
+                        padding-left: 7px;
+                        border-left: 5px solid #eaf5ff;
+                        font-style: italic;
+                        margin: 0;
+                    }
+                    >.source{
+                        padding-left: 12px;
+                        font-size: .8rem;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        >a{
+                            font-weight: normal
+                        }
+                    
+                    }
+                }
+            }
+            
+        }
+    }
+}

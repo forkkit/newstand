@@ -12,6 +12,10 @@ export class StreamService {
     return this.http.get(`/api/streams/feed/${id}`)
   }
 
+  feedMore(id, next): Observable<any> {
+    return this.http.get(`/api/streams/feed/${id}/more/${next}`)
+  }
+
   follow(target): Observable<any> {
     return this.http.post('/api/streams/follow', target)
   }
