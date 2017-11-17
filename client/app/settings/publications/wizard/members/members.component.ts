@@ -75,7 +75,7 @@ export class WizardMembersComponent implements OnInit {
     return this.wizardService.members(this.profile._id, this.profile.publisher).subscribe(
       data => {
         this.wizardAuth.updatePublisher(data);
-        this.router.navigate(['settings/publications/create/details', this.profile._id]);
+        this.router.navigate(['settings/publications/create/verify', this.profile._id]);
       },
       err => this.toast.setMessage(err.error, 'danger')
     );

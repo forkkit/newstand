@@ -1,7 +1,9 @@
 import {Router, Request, Response, NextFunction} from 'express';
 
+import { stringScraper } from 'string-scraper';
+import * as shortid from 'shortid';
+
 import * as auth from '../../auth/auth.service';
-import Publisher from '../../models/publisher';
 import Profile from '../../models/profile';
 import User from '../../models/user';
 import Stream from '../../models/stream';
@@ -12,7 +14,6 @@ import { userRequest } from "../../config/definitions";
 export class WizardRouter extends BaseCtrl{
   router: Router
   model = Profile;
-  publisher = Publisher;
   user = User;
 
   constructor() {
@@ -20,6 +21,43 @@ export class WizardRouter extends BaseCtrl{
     this.router = Router();
     this.routes();
   }
+
+  private setup = (req: Request, res: Response) =>  {
+    
+    const obj = new this.model(req.body);
+
+    obj.publisher.id = shortid.generate();
+    
+    obj.save()
+      .then(this.respondWithResult(res))
+      .catch(this.validationError(res));
+    
+    }
+
+  private updateSetup = (req: Request, res: Response) =>  {
+    
+    const data = req.body;
+
+    return this.model.findById(req.params.id).exec()
+        .then(profile=>{
+        
+        if(!profile){
+            throw 'Publication not found!';
+        }
+
+        profile.name = data.name;
+        profile.username = data.username;
+        profile.publisher.domain = data.publisher.domain;
+        profile.bio = data.bio;
+
+        return profile.save()
+            .then(this.respondWithResult(res))
+            .catch(err => {throw err});
+
+        })
+        .catch(this.validationError(res))
+    
+    }
 
   private findMember = (req: Request, res: Response) =>  {
 
@@ -78,37 +116,56 @@ export class WizardRouter extends BaseCtrl{
 
     private details = (req: userRequest, res: Response) =>  {
 
-        const publisher = new this.publisher(req.body);
-        const user = req.profile;
-        
-        return publisher.save()
-            .then(savedPublisher => {
+        const domains = req.body;       
+                 
+        return this.model.findById(req.params.id).exec()
+            .then(profile => {
+
+                profile.publisher = domains;
+                profile.publisher.status = 2;
                 
-                return this.model.findById(req.params.id).exec()
-                    .then(profile => {
-
-                        profile.publisher.object = savedPublisher._id;
-                        profile.publisher.status = 2;
-                        
-                        return profile.save()
-                            .then(this.follow(user))
-                            .then(this.respondWithResult(res))
-                            .catch(err => {throw err});
-                    })
+                return profile.save()
+                    .then(this.respondWithResult(res))
                     .catch(err => {throw err});
-
             })
             .catch(this.validationError(res));
 
+
+    }
+
+    public verifySegment = (req: Request, res: Response) =>  {
+        
+        const data = req.body;
+
+        //Allow full access to Boston.com for testing
+        const identifier = (data.profile.domain === 'boston.com') ? 'article' : '.ce-'+data.profile.id;
+        
+        return stringScraper(data.url, data.section, identifier, 20, false)
+        .then(this.respondWithResult(res))
+        .catch(this.handleError(res));
+        
+    }
+
+    public complete = (req: Request, res: Response) =>  {
+        
+        const data = req.body;
+
+        this.model.findOneAndUpdate(data, {$set:{'status': 'active'}}).exec()
+            .then(this.respondWithResult(res))
+            .catch(this.handleError(res));
+        
     }
 
   
   
   routes() {
-    this.router.post('/setup', this.insert);
-    this.router.get('/members/:email', this.findMember);
-    this.router.put('/members/:id', this.members);
+    this.router.post('/setup', auth.isAuthenticated(), this.setup);
+    this.router.post('/setup/:id', auth.isAuthenticated(), this.updateSetup);
+    this.router.get('/members/:email', auth.isAuthenticated(), this.findMember);
+    this.router.put('/members/:id', auth.isAuthenticated(), this.members);
     this.router.put('/details/:id', auth.isAuthenticated(), this.details);
+    this.router.post('/segment', auth.isAuthenticated(), this.verifySegment);
+    this.router.put('/verify', auth.isAuthenticated(), this.complete);
     this.router.get('/:id', this.get);
   }
 

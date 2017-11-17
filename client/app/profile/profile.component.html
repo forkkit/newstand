@@ -14,7 +14,7 @@
 
         <hr>
 
-        <button class="btn btn-dark btn-block rounded-0 mb-3" *ngIf="!userAuth && !profile.follow" (click)="follow(profile._id)">Follow {{profile.type}}</button>
+        <button class="btn btn-dark btn-block rounded-0 mb-3" *ngIf="(profile.role === 'user') && !profile.follow" (click)="follow(profile._id)">Follow {{profile.type}}</button>
             
     </div>
     <div class="col-md-9 mb-5">
@@ -26,7 +26,7 @@
                 </a>
             </li>
             <li class="nav-item" *ngIf="profile.type === 'publisher'">
-                <a class="nav-link" [routerLink]="['/' + profile.username + '/flags']" [queryParams]="{ q: 'status: raise' }" [class.active]="currentTab === 'flag'">
+                <a class="nav-link" [routerLink]="['/', profile.username , 'flags']" [queryParams]="{ q: 'status: raise' }" [class.active]="currentTab === 'flag'">
                     <i class="fa fa-flag" aria-hidden="true"></i>
                     &nbsp;Flags
                 </a>

@@ -21,13 +21,13 @@
                 <div class="col-md-7">
                     <div class="input-group">
                             <div class="input-group-btn" ngbDropdown placement="bottom-left">
-                                    <button type="button" class="btn btn-light dropdown-toggle" ngbDropdownToggle>
-                                        <i class="fa fa-filter" aria-hidden="true"></i>
-                                    </button>
-                                    <div ngbDropdownMenu class="dropdown-menu-right">
-                                        <a class="dropdown-item" href="javascript:;" *ngFor="let item of filter" (click)="changeFilter(item, toFocus)">{{item}}</a>
-                                    </div>
+                                <button type="button" class="btn btn-light dropdown-toggle" ngbDropdownToggle>
+                                    <i class="fa fa-filter" aria-hidden="true"></i>
+                                </button>
+                                <div ngbDropdownMenu class="dropdown-menu-right">
+                                    <a class="dropdown-item" href="javascript:;" *ngFor="let item of filter" (click)="changeFilter(item, toFocus)">{{item}}</a>
                                 </div>
+                            </div>
                         <div class="input-group-addon"><i class="fa fa-search" aria-hidden="true"></i></div>
                         
                         <input class="form-control" type="text" [(ngModel)]='search' (keyup.enter)="searchFlag($event)" #toFocus>

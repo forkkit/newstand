@@ -1,20 +1,38 @@
-<form action="" [formGroup]="setupForm" (ngSubmit)="submit(setupForm)">
+<form action="" [formGroup]="setupForm" (ngSubmit)="submit(setupForm.value, setupForm.valid)">
     <div class="mt-2">
         <div class="row">
             <div class="col-md-8">
                 <div class="form-group">
                     <label for="name">Name</label>
                     <input class="form-control form-control-lg rounded-0" id="name" type="text" name="name" spellcheck="false" formControlName="name" (blur)="createUsername($event.target.value)">
+                    <p class="input-error" *ngIf="!nameCtrl.valid && submitted">
+                        Publication name required
+                    </p>
                 </div>
                 <div class="form-group" [hidden]="!hasUsername">
                     <label for="username">handle</label>
                     <input class="form-control form-control-lg rounded-0" id="username" type="text" name="username" spellcheck="false" [(ngModel)]="handle" (keyup)="handleFormat($event.target.value)" formControlName="username">
                     <small class="helper-text text-muted">newstand.org/{{handle}}</small>
+                    <p class="input-error" *ngIf="!usernameCtrl.valid && submitted">
+                        Publication username required
+                    </p>
+                    <p class="input-error" *ngIf="errors.username">
+                        {{ errors.username }}
+                    </p>
+                </div>
+                <div class="form-group" formGroupName="publisher">
+                    <label for="name">Base domain</label>
+                    <input class="form-control form-control-lg rounded-0" id="domain" type="text" name="domain" spellcheck="false" formControlName="domain" (blur)="domainFormat($event.target.value)">
+                    <p class="input-error" *ngIf="!domainCtrl.valid && submitted">
+                        Publication domain required
+                    </p>
+                    <p class="input-error" *ngIf="errors['publisher.domain']">
+                        {{ errors['publisher.domain']}}
+                    </p>
                 </div>
                 <div class="form-group">
                     <label for="bio">Bio</label>
                     <textarea name="" id="bio" name="bio" rows="2" class="form-control form-control-lg" formControlName="bio"></textarea>
-                    <small class="helper-text text-muted">Brief statement introducing this publication</small>
                 </div>
             </div>
             <div class="col-md-4">
@@ -32,7 +50,7 @@
 
         <div class="mt-4">
             <a routerLink="/settings/publications" role="button" class="btn btn-secondary btn-lg rounded-0">Cancel</a>
-            <button class="btn btn-dark btn-lg rounded-0" type="submit">
+            <button class="btn btn-dark btn-lg rounded-0" type="submit" [disabled]="setupForm.invalid">
                 Continue
             </button>
         </div>

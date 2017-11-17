@@ -2,12 +2,14 @@ import { ModuleWithProviders, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ngfModule } from "angular-file";
 
 import { WizardComponent } from './wizard.component';
 import { WizardSetupComponent } from './setup/setup.component';
 import { WizardMembersComponent } from './members/members.component';
-import { WizardDetailsComponent } from './details/details.component';
+import { WizardVerifyComponent } from './verify/verify.component';
 
 import {
     WizardGuard, 
@@ -17,8 +19,8 @@ import {
 
 import { 
     AuthGuardLogin,
-    //SharedModule
-  } from '../../../shared';
+    SharedModule
+} from '../../../shared';
 
 const wizardRouting: ModuleWithProviders = RouterModule.forChild([
     { path: '', component: WizardComponent, canActivate: [ AuthGuardLogin],
@@ -42,10 +44,10 @@ const wizardRouting: ModuleWithProviders = RouterModule.forChild([
             data: { step: 1, title: 'Newstand | Publication - Members' }
         },
         {
-            path: 'details/:id',
-            component: WizardDetailsComponent,
+            path: 'verify/:id',
+            component: WizardVerifyComponent,
             canActivate: [WizardGuard],
-            data: { step: 2, title: 'Newstand | Publication - Details' }
+            data: { step: 2, title: 'Newstand | Publication - Verify' }
         }
       ] 
     }
@@ -57,14 +59,15 @@ const wizardRouting: ModuleWithProviders = RouterModule.forChild([
         FormsModule,
         ReactiveFormsModule,
         wizardRouting,
-       // SharedModule,
         ngfModule,
+        NgbModule,
+        SharedModule
     ],
     declarations: [
         WizardComponent,
         WizardSetupComponent,
         WizardMembersComponent,
-        WizardDetailsComponent
+        WizardVerifyComponent
     ], 
     providers: [
         WizardGuard,

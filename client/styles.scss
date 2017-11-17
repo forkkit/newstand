@@ -47,6 +47,13 @@ body {
   max-width: 960px
 }
 
+form{
+  .input-error{
+    font-size: .9rem;
+    color: #dc3545;
+  }
+}
+
 .input-group {
   margin-bottom: 15px;
 }

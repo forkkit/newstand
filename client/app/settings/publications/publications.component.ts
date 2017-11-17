@@ -21,7 +21,7 @@ export class SettingsPublicationsComponent implements OnInit {
     private reverse: ReversePipe
   ) { 
 
-    this.statusArray = ['members', 'details'];
+    this.statusArray = ['members', 'verify'];
 
   }
 

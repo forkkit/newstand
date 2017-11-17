@@ -19,17 +19,20 @@ import {
 })
 export class WizardSetupComponent implements OnInit {
 
-  handle = '';
-  hasUsername = false;
-  publisher: Profile = new Profile();
-
-  setupForm: FormGroup;
-
+  public handle = '';
+  public hasUsername = false;
+  public publisher: Profile = new Profile();
+  public setupForm: FormGroup;
+  public nameCtrl: FormControl;
+  public usernameCtrl: FormControl;
+  public domainCtrl: FormControl;
+  public errors = {};
   private subscription;
+  public submitted: boolean = false;
 
   constructor(
     private router: Router,
-    private fb: FormBuilder,
+    private _fb: FormBuilder,
     private auth: AuthService,
     private wizardAuth: WizardAuth,
     private wizardService: WizardService,
@@ -38,19 +41,24 @@ export class WizardSetupComponent implements OnInit {
 
       const currentUser = this.auth.getCurrentUser();
 
-      this.setupForm = fb.group({
-          name: ['', Validators.required],
-          username: ['', Validators.required],
+      this.nameCtrl = this._fb.control('', Validators.required);
+      this.usernameCtrl = this._fb.control('', Validators.required);
+      this.domainCtrl = this._fb.control('', Validators.required);
+
+      this.setupForm = _fb.group({
+          name: this.nameCtrl ,
+          username: this.usernameCtrl,
           bio: '',
           image: '/assets/pub_placeholder.png',
           type: 'publisher',
-          publisher: {
+          publisher: _fb.group({
+            domain: this.domainCtrl,
             members:[{
               profile: currentUser._id,
               username: currentUser.username,
               role: 'owner'
             }]
-          }
+          })
       });
 
     }
@@ -77,10 +85,6 @@ export class WizardSetupComponent implements OnInit {
 
     }
 
-    ngOnDestroy() {
-      this.subscription.unsubscribe();
-    }
-
     createUsername(value){
       if(this.hasUsername || !value){
         return;
@@ -94,36 +98,72 @@ export class WizardSetupComponent implements OnInit {
       this.handle = this.slugifyPipe.transform(value);
     }
 
+    domainFormat(value){ 
 
-    submit(form){
+      const result = value.replace(/^(?:https?:\/\/)?(?:www\.)?/i, "").split('/')[0];
+
+      this.setupForm.patchValue({
+        publisher:{
+          domain: result
+        }
+      });
+
+    }
+
+    submit(model: Profile, isValid: boolean){
+
+      this.submitted = true;
+
+      // check validity
+      if(!isValid){
+        //this.toast.setMessage('Please complete all required fields', 'danger');
+        return;
+      }
 
       // save
-      if(!form.value._id){
+      if(!model._id){
 
-        return this.wizardService.setup(form.value).subscribe(
+        return this.wizardService.setup(model).subscribe(
           data => {
             this.wizardAuth.updatePublisher(data);
             this.router.navigate(['settings/publications/create/members', data._id])
           },
-          err => this.toast.setMessage(err.error, 'danger')
+          err => {
+            err = JSON.parse(err.error);
+
+            this.errors = {};
+
+            for(let field in err.errors){
+              this.errors[field] = err.errors[field].message;
+            }
+
+          }
         );
       }
 
-      // form untouched
-      if(form.pristine){
-        this.router.navigate(['settings/publications/create/members', form.value._id]);
-        return;
-      }
-      
       // update
-      return this.wizardService.updateProfile(form.value._id, form.value).subscribe(
+      return this.wizardService.updateSetup(model._id, model).subscribe(
         data => {
-          this.wizardAuth.updatePublisher(form.value);
-          this.router.navigate(['settings/publications/create/members', form.value._id])
+          this.wizardAuth.updatePublisher(model);
+          this.router.navigate(['settings/publications/create/members', model._id])
         },
-        err => this.toast.setMessage(err.error, 'danger')
+        err => {
+          err = JSON.parse(err.error);
+          
+          this.errors = {};
+
+          for(let field in err.errors){
+            this.errors[field] = err.errors[field].message;
+          }
+
+        }
       );
 
+    }
+
+
+    ngOnDestroy() {
+      this.subscription.unsubscribe();
     }
 
 }

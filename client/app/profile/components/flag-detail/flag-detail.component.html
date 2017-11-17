@@ -58,7 +58,7 @@
                 </a>
             </div>
             
-            <app-flag-comment *ngIf="respond" [flag]="flag" [role]="userRole" (saved)='saved($event)'></app-flag-comment>
+            <app-flag-comment *ngIf="respond" [flag]="flag" [user]="profile" (saved)='saved($event)'></app-flag-comment>
         </div>
 
     </div>

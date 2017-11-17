@@ -2,6 +2,7 @@ import { Component, ViewEncapsulation, OnInit, Input, Output, EventEmitter  } fr
 import { FormGroup, FormControl, Validators, FormBuilder, FormArray } from '@angular/forms';
 
 import { 
+  Profile,
   FlagService,
   Flag,
   Activity
@@ -16,7 +17,7 @@ import {
 export class FlagCommentComponent implements OnInit{
 
   @Input() flag: Flag = new Flag();
-  @Input() role: string;
+  @Input() user: Profile = new Profile();;
   @Output() saved: EventEmitter<Flag> = new EventEmitter<Flag>();
 
   public activity: Activity = new Activity(); 
@@ -57,7 +58,7 @@ export class FlagCommentComponent implements OnInit{
 
   ngOnInit(){
     this.activityForm.patchValue({
-      user: {role:this.role},
+      user: {role:this.user.role},
       flag: this.flag._id,
       type: 'comment'
     });

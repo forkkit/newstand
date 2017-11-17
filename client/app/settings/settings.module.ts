@@ -1,4 +1,5 @@
 import { ModuleWithProviders, NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { DatePipe } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { ngfModule } from "angular-file";
@@ -35,6 +36,7 @@ const settingsRouting: ModuleWithProviders = RouterModule.forChild([
 
 @NgModule({
     imports: [
+        CommonModule,
         settingsRouting,
         SharedModule,
         WizardModule,

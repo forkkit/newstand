@@ -1,4 +1,4 @@
-<div class="card card-body rounded-0">
+<div class="card card-body rounded-0 mb-3">
     <h3 class="card-title font-weight-bold">Create publication account</h3>
     <nav class="nav nav-pills nav-fill nav-pills-create-pub mb-4">
         <a class="nav-item nav-link" [routerLink]="['/settings/publications/create/setup/' +  profile._id]" routerLinkActive="active">
@@ -9,9 +9,9 @@
             Step 2
             <p>Add team members</p>
         </a>
-        <a class="nav-item nav-link" [ngClass]="{'disabled': profile.publisher.status < 1}" [routerLink]="['/settings/publications/create/details/' + profile._id]" routerLinkActive="active">
+        <a class="nav-item nav-link" [ngClass]="{'disabled': profile.publisher.status < 1}" [routerLink]="['/settings/publications/create/verify/' + profile._id]" routerLinkActive="active">
             Step 3
-            <p>Publication details</p>
+            <p>Verify account</p>
         </a>
     </nav>
 

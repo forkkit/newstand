@@ -25,7 +25,6 @@ export class ProfileComponent implements OnInit{
 
   public profile: Profile = new Profile();
   private urlPram: string;
-  public userAuth: boolean;
   public currentTab:string;
   private subscription;
   private switchView:boolean = false;
@@ -38,14 +37,6 @@ export class ProfileComponent implements OnInit{
     private flagService: FlagService,
     private streamService: StreamService
   ) { 
-    
-    route.params
-      .subscribe(params=>{
-        this.switchView = false;
-         //Update profile data based on username
-        this.profileAuth.populate(params.username);
-      
-      });
 
     const urlParam = route.snapshot.queryParams.label;
 
@@ -63,9 +54,6 @@ export class ProfileComponent implements OnInit{
         this.switchView = true;
         this.profile = profile;
       });
-
-    this.profileAuth.isUserAuth
-      .subscribe(auth => this.userAuth = auth);
 
     //Hack to keep current tab active
     this.activeRoute();

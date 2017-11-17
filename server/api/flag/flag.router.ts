@@ -1,6 +1,7 @@
 import {Router, Request, Response, NextFunction} from 'express';
 import { stringScraper } from 'string-scraper';
 
+
 import * as auth from '../../auth/auth.service';
 import config from '../../config';
 import Profile from '../../models/profile';
@@ -28,18 +29,17 @@ export class FlagRouter extends BaseCtrl{
 
   public searchByDomain = (req: Request, res: Response) =>  {
 
-    return this.publisher.findOne({ "domain": { "$regex": req.body.url, "$options": "i" } }).exec()
+    return this.model.findOne({ "publisher.domain": { "$regex": req.body.url, "$options": "i" } }).exec()
       .then((result) => {
 
         if(!result){
           res.json({error: 'not_found', domain: req.body.url});
         }
-        
-        return this.model.findOne({'publisher.object': result._id}).exec()
-          .then(this.respondWithResult(res))
-          .catch((err) => { throw err; });
+
+        return result;
 
       })
+      .then(this.respondWithResult(res))
       .catch(this.validationError(res))
 
   }
@@ -48,7 +48,7 @@ export class FlagRouter extends BaseCtrl{
 
     const data = req.body; 
     
-    return stringScraper(data.url, data.section, 20)
+    return stringScraper(data.url, data.section, 'body', 20, true)
     .then((result) => {
       return res.json({valid:result})
     })

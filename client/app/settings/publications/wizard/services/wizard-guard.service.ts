@@ -17,7 +17,7 @@ export class WizardGuard implements CanActivate {
     ) {
 
         // Referenced for auth route redirection
-        this.steps = ['setup', 'members'];
+        this.steps = ['setup', 'members', 'details'];
     }
   
 
@@ -39,8 +39,8 @@ export class WizardGuard implements CanActivate {
     
                 const profile = this.wizardAuth.getCurrentPublisher(); 
 
-                //Redirct to create if no publisher id or already complete
-                if(!profile._id || profile.publisher.status === 2){
+                //Redirect to create if no publisher id or already complete
+                if(!profile._id || profile.publisher.status === 3){
                     this.router.navigate(['settings/publications/create/setup']);
                     return;
                 }

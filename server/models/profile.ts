@@ -12,11 +12,22 @@ const profileSchema = new mongoose.Schema({
     default: 'pending'
   },
   type : String,
+  role: {
+    type: String,
+    default: 'user'
+  },
   publisher: {
+    id: String,
+    public: {
+      type: Boolean,
+      default: true
+    },
     status: {
       type: Number, 
       default: 0
     },
+    domain: String,
+    subdomains: [],
     members:[{
       username: String,
       role: String,
@@ -28,11 +39,7 @@ const profileSchema = new mongoose.Schema({
         type: Date, 
         default: Date.now
       }
-    }], 
-    object: {
-      type: ObjectId, 
-      ref: 'Publisher' 
-    }
+    }]
   },
   user: { 
     object: {
@@ -49,23 +56,42 @@ const profileSchema = new mongoose.Schema({
 });
 
 profileSchema
-.path('username')
-.validate(function(value, respond) {
+  .path('username')
+  .validate(function(value, respond) {
 
-  return this.constructor.findOne({ username: value }).exec()
-    .then(user => {
-      if(user) {
-        if(this.id === user.id) {
-          return respond(true);
+    return this.constructor.findOne({ username: value }).exec()
+      .then(user => {
+        if(user) {
+          if(this.id === user.id) {
+            return respond(true);
+          }
+          return respond(false);
         }
-        return respond(false);
-      }
-      return respond(true);
-    })
-    .catch(function(err) {
-      throw err;
-    });
-}, 'The specified username is already in use.');
+        return respond(true);
+      })
+      .catch(function(err) {
+        throw err;
+      });
+  }, 'The specified username is already in use');
+
+  profileSchema
+    .path('publisher.domain')
+    .validate(function(value, respond) {
+
+      return this.constructor.findOne({ 'publisher.domain': value }).exec()
+        .then(user => {
+          if(user) {
+            if(this.id === user.id) {
+              return respond(true);
+            }
+            return respond(false);
+          }
+          return respond(true);
+        })
+        .catch(function(err) {
+          throw err;
+        });
+    }, 'The specified domain is already in use');
 
 
 const Profile = mongoose.model('Profile', profileSchema);

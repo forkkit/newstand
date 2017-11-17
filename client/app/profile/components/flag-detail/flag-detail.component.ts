@@ -2,9 +2,11 @@ import { Component, ViewEncapsulation, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { 
+  AuthService,
   FlagService,
   Flag,
-  Activity
+  Activity,
+  Profile
 } from '../../../shared';
 
 import {
@@ -19,11 +21,13 @@ import {
 })
 export class ProfileFlagsDetailComponent implements OnInit{
 
+  public profile: Profile = new Profile();
   public flag: Flag = new Flag(); 
   public respond: boolean = false;
   public userRole: string;
 
   constructor(
+    private auth: AuthService,
     private flagService:FlagService,
     private profileAuthService: ProfileAuthService,
     private route: ActivatedRoute
@@ -38,13 +42,17 @@ export class ProfileFlagsDetailComponent implements OnInit{
       
       );
 
+      flagService.getDetail(id).flatMap(flag => {
+        this.flag = flag;
+        return this.profileAuthService.currentProfile;
+      }).subscribe(profile => {
+        this.profile = profile;
+      });
+
   }
 
   ngOnInit(){
-    this.profileAuthService.userRole.subscribe(
-      role => this.userRole = role,
-      err => console.log(err)
-    );
+   
   }
 
   saved(activity:Activity):void {

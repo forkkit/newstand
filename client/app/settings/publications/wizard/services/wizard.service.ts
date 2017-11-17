@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 
-import { Publisher, Profile } from '../../../../shared';
+import { Profile } from '../../../../shared';
 
 @Injectable()
 export class WizardService {
@@ -16,7 +16,11 @@ export class WizardService {
   }
 
   setup(publication): Observable<Profile> {
-    return this.http.post<Publisher>('/api/wizards/setup', publication);
+    return this.http.post<Profile>('/api/wizards/setup', publication);
+  }
+
+  updateSetup(id, publication): Observable<Profile> {
+    return this.http.post<Profile>(`/api/wizards/setup/${id}`, publication);
   }
 
   findMember(email): Observable<Profile> {
@@ -27,13 +31,16 @@ export class WizardService {
     return this.http.put<Profile>(`/api/wizards/members/${id}`, data);
   }
 
-  details(id, data): Observable<Publisher> {
-    return this.http.put<Publisher>(`/api/wizards/details/${id}`, data);
+  details(id, data): Observable<Profile> {
+    return this.http.put<Profile>(`/api/wizards/details/${id}`, data);
   }
 
-  updateProfile(id, publication): Observable<Profile> {
-    return this.http.put<Profile>(`/api/profiles/${id}`, publication);
+  segment(data): Observable<Profile> {
+    return this.http.post<Profile>(`/api/wizards/segment`, data);
   }
 
+  verify(data): Observable<Profile> {
+    return this.http.put<Profile>(`/api/wizards/verify`, data);
+  }
 
 }

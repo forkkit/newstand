@@ -6,7 +6,7 @@ import { QuillModule } from 'ngx-quill';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { ProfileComponent } from './profile.component';
-import { ProfileAuthService } from './services';
+import { ProfileAuthService, ProfileGuard } from './services';
 import { AuthGuardLogin, SharedModule, EllipsisPipe } from '../shared';
 
 import {
@@ -20,6 +20,7 @@ const profileRouting: ModuleWithProviders = RouterModule.forChild([
   {
     path: ':username',
     component: ProfileComponent,
+    canActivateChild: [ProfileGuard],
       children: [
         { path: '', pathMatch: 'full', component: ProfileFeedComponent, data: { title: 'Newstand | Profile', page: 'feed'} },
         { path: 'flags', component: ProfileFlagsComponent, data: { title: 'Newstand | Flags', page: 'flag'} },
@@ -46,7 +47,8 @@ const profileRouting: ModuleWithProviders = RouterModule.forChild([
     EllipsisPipe
   ],
   providers: [
-    ProfileAuthService
+    ProfileAuthService,
+    ProfileGuard
   ]
 })
 export class ProfileModule {}

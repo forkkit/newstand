@@ -1,0 +1,32 @@
+<form action="" [formGroup]="verifyForm" (ngSubmit)="submit(verifyForm.value, verifyForm.valid)">
+    
+    <h6>1. Help us find your content</h6>
+    <p class="info">
+        Add <code>{{'ce-'+profile.publisher.id}}</code> as a class to the div tag that contains article content on your website.
+        <br><br>
+        Example: <br> <code>&lt;div class="article {{'ce-'+profile.publisher.id}}"&gt;This is content&lt;/div&gt;</code>
+    </p>
+
+    <h6>2. Verify the connection</h6>
+    <input class="form-control form-control-lg rounded-0" id="url" type="text" name="url" spellcheck="false" formControlName="url" placeholder="Enter article URL" (blur)="verifyDomain($event.target.value, toFocus)" (keyup.enter)="verifyDomain($event.target.value, toFocus)" [readonly]="allowContent">
+    <p class="input-error" *ngIf="errorMessage">
+        {{errorMessage}}
+    </p>    
+
+    <div [hidden]="!allowContent" class="mt-2">
+        <textarea id="segment" name="segment" rows="3" class="form-control form-control-lg" formControlName="segment" placeholder="Copy/paste segment from article" (blur)="verifyContent($event.target.value)" (keyup.enter)="verifyContent($event.target.value)" #toFocus></textarea>
+        <p class="input-error" *ngIf="contentErr">
+            {{contentErr}}
+        </p>
+    </div>
+
+    <div *ngIf="isVerified" class="mt-4">
+        <h4>Your account has been successfully verified!</h4>
+
+        <div class="mt-4">
+            <a [routerLink]="['/settings/publications/create/members/' + profile._id]" role="button" class="btn btn-secondary btn-lg rounded-0">Back</a>
+            <button class="btn btn-dark btn-lg rounded-0" type="submit">Complete</button>
+        </div>
+    </div>
+
+</form>

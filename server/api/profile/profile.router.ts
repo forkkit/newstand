@@ -31,19 +31,31 @@ export class ProfileRouter extends BaseCtrl{
     
     const params = req.params;
     const user = req.profile;
+    
 
     return this.model.findOne({ username: params.username }).exec()
         .then(profile => {
-            if(!profile) {
-                throw new Error('Profile not found');
+            
+          if(!profile) {
+            throw new Error('Profile not found');
+          }
+
+          if(!user){
+            return profile;
+          }
+
+          //User owns profile page
+          if(user._id.equals(profile._id)){
+            profile.role = 'owner';
+            return profile;
+          }
+
+          const members = profile.publisher.members;
+
+          for(let i=0; i<members.length; i++){
+            if(members[i].profile.equals(user._id)){
+              profile.role = members[i].role;
             }
-
-            return profile;
-        })
-        .then((profile)=>{
-
-          if(!user || user._id.equals(profile._id)){
-            return profile;
           }
 
           return this.stream.Follow.find({user:user._id, target: profile._id}).exec()
@@ -64,7 +76,7 @@ export class ProfileRouter extends BaseCtrl{
 
   public username = (req: userRequest, res: Response) =>  {
     
-    const user = req.profile;
+    const user = req.profile; 
     const username = req.body.username;
     
     return this.model.findById(user._id).exec()
@@ -86,8 +98,6 @@ export class ProfileRouter extends BaseCtrl{
     
   }
 
-
-
   routes() {
 
     this.router.get('/username/:username', auth.checkAuth(), this.profile);
@@ -95,7 +105,7 @@ export class ProfileRouter extends BaseCtrl{
     this.router.get('/', auth.isAuthenticated(), this.index)
     this.router.get('/:id', auth.checkAuth(), this.get);
     this.router.post('/', this.insert);
-    this.router.put('/:id', this.update);    
+
   }
 
 }

@@ -1,4 +1,5 @@
 import { NgModule, ModuleWithProviders, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
@@ -38,6 +39,7 @@ const rootRouting: ModuleWithProviders = RouterModule.forRoot([]);
   ],
   imports: [
     NgbModule.forRoot(),
+    BrowserModule,
     AuthModule,
     HomeModule,
     SettingsModule,
@@ -46,7 +48,7 @@ const rootRouting: ModuleWithProviders = RouterModule.forRoot([]);
     NotFoundModule,
     ProfileModule,
     HttpClientModule,
-    rootRouting
+    rootRouting,
   ],
   providers: [
     AuthService,

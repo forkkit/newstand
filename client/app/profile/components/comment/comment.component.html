@@ -45,7 +45,7 @@
             <div class="comment-footer pt-2">
                 <div class="row">
                     <div class="col-md-8">
-                        <div class="admin-zone"> 
+                        <div class="admin-zone" *ngIf="user.role !== 'user'"> 
                             <select class="form-control" name="label" (change)="address($event)">
                                 <option value="">{{addressPlaceholder || 'Address flag'}}</option>
                                 <option *ngFor="let options of addressOptions[flag.label]" value="{{options.value}}">{{options.title}}</option>

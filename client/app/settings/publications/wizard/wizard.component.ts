@@ -22,7 +22,7 @@ export class WizardComponent implements OnInit {
     private router: Router
   ) {
     
-    this.statusArray = ['setup', 'members', 'details'];
+    this.statusArray = ['setup', 'members'];
 
     this.profile = {
       _id: '',
