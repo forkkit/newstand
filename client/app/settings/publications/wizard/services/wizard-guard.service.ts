@@ -40,7 +40,7 @@ export class WizardGuard implements CanActivate {
                 const profile = this.wizardAuth.getCurrentPublisher(); 
 
                 //Redirect to create if no publisher id or already complete
-                if(!profile._id || profile.publisher.status === 3){
+                if(!profile._id || profile.publisher.status === 2){
                     this.router.navigate(['settings/publications/create/setup']);
                     return;
                 }

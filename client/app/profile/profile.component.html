@@ -37,7 +37,7 @@
                     &nbsp;Team
                 </a>
             </li>
-            <li class="nav-item" *ngIf="profile.type === 'publisher' && userAuth">
+            <li class="nav-item" *ngIf="profile.type === 'publisher' && profile.role === 'owner'">
                 <a class="nav-link" href="#">
                     <i class="fa fa-cogs" aria-hidden="true"></i>
                     &nbsp;Settings

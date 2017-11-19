@@ -28,7 +28,7 @@
                 <tr *ngFor="let profile of profiles" (click)="goToProfile(profile)">
                     <td><img src="{{profile.image}}" alt=""></td>
                     <td>{{profile.name}}</td>
-                    <td>{{profile.publisher.status < 2 ? 'pending setup' : profile.status !== 'active' ? 'pending approval' : 'active'}}</td>
+                    <td>{{profile.status === 'active' ? 'Active' : 'Pending setup'}}</td>
                     <td>{{ profile.date | date:'medium' }}</td>
                 </tr>
             </tbody>

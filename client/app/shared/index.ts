@@ -6,5 +6,6 @@ export * from './directives';
 export * from './notifications';
 export * from './pipes';
 export * from './flag-modal/flag-modal.component';
-export * from './toast/toast.component';
-export * from './feed/feed.component';
+export * from './toast';
+export * from './feed';
+export * from './file-upload';

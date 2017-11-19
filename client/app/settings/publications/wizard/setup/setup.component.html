@@ -37,13 +37,8 @@
             </div>
             <div class="col-md-4">
                 <div class="form-group">
-                    <label for="bio">Publication picture</label>
-                    <div class="img-wrapper">
-                        <img src="/assets/pub_placeholder.png" alt="">
-                        <div class="img-text">
-                            <span>Tap to edit</span>
-                        </div>
-                    </div>
+                    <label>Publication picture</label>
+                    <app-file-upload [image]="setupForm.value.image" (path)="imagePath($event)"></app-file-upload>    
                 </div>
             </div>
         </div>

@@ -33,6 +33,12 @@ const all = {
         key: process.env.STREAM_KEY || 'id',
         secret: process.env.STREAM_SECRET || 'secret'
     },
+    s3:{
+        accessKeyId: process.env.S3_KEY || '',
+        secretAccessKey: process.env.S3_SECRET || '',
+        region: process.env.S3_REGION || '', 
+        bucket: process.env.S3_BUCKET || ''
+    },
 }
 
 export default all;

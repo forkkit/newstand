@@ -150,7 +150,7 @@ export class WizardRouter extends BaseCtrl{
         
         const data = req.body;
 
-        this.model.findOneAndUpdate(data, {$set:{'status': 'active'}}).exec()
+        this.model.findOneAndUpdate(data, {$set:{'status': 'active', 'publisher.status': 2}}).exec()
             .then(this.respondWithResult(res))
             .catch(this.handleError(res));
         

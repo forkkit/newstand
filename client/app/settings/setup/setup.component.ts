@@ -1,28 +1,23 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
-import { FileUploader } from "angular-file";
 
 import { ToastComponent } from '../../shared/toast/toast.component';
 import { AuthService, ProfilesService } from '../../shared/services';
-import { User } from '../../shared/models';
-const URL = 'https://evening-anchorage-3159.herokuapp.com/api/';
+import { Profile } from '../../shared/models';
+
+
 @Component({
   selector: 'app-settings-setup',
   templateUrl: './setup.component.html',
   styleUrls: ['./setup.component.scss']
 })
 export class SettingsSetupComponent implements OnInit {
-
-  currentUser: User;
   
   isLoading = true;
 
-  usernameForm: FormGroup;
-  username = new FormControl('', [Validators.required]);
-  
-
-  public uploader:FileUploader = new FileUploader({url: URL});
+  setupForm: FormGroup;
+  currentUser: Profile;
 
   constructor(
     private auth: AuthService,
@@ -31,35 +26,50 @@ export class SettingsSetupComponent implements OnInit {
     private formBuilder: FormBuilder,
     public toast: ToastComponent) {
 
-      this.usernameForm = this.formBuilder.group({
-        username: this.username
+      this.setupForm = this.formBuilder.group({
+        username: ['', <any>Validators.required],
+        bio: '',
+        image: ''
       });
     }
 
   ngOnInit() {
-    this.getUser();
-  }
-
-  getUser() {
     this.auth.currentUser.subscribe(
-      (userData: User) => {
-        this.currentUser = userData;
+      (user: Profile) => {
+
+        this.setupForm.patchValue({
+          username: user.username,
+          image: user.image
+        });
+
+        this.currentUser = user;
+
       }
     );
   }
 
-  submit() {
+  imagePath(event) {
+    if(event.path){
+      this.setupForm.patchValue({
+        image: event.path
+      });
+    }
+  }
 
-    this.profile.username(this.currentUser)
-      .subscribe(
-        data => {
-          this.auth.update(data);
-          this.router.navigate(['/' + data.username])
-        },
-        err => {
-          this.toast.setMessage(err.error, 'danger'); 
-        }
-      );
+  submit(model: Profile, isValid: boolean) { 
+
+    if(isValid){
+      this.profile.username(model)
+        .subscribe(
+          data => {
+            this.auth.update(data);
+            this.router.navigate(['/' + data.username])
+          },
+          err => {
+            this.toast.setMessage(err.error, 'danger'); 
+          }
+        );
+    }
 
   }
 

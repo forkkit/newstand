@@ -110,6 +110,15 @@ export class WizardSetupComponent implements OnInit {
 
     }
 
+    imagePath(event) {
+
+      if(event.path){
+        this.setupForm.patchValue({
+          image: event.path
+        });
+      }
+    }
+
     submit(model: Profile, isValid: boolean){
 
       this.submitted = true;
@@ -160,7 +169,6 @@ export class WizardSetupComponent implements OnInit {
       );
 
     }
-
 
     ngOnDestroy() {
       this.subscription.unsubscribe();

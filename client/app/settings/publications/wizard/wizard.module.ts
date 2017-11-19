@@ -4,7 +4,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { ngfModule } from "angular-file";
 
 import { WizardComponent } from './wizard.component';
 import { WizardSetupComponent } from './setup/setup.component';
@@ -59,7 +58,6 @@ const wizardRouting: ModuleWithProviders = RouterModule.forChild([
         FormsModule,
         ReactiveFormsModule,
         wizardRouting,
-        ngfModule,
         NgbModule,
         SharedModule
     ],

@@ -77,7 +77,7 @@ export class ProfileRouter extends BaseCtrl{
   public username = (req: userRequest, res: Response) =>  {
     
     const user = req.profile; 
-    const username = req.body.username;
+    const update = req.body;
     
     return this.model.findById(user._id).exec()
       .then(profile => {
@@ -86,7 +86,9 @@ export class ProfileRouter extends BaseCtrl{
           throw new Error('Profile not found');
         }
 
-        profile.username = username;
+        profile.username = update.username;
+        profile.image = update.image;
+        profile.bio = update.bio;
         profile.type = 'user';
         profile.status = 'active';
         return profile.save()
@@ -102,6 +104,7 @@ export class ProfileRouter extends BaseCtrl{
 
     this.router.get('/username/:username', auth.checkAuth(), this.profile);
     this.router.put('/username', auth.isAuthenticated(), this.username);
+    this.router.put('/:id', auth.isAuthenticated(), this.update);
     this.router.get('/', auth.isAuthenticated(), this.index)
     this.router.get('/:id', auth.checkAuth(), this.get);
     this.router.post('/', this.insert);

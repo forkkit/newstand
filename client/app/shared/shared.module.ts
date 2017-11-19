@@ -13,6 +13,7 @@ import { FlagModalComponent } from './flag-modal/flag-modal.component';
 import { UserAuthDirective } from './directives';
 import { FlagService } from './services/flag.service';
 import { NotificationsSharedComponent } from './notifications';
+import { FileUploadComponent } from './file-upload';
  
 @NgModule({
   imports: [
@@ -33,6 +34,7 @@ import { NotificationsSharedComponent } from './notifications';
     LoadingComponent,
     FeedComponent,
     UserAuthDirective,
+    FileUploadComponent
   ],
   declarations: [
     ToastComponent,
@@ -40,7 +42,8 @@ import { NotificationsSharedComponent } from './notifications';
     FeedComponent,
     FlagModalComponent,
     UserAuthDirective,
-    NotificationsSharedComponent
+    NotificationsSharedComponent,
+    FileUploadComponent
   ],
   entryComponents: [
     FlagModalComponent,

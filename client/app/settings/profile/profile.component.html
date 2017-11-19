@@ -1,3 +1,4 @@
+<app-toast [message]="toast.message"></app-toast>
 <div class="card card-body rounded-0">
     <h3 class="card-title font-weight-bold">Public profile</h3>
     <form action="" [formGroup]="profileForm" (ngSubmit)="submit(profileForm)">
@@ -21,12 +22,7 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for="bio">Profile picture</label>
-                        <div class="img-wrapper">
-                            <img src="{{profileForm.value.image}}" alt="">
-                            <div class="img-text">
-                                <span>Tap to edit</span>
-                            </div>
-                        </div>
+                        <app-file-upload [image]="profileForm.value.image" (path)="imagePath($event)"></app-file-upload> 
                     </div>
                 </div>
             </div>

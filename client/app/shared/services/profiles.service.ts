@@ -33,5 +33,9 @@ export class ProfilesService {
   username(user): Observable<any> {
     return this.http.put('/api/profiles/username', user);
   }
+
+  upload(data): Observable<any> {
+    return this.http.post('/api/uploads', data);
+  }
   
 }

@@ -1,7 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
-import { FileUploader } from "angular-file";
 
 import { ToastComponent } from '../../shared/toast/toast.component';
 import { AuthService, ProfilesService } from '../../shared';
@@ -13,14 +12,15 @@ const URL = 'https://evening-anchorage-3159.herokuapp.com/api/';
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss']
 })
-export class SettingsProfileComponent implements OnInit{
+export class SettingsProfileComponent{
 
   profileForm: FormGroup;
 
   constructor(
     private auth: AuthService,
     private fb: FormBuilder, 
-    private profilesService: ProfilesService
+    private profilesService: ProfilesService,
+    private toast: ToastComponent
   ){
     const profile = this.auth.getCurrentUser();
 
@@ -33,14 +33,21 @@ export class SettingsProfileComponent implements OnInit{
     });
   }
 
-  ngOnInit(){
-
+  imagePath(event) {
+    if(event.path){
+      this.profileForm.patchValue({
+        image: event.path
+      });
+    }
   }
 
   submit(form){
 
     return this.profilesService.update(form.value).subscribe(
-      profile => this.auth.update(form.value),
+      profile => {
+        this.auth.update(form.value);
+        this.toast.setMessage('Profile successfully updated.', 'success');
+      },
       err => console.log('error')
     );
 

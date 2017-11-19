@@ -17,6 +17,7 @@ import PublisherRouter from '../api/publisher/publisher.router';
 import WizardRouter from '../api/publisher/wizard.router';
 import FlagRouter from '../api/flag/flag.router';
 import StreamRouter from '../api/stream/stream.router';
+import UploadRouter from '../api/upload/upload.router';
 import AuthRouter from '../auth';
 
 class App {
@@ -51,6 +52,7 @@ class App {
         this.express.use('/api/wizards', WizardRouter);
         this.express.use('/api/flags', FlagRouter);
         this.express.use('/api/streams', StreamRouter);
+        this.express.use('/api/uploads', UploadRouter);
         this.express.use('/api/auth', AuthRouter);
     }
 }

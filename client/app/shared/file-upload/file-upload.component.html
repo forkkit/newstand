@@ -1,0 +1,12 @@
+<div class="upload-wrapper">
+    <div class="loader" [class.active]="isLoading">
+        <app-loading [condition]="isLoading"></app-loading>
+    </div>
+    <a href="javascript:;" (click)="file.click()">
+        <img [src]="tempImage ? tempImage : image" alt="">
+        <div class="img-text" *ngIf="!tempImage">
+            <span>Tap to edit</span>
+        </div>
+    </a>
+</div>
+<input #file type="file" accept="image/*" (change)="upload($event)" style="opacity:0; height:0px;width:0px;">
