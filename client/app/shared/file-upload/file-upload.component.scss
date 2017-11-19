@@ -43,4 +43,12 @@
             background-color:rgba(255,255,255, 0.4);
         }
     }
+
+    >.error{
+        position: absolute;
+        font-size: .8rem;
+        text-align: center;
+        right: 0;
+        left: 0;
+    }
 }

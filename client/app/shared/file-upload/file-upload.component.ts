@@ -13,32 +13,53 @@ export class FileUploadComponent{
   @Output() path: EventEmitter<string> = new EventEmitter<string>();;
   public tempImage: string;
   public isLoading: boolean = false;
+  public error: string;
 
   constructor(private profilesService: ProfilesService){ }
 
   
   upload(input:any){ 
 
-    this.isLoading = true;
-
-    let fileCount: number = input.target.files.length;
+    this.error = '';
+    const files = input.target.files;
     let formData = new FormData();
 
-    if (fileCount > 0) {
-      
-      formData.append('photo', input.target.files.item(0));
-
-      this.profilesService.upload(formData)
-        .subscribe(
-          data => {
-            this.path.emit(data);
-            this.isLoading = false;
-          },
-          err => {
-            console.log(err);
-          }
-        );
+    //Exists
+    if(files.length === 0) {
+      this.error = 'Error: Image not found';
+      return;
     }
+
+    //Size (< 1mb)
+    if(files[0].size > 1000000){
+      this.error = 'Error: Image exceeds maximum file size of 1 mb';
+      return;
+    }
+
+    //Type
+    const name = files[0].name;
+    const extenstion = name.substring(name.lastIndexOf('.') + 1).toLowerCase();
+
+    if (extenstion !== "gif" && extenstion !== "png"
+    && extenstion !== "jpeg" && extenstion !== "jpg") {
+      this.error = 'Error: Image must be a PNG, JPG, or GIF file';
+      return;
+    }
+
+    this.isLoading = true;
+      
+    formData.append('photo', files.item(0));
+
+    this.profilesService.upload(formData)
+      .subscribe(
+        data => {
+          this.path.emit(data);
+          this.isLoading = false;
+        },
+        err => {
+          console.log(err);
+        }
+      );
   }
 
 }

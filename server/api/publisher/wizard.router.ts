@@ -47,6 +47,7 @@ export class WizardRouter extends BaseCtrl{
 
         profile.name = data.name;
         profile.username = data.username;
+        profile.image = data.image;
         profile.publisher.domain = data.publisher.domain;
         profile.bio = data.bio;
 
